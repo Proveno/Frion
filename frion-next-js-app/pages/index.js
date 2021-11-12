@@ -13,7 +13,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to Test Zone
+        </h1>
+        <h1 className="border-black flex">
+          <a>HELLO</a>
+          <a className="mt-15 cursor-pointer">THAT Zone</a>
         </h1>
 
         <p className={styles.description}>
