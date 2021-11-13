@@ -1,0 +1,12 @@
+.navBar {
+    background-color: #281D2C;
+    color: #EDEDED;
+}
+.imageLogo{
+    width: 35px;
+    height: 35px;
+}
+.textLogo {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 25px;
+}
