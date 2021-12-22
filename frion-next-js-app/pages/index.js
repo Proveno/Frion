@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import Image from 'next/image'
-import navBar from '../styles/navBar.module.css'
-import infBlock from '../styles/infoBlock.module.css'
+import React, { useState } from "react";
+import Image from "next/image";
+import navBar from "../styles/navBar.module.css";
+import infBlock from "../styles/infoBlock.module.css";
 
-import MenuIcon from '../assets/logo.png'
-import CatImage from '../assets/InformationCat.jpeg'
-import CloseIcon from '../assets/window-close-regular.svg'
+import MenuIcon from "../assets/logo.png";
+import CatImage from "../assets/InformationCat.jpeg";
+import CloseIcon from "../assets/window-close-regular.svg";
 
 export default function Home() {
   // const [isSideMenuOpen, setisSideMenuOpen] = useState(false)
@@ -14,28 +14,25 @@ export default function Home() {
   //   (isSideMenuOpen) ? setisSideMenuOpen(false) : setisSideMenuOpen(true)
   // }
 
-
   return (
     <div>
       {/* NavBar */}
-      <div className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`} >
+      <div
+        className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
+      >
         {/* Logo/Home */}
         <div className={`flex`}>
           <div className={`${navBar.imageLogo}`}>
-            <Image src={MenuIcon} alt="Logo picture :>"/>
+            <Image src={MenuIcon} alt="Logo picture :>" />
           </div>
           <div className={`ml-2 ${navBar.textLogo}`}>
-            <a>
-              Frion
-            </a>
+            <a>Frion</a>
           </div>
         </div>
 
         {/* NavButtons */}
         <div className={`flex justify-between w-9/12`}>
-          <div className={`self-center`}>
-            {/* Indent from logo */}
-          </div>
+          <div className={`self-center`}>{/* Indent from logo */}</div>
           <div className={`self-center`}>
             <button>ABOUT US</button>
           </div>
@@ -51,23 +48,42 @@ export default function Home() {
           <div className={`self-center`}>
             <button>CONTACTS</button>
           </div>
-          <div className={`self-center`}>
-            {/* Indent from right border */}
-          </div>
+          <div className={`self-center`}>{/* Indent from right border */}</div>
         </div>
-
-
       </div>
       {/* About Us */}
-      <div>
-        <h3>What is Frion?</h3>
-        <div className='flex'>
-          <div className='self-start justify-center w-1/2'>
-            Lorem fshjdfkshdfkhksjdhfksdhkfjhsdjfhsdhfkjdshkjfhsdkfjshdkfhsdkjfhskdjhfsdjkhfsjkdhfkjsdhfjsdhfjksdhjkfshdfk
-          </div>
-          <div className='self-center justify-center w-1/2'>
-            <div className={`${infBlock.catImage}`}>
-            <Image className='border-none rounded-3xl' src={CatImage} alt="Picture with cat :>"/>
+      <div className="container mx-auto">
+        <div className="px-7 py-28">
+          <p className="text-2xl ml-4">What is Frion?</p>
+          <div className="flex mt-10">
+            <div className="self-start justify-center w-3/4">
+              <p
+                className={`whitespace-normal break-word indent-8 text-justify font-serif text-lg pr-14`}
+              >
+                {/* TODO: Rewrite text!!! */}
+                There are many variations of passages of Lorem Ipsum available,
+                but the majority have suffered alteration in some form, by
+                injected humour, or randomised words which don't look even
+                slightly believable. If you are going to use a passage of Lorem
+                Ipsum, you need to be sure there isn't anything embarrassing
+                hidden in the middle of text. All the Lorem Ipsum generators on
+                the Internet tend to repeat predefined chunks as necessary,
+                making this the first true generator on the Internet. It uses a
+                dictionary of over 200 Latin words, combined with a handful of
+                model sentence structures, to generate Lorem Ipsum which looks
+                reasonable. The generated Lorem Ipsum is therefore always free
+                from repetition, injected humour, or non-characteristic words
+                etc.
+              </p>
+            </div>
+            <div className="self-center text-right ml-5">
+              <div className={`${infBlock.catImage}`}>
+                <Image
+                  className="border-none rounded-3xl"
+                  src={CatImage}
+                  alt="Picture with cat :>"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -87,17 +103,23 @@ export default function Home() {
     //         </button>
     //         {(isSideMenuOpen) ? SideMenu() : ''}
     //   </div>
-  )
+  );
 }
 
 function SideMenu() {
   return (
     <div className="fixed h-screen w-1/2 sm:w-1/4 lg:hidden bg-blue-500 top-8">
       <ul className="menu-list flex flex-col text-xs font-bold">
-        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700"><a href="#">Home</a></li>
-        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700"><a href="#">Profile</a></li>
-        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700"><a href="#">Settings</a></li>
+        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700">
+          <a href="#">Home</a>
+        </li>
+        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700">
+          <a href="#">Profile</a>
+        </li>
+        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700">
+          <a href="#">Settings</a>
+        </li>
       </ul>
     </div>
-  )
+  );
 }
