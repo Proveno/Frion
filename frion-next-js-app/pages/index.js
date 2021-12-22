@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import navBar from '../styles/navBar.module.css'
+import infBlock from '../styles/infoBlock.module.css'
 
 import MenuIcon from '../assets/logo.png'
+import CatImage from '../assets/InformationCat.jpeg'
 import CloseIcon from '../assets/window-close-regular.svg'
 
 export default function Home() {
@@ -55,6 +57,20 @@ export default function Home() {
         </div>
 
 
+      </div>
+      {/* About Us */}
+      <div>
+        <h3>What is Frion?</h3>
+        <div className='flex'>
+          <div className='self-start justify-center w-1/2'>
+            Lorem fshjdfkshdfkhksjdhfksdhkfjhsdjfhsdhfkjdshkjfhsdkfjshdkfhsdkjfhskdjhfsdjkhfsjkdhfkjsdhfjsdhfjksdhjkfshdfk
+          </div>
+          <div className='self-center justify-center w-1/2'>
+            <div className={`${infBlock.catImage}`}>
+            <Image className='border-none rounded-3xl' src={CatImage} alt="Picture with cat :>"/>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     // NavBarEx
