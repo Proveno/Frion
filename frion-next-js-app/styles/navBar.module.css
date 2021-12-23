@@ -1,6 +1,7 @@
 .navBar {
     background-color: #281D2C;
     color: #EDEDED;
+    z-index: 1;
 }
 .imageLogo{
     width: 35px;

@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import navBar from "../styles/navBar.module.css";
 import infBlock from "../styles/infoBlock.module.css";
+import instructBlock from "../styles/instructBlock.module.css";
 
 import MenuIcon from "../assets/logo.png";
 import CatImage from "../assets/InformationCat.jpeg";
+import requestImageInfo from "../assets/requestInfo.png";
+
+
 import CloseIcon from "../assets/window-close-regular.svg";
 
 export default function Home() {
@@ -33,26 +38,36 @@ export default function Home() {
         {/* NavButtons */}
         <div className={`flex justify-between w-9/12`}>
           <div className={`self-center`}>{/* Indent from logo */}</div>
-          <div className={`self-center`}>
-            <button>ABOUT US</button>
-          </div>
-          <div className={`self-center`}>
-            <button>REGISTRATION</button>
-          </div>
-          <div className={`self-center`}>
-            <button>SHOP</button>
-          </div>
-          <div className={`self-center`}>
-            <button>GALLERY</button>
-          </div>
-          <div className={`self-center`}>
-            <button>CONTACTS</button>
-          </div>
+          <Link href={"/#About"}>
+            <div className={`self-center`}>
+              <button>ABOUT US</button>
+            </div>
+          </Link>
+          <Link href={"/#About"}>
+            <div className={`self-center`}>
+              <button>REGISTRATION</button>
+            </div>
+          </Link>
+          <Link href={"/#About"}>
+            <div className={`self-center`}>
+              <button>SHOP</button>
+            </div>
+          </Link>
+          <Link href={"/#About"}>
+            <div className={`self-center`}>
+              <button>GALLERY</button>
+            </div>
+          </Link>
+          <Link href={"/#About"}>
+            <div className={`self-center`}>
+              <button>CONTACTS</button>
+            </div>
+          </Link>
           <div className={`self-center`}>{/* Indent from right border */}</div>
         </div>
       </div>
       {/* About Us */}
-      <div className="container mx-auto">
+      <div className="container mx-auto" id="About">
         <div className="px-7 py-28">
           <p className="text-2xl ml-4">What is Frion?</p>
           <div className="flex mt-10">
@@ -77,17 +92,61 @@ export default function Home() {
               </p>
             </div>
             <div className="self-center text-right ml-5">
-              <div className={`${infBlock.catImage}`}>
+              <div className={`${infBlock.Image}`}>
                 <Image
                   className="border-none rounded-3xl"
                   src={CatImage}
                   alt="Picture with cat :>"
+                  placeholder="blur"
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
+      {/* Reg instruction */}
+      <div className={`${instructBlock.container}`}>
+        <div className="px-7 py-28 container mx-auto">
+          <p className="text-2xl ml-4">How can I create request?</p>
+          <div className="flex mt-10">
+          <div className="self-center text-right mr-5 static">
+              <div className={`${infBlock.Image}`}>
+              <Image
+                  className={`${infBlock.catImage} border-none rounded-3xl`}
+                  src={requestImageInfo}
+                  alt="Picture with dog :>"
+                  placeholder="blur"
+                />
+              </div>
+            </div>
+
+            <div className="self-start justify-center w-3/4">
+              <p
+                className={`whitespace-normal break-word indent-8 text-justify font-serif text-lg pl-14`}
+              >
+                {/* TODO: Rewrite text!!! */}
+                There are many variations of passages of Lorem Ipsum available,
+                but the majority have suffered alteration in some form, by
+                injected humour, or randomised words which don't look even
+                slightly believable. If you are going to use a passage of Lorem
+                Ipsum, you need to be sure there isn't anything embarrassing
+                hidden in the middle of text. All the Lorem Ipsum generators on
+                the Internet tend to repeat predefined chunks as necessary,
+                making this the first true generator on the Internet. It uses a
+                dictionary of over 200 Latin words, combined with a handful of
+                model sentence structures, to generate Lorem Ipsum which looks
+                reasonable. The generated Lorem Ipsum is therefore always free
+                from repetition, injected humour, or non-characteristic words
+                etc.
+              </p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+
+
     </div>
     // NavBarEx
     // <div className="fixed w-full h-8 bg-blue-400 text-gray-200 flex flex-row justify-between items-center">
