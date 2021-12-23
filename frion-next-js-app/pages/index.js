@@ -4,11 +4,11 @@ import Image from "next/image";
 import navBar from "../styles/navBar.module.css";
 import infBlock from "../styles/infoBlock.module.css";
 import instructBlock from "../styles/instructBlock.module.css";
+import formBlock from "../styles/requestForm.module.css";
 
 import MenuIcon from "../assets/logo.png";
 import CatImage from "../assets/InformationCat.jpeg";
 import requestImageInfo from "../assets/requestInfo.png";
-
 
 import CloseIcon from "../assets/window-close-regular.svg";
 
@@ -109,9 +109,9 @@ export default function Home() {
         <div className="px-7 py-28 container mx-auto">
           <p className="text-2xl ml-4">How can I create request?</p>
           <div className="flex mt-10">
-          <div className="self-center text-right mr-5 static">
+            <div className="self-center text-right mr-5 static">
               <div className={`${infBlock.Image}`}>
-              <Image
+                <Image
                   className={`${infBlock.catImage} border-none rounded-3xl`}
                   src={requestImageInfo}
                   alt="Picture with dog :>"
@@ -140,13 +140,120 @@ export default function Home() {
                 etc.
               </p>
             </div>
-            
           </div>
         </div>
       </div>
-      
+      {/* Request form */}
+      <div className="container mx-auto" id="Form">
+        <div className="px-7 py-28">
+          <p className="text-2xl text-center">Create request</p>
+          <div className="flex mt-10 justify-center">
+            <div
+              className={`${formBlock.form} border-none rounded-3xl self-start w-2/3 px-14`}
+            >
+              <form className="my-7">
+                <label className="block my-3">
+                  <span className="block text-sm font-medium text-gray-700">
+                    First name
+                  </span>
+                  <input
+                    type="text"
+                    required
+                    className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                    placeholder="Enter your name here..."
+                  />
+                </label>
+                <label className="block my-3">
+                  <span className="block text-sm font-medium text-gray-700">
+                    Second name
+                  </span>
+                  <input
+                    type="text"
+                    required
+                    className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                    placeholder="Enter your surname here..."
+                  />
+                </label>
+                <label className="block my-3">
+                  <span className="block text-sm font-medium text-gray-700">
+                    Phone number
+                  </span>
+                  <input
+                    type="text"
+                    className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                    placeholder="Enter your phone number here..."
+                  />
+                </label>
+                <label className="block my-3">
+                  <span class="block text-sm font-medium text-gray-700">
+                    Email
+                  </span>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    class="peer px-3 py-2 bg-white placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-lg invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+                    placeholder="you@example.com"
+                  />
+                  <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
+                    Please provide a valid email address.
+                  </p>
+                </label>
+                <label className="block my-3">
+                  <span className="block text-sm font-medium text-gray-700">
+                    Pet
+                  </span>
+                  <select
+                    className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                    required
+                  >
+                    <option>Cat</option>
+                    <option>Dog</option>
+                    <option>Fish</option>
+                  </select>
+                </label>
 
+                <label className="block my-5 flex justify-center">
+                  <div className="w-1/3 block text-sm text-center font-medium text-gray-700">
+                    Taking
+                    <input
+                      type="radio"
+                      name="feedback"
+                      className="default:ring-2 ml-2"
+                    />
+                  </div>
 
+                  <div className="w-1/3 block text-sm text-center font-medium text-gray-700">
+                    Giving
+                    <input
+                      type="radio"
+                      name="feedback"
+                      className="default:ring-2 ml-2"
+                    />
+                  </div>
+                  <div className="w-1/3 block text-sm text-center font-medium text-gray-700">
+                    Healing
+                    <input
+                      type="radio"
+                      name="feedback"
+                      className="default:ring-2 ml-2"
+                    />
+                  </div>
+                </label>
+
+                <div className="justify-center flex w-full">
+                  <button
+                    type="submit"
+                    className={`${formBlock.SubmitButton} w-full py-2 rounded-lg`}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     // NavBarEx
     // <div className="fixed w-full h-8 bg-blue-400 text-gray-200 flex flex-row justify-between items-center">
