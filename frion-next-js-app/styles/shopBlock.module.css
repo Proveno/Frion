@@ -1,0 +1,19 @@
+.shopContainer{
+    background-color: #281D2C;
+    color: #EDEDED;
+}
+.shopItems{
+    background-color: white;
+    max-width: 300px;
+    border: solid #281D2C 1px;
+}
+.shopBuyButton{
+    background-color: #19101d;
+    color: #EDEDED;
+    border: #19101d 5px solid;
+}
+.shopViewButton{
+    background-color: #EDEDED;
+    color: #19101d;
+    border: #EDEDED 5px solid;
+}

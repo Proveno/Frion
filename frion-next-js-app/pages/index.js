@@ -5,20 +5,22 @@ import navBar from "../styles/navBar.module.css";
 import infBlock from "../styles/infoBlock.module.css";
 import instructBlock from "../styles/instructBlock.module.css";
 import formBlock from "../styles/requestForm.module.css";
+import shopBlock from "../styles/shopBlock.module.css";
 
 import MenuIcon from "../assets/logo.png";
 import CatImage from "../assets/InformationCat.jpeg";
 import requestImageInfo from "../assets/requestInfo.png";
 
+import productImage1 from "../assets/Product/1.png";
+import productImage2 from "../assets/Product/2.png";
+import productImage3 from "../assets/Product/3.png";
+import productImage4 from "../assets/Product/4.png";
+import productImage5 from "../assets/Product/5.png";
+import productImage6 from "../assets/Product/6.png";
+
 import CloseIcon from "../assets/window-close-regular.svg";
 
 export default function Home() {
-  // const [isSideMenuOpen, setisSideMenuOpen] = useState(false)
-
-  // const showSideMenu = () => {
-  //   (isSideMenuOpen) ? setisSideMenuOpen(false) : setisSideMenuOpen(true)
-  // }
-
   return (
     <div>
       {/* NavBar */}
@@ -36,6 +38,7 @@ export default function Home() {
         </div>
 
         {/* NavButtons */}
+        {/* TODO: replace links to scroll */}
         <div className={`flex justify-between w-9/12`}>
           <div className={`self-center`}>{/* Indent from logo */}</div>
           <Link href={"/#About"}>
@@ -43,19 +46,14 @@ export default function Home() {
               <button>ABOUT US</button>
             </div>
           </Link>
-          <Link href={"/#About"}>
+          <Link href={"/#Registration"}>
             <div className={`self-center`}>
               <button>REGISTRATION</button>
             </div>
           </Link>
-          <Link href={"/#About"}>
+          <Link href={"/#Shop"}>
             <div className={`self-center`}>
               <button>SHOP</button>
-            </div>
-          </Link>
-          <Link href={"/#About"}>
-            <div className={`self-center`}>
-              <button>GALLERY</button>
             </div>
           </Link>
           <Link href={"/#About"}>
@@ -69,7 +67,7 @@ export default function Home() {
       {/* About Us */}
       <div className="container mx-auto" id="About">
         <div className="px-7 py-28">
-          <p className="text-2xl ml-4">What is Frion?</p>
+          <p className="text-3xl ml-4">What is Frion?</p>
           <div className="flex mt-10">
             <div className="self-start justify-center w-3/4">
               <p
@@ -105,9 +103,9 @@ export default function Home() {
         </div>
       </div>
       {/* Reg instruction */}
-      <div className={`${instructBlock.container}`}>
+      <div className={`${instructBlock.container}`} id="Registration">
         <div className="px-7 py-28 container mx-auto">
-          <p className="text-2xl ml-4">How can I create request?</p>
+          <p className="text-3xl ml-4">How can I create request?</p>
           <div className="flex mt-10">
             <div className="self-center text-right mr-5 static">
               <div className={`${infBlock.Image}`}>
@@ -146,10 +144,10 @@ export default function Home() {
       {/* Request form */}
       <div className="container mx-auto" id="Form">
         <div className="px-7 py-28">
-          <p className="text-2xl text-center">Create request</p>
+          <p className="text-3xl text-center">Create request</p>
           <div className="flex mt-10 justify-center">
             <div
-              className={`${formBlock.form} border-none rounded-3xl self-start w-2/3 px-14`}
+              className={`${formBlock.form} border-none rounded-3xl self-start w-3/5 px-14`}
             >
               <form className="my-7">
                 <label className="block my-3">
@@ -254,38 +252,146 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
-    // NavBarEx
-    // <div className="fixed w-full h-8 bg-blue-400 text-gray-200 flex flex-row justify-between items-center">
-    //         <div className="brand-logo text-sm font-bold px-2">rhombus</div>
-    //         <ul className="hidden menu-list lg:flex lg:flex-row text-xs font-bold">
-    //             <li className="menu-list-item px-2"><a href="#">Home</a></li>
-    //             <li className="menu-list-item px-2"><a href="#">Profile</a></li>
-    //             <li className="menu-list-item px-2"><a href="#">Settings</a></li>
-    //         </ul>
+      {/*Shop*/}
+      <div className={`${shopBlock.shopContainer}`} id="Shop">
+        <div className="px-7 py-28 container mx-auto ">
+          <p className="text-3xl ml-4">You need something for your pet?</p>
+          <div className="grid gap-4 grid-cols-3 justify-between py-12">
+            {/* TODO: map first 10 products and shop them. If user wants to see more -> new page with full shop */}
+            {/* Fix different height */}
+            {/* 1-st Product */}
+            <div
+              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3`}
+            >
+              <Image
+                width={500}
+                height={500}
+                className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                src={productImage1}
+                alt="Product picture"
+              ></Image>
+              <span className="block text-sm text-lg text-gray-700 my-2">
+                Purina One Sterilcat
+              </span>
+              <button
+                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+              >
+                Buy for <span> 13,50$</span>
+              </button>
+            </div>
+            {/* 2-nd Product */}
+            <div
+              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3`}
+            >
+              <Image
+                width={500}
+                height={500}
+                className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                src={productImage2}
+                alt="Product picture"
+              ></Image>
+              <span className="block text-sm text-lg text-gray-700 my-2">
+                EuroDog, beef flavor
+              </span>
+              <button
+                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+              >
+                Buy for <span>9,50$</span>
+              </button>
+            </div>
+            {/* 3-rd Product */}
+            <div
+              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3`}
+            >
+              <Image
+                width={500}
+                height={500}
+                className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                src={productImage3}
+                alt="Product picture"
+              ></Image>
+              <span className="block text-sm text-lg text-gray-700 my-2">
+                EVOLUTOR, collar for dogs
+              </span>
+              <button
+                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+              >
+                Buy for <span>20,00$</span>
+              </button>
+            </div>
+            {/* 4-th Product */}
+            <div
+              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-3 mx-auto pt-3`}
+            >
+              <Image
+                width={500}
+                height={500}
+                className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                src={productImage4}
+                alt="Product picture"
+              ></Image>
+              <span className="block text-sm text-lg text-gray-700 my-2">
+                Parrot cage
+              </span>
+              <button
+                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+              >
+                Buy for <span>20,99$</span>
+              </button>
+            </div>
+            {/* 5-th Product */}
+            <div
+              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-3 mx-auto pt-3`}
+            >
+              <Image
+                width={500}
+                height={500}
+                className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                src={productImage5}
+                alt="Product picture"
+              ></Image>
+              <span className="block text-sm text-lg text-gray-700 my-2">
+                Sani Pet, cat litter
+              </span>
+              <button
+                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+              >
+                Buy for <span>8,00$</span>
+              </button>
+            </div>
 
-    //         <button onClick={()=>{showSideMenu()}} className="lg:hidden menu-button">
-    //             {(isSideMenuOpen) ? <img src={CloseIcon} className="w-8 h-8 px-2" alt="close"></img> : <img src={MenuIcon} className="w-8 h-8 px-2" alt="menu"></img>}
-    //         </button>
-    //         {(isSideMenuOpen) ? SideMenu() : ''}
-    //   </div>
-  );
-}
-
-function SideMenu() {
-  return (
-    <div className="fixed h-screen w-1/2 sm:w-1/4 lg:hidden bg-blue-500 top-8">
-      <ul className="menu-list flex flex-col text-xs font-bold">
-        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700">
-          <a href="#">Home</a>
-        </li>
-        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700">
-          <a href="#">Profile</a>
-        </li>
-        <li className="menu-list-item py-2 hover:bg-white hover:text-blue-700">
-          <a href="#">Settings</a>
-        </li>
-      </ul>
+            {/* 6-th Product */}
+            <div
+              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-3 mx-auto pt-3`}
+            >
+              <Image
+                width={500}
+                height={500}
+                className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                src={productImage6}
+                alt="Product picture"
+              ></Image>
+              <span className="block text-sm text-lg text-gray-700 my-2">
+                Georplast Mini Twisterball
+              </span>
+              <button
+                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+              >
+                Buy for <span>9,40$</span>
+              </button>
+            </div>
+          </div>
+          <div className="w-full flex justify-center">
+          <button className={`${shopBlock.shopViewButton} w-2/5 rounded-3xl py-1 font-bold`}>
+            View all products
+          </button>
+          </div>
+          
+        </div>
+      </div>
+      <div className="container mx-auto h-96">
+        Text
+      </div>
     </div>
   );
 }
