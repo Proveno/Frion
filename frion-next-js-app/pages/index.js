@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import navBar from "../styles/navBar.module.css";
+import feedBack from "../styles/feedButton.module.css";
+import cartBlock from "../styles/cartState.module.css";
 import infBlock from "../styles/infoBlock.module.css";
 import instructBlock from "../styles/instructBlock.module.css";
 import formBlock from "../styles/requestForm.module.css";
@@ -23,6 +25,9 @@ import productImage6 from "../assets/Product/6.png";
 import cartIcon from "../assets/Icons/Tilda_Icons_3st_cart.svg";
 import mapIcon from "../assets/Icons/Tilda_Icons_3st_map.svg";
 import feedbackIcon from "../assets/Icons/Tilda_Icons_3st_woman.svg";
+import feedbackClientIcon from "../assets/Icons/Tilda_Icons_3st_man.svg";
+import tickIcon from "../assets/Icons/Tilda_Icons_27bu_3.svg";
+import crossIcon from "../assets/Icons/Tilda_Icons_27bu_8.svg";
 
 import twitterIcon from "../assets/Icons/Twit.png";
 import facebookIcon from "../assets/Icons/face.png";
@@ -34,49 +39,277 @@ import youtubeIcon from "../assets/Icons/yout.png";
 import CloseIcon from "../assets/window-close-regular.svg";
 
 export default function Home() {
+  const [ShouldShowChat, setShouldShowChat] = useState(false);
+  const [ShouldNavButtons, setShouldNavButtons] = useState(true);
+  const [isCartOpened, setIsCartOpened] = useState(false);
+
+  const [ShouldShowCart, setShouldShowCart] = useState(0);
+  function addQuant(number) {
+    setShouldShowCart(ShouldShowCart + number);
+  }
   return (
     <div>
       {/* NavBar */}
-      <div
-        className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
-      >
-        {/* Logo/Home */}
-        <div className={`flex`}>
-          <div className={`${navBar.imageLogo}`}>
-            <Image src={MenuIcon} alt="Logo picture :>" />
+      {ShouldNavButtons && (
+        <div
+          className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
+        >
+          {/* Logo/Home */}
+          <div className={`flex`}>
+            <div className={`${navBar.imageLogo}`}>
+              <Image src={MenuIcon} alt="Logo picture :>" />
+            </div>
+            <div className={`ml-2 ${navBar.textLogo}`}>
+              <a>Frion</a>
+            </div>
           </div>
-          <div className={`ml-2 ${navBar.textLogo}`}>
-            <a>Frion</a>
-          </div>
-        </div>
 
-        {/* NavButtons */}
-        {/* TODO: replace links to scroll */}
-        <div className={`flex justify-between w-9/12`}>
-          <div className={`self-center`}>{/* Indent from logo */}</div>
-          <Link href={"/#About"}>
-            <div className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}>
-              <button>ABOUT US</button>
+          {/* NavButtons */}
+          {/* TODO: replace links to scroll */}
+          <div className={`flex justify-between w-9/12`}>
+            <div className={`self-center`}>{/* Indent from logo */}</div>
+            <Link href={"/#About"}>
+              <div
+                className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
+              >
+                <button>ABOUT US</button>
+              </div>
+            </Link>
+            <Link href={"/#Registration"}>
+              <div
+                className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
+              >
+                <button>REGISTRATION</button>
+              </div>
+            </Link>
+            <Link href={"/#Shop"}>
+              <div
+                className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
+              >
+                <button>SHOP</button>
+              </div>
+            </Link>
+            <Link href={"/#Contacts"}>
+              <div
+                className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
+              >
+                <button>CONTACTS</button>
+              </div>
+            </Link>
+            <div className={`self-center`}>
+              {/* Indent from right border */}
             </div>
-          </Link>
-          <Link href={"/#Registration"}>
-            <div className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}>
-              <button>REGISTRATION</button>
-            </div>
-          </Link>
-          <Link href={"/#Shop"}>
-            <div className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}>
-              <button>SHOP</button>
-            </div>
-          </Link>
-          <Link href={"/#Contacts"}>
-            <div className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}>
-              <button>CONTACTS</button>
-            </div>
-          </Link>
-          <div className={`self-center`}>{/* Indent from right border */}</div>
+          </div>
         </div>
+      )}
+      {/* feedBack chat */}
+      {ShouldShowChat && (
+        <div
+          className={`${feedBack.textPlace} fixed bottom-36 w-64 h-96 right-12 rounded-t-3xl rounded-b-lg`}
+        >
+          <div className={`${feedBack.messagesPlace} pt-1 px-1`}>
+            <div className="text-center text-sm font-bold text-gray-700">
+              Feedback
+            </div>
+
+            <div className="flex justify-start my-2">
+              <div className={`${feedBack.icon} rounded-full p-1`}>
+                <Image src={feedbackIcon}></Image>
+              </div>
+              <div className="w-full px-2 bg-white mx-2 rounded-lg text-sm">
+                it is a long established fact that a reader will be distracted
+                by the readable content.
+              </div>
+            </div>
+            <div className="flex justify-end my-2">
+              <div className="w-full px-2 bg-white mx-2 rounded-lg text-sm">
+                Many desktop publishing packages and web page editors
+              </div>
+              <div className={`${feedBack.icon} rounded-full p-1`}>
+                <Image src={feedbackClientIcon}></Image>
+              </div>
+            </div>
+
+            <div className="flex justify-start my-2">
+              <div className={`${feedBack.icon} rounded-full p-1`}>
+                <Image src={feedbackIcon}></Image>
+              </div>
+              <div className="w-full px-2 bg-white mx-2 rounded-lg text-sm">
+                is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever
+                since the 1500s
+              </div>
+            </div>
+          </div>
+          <div className="flex self-end">
+            <input
+              type="text"
+              required
+              className="my-auto ml-1 block w-5/6 px-3 py-2 bg-white rounded-l-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+              placeholder="Enter your message here..."
+            />
+            <div className={`${feedBack.sendMessage} my-auto p-1 rounded-r-lg`}>
+              <Image src={telegramIcon}></Image>
+            </div>
+          </div>
+        </div>
+      )}
+      <div
+        className={`${feedBack.feedButton} fixed bottom-12 mb-12 right-12 ${
+          ShouldShowChat ? `p-3` : `p-2`
+        } rounded-full`}
+        onClick={() => {
+          setShouldShowChat(!ShouldShowChat);
+        }}
+      >
+        <Image
+          src={ShouldShowChat ? crossIcon : feedbackIcon}
+          alt="FeedBackIcon"
+        ></Image>
       </div>
+
+      {isCartOpened &&(<div
+        className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
+      >
+        <div className={`${cartBlock.cart} self-center w-2/5 rounded-3xl`}>
+          <div className={`${cartBlock.products} px-4 pt-2`}>
+            <div className="flex justify-between">
+            <div className="text-start text-2xl font-bold text-gray-700">
+              My order:
+            </div>
+            <div className={`${cartBlock.close} mt-1`}
+            onClick={()=>{
+              setShouldNavButtons(true);
+              setIsCartOpened(false);
+            }}>
+              <Image src={crossIcon} alt="Close"></Image>
+            </div>
+            </div>
+            
+            <div
+              className={`${cartBlock.product} bg-white mt-4 w-full py-2 rounded-lg`}
+            >
+              {/* One product order */}
+              <div className="flex justify-between">
+                <div className={`${cartBlock.images}  mt-2`}>
+                  <Image className="rounded-lg" src={productImage1}></Image>
+                </div>
+                <div className="w-4/5">
+                  <span className="block text-sm text-lg text-gray-700 my-2">
+                    Purina One Sterilcat
+                  </span>
+                  <div className="w-full pr-5">
+                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                      <div>Price</div>
+                      <div>-</div>
+                      <div>
+                        <span>13,5</span>$
+                      </div>
+                    </div>
+                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                      <div>Quantity</div>
+                      <div>-</div>
+                      <input
+                        className="w-14 border rounded-xl"
+                        type={"number"}
+                      ></input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={`${cartBlock.line} w-full h-0.5`}></div>
+
+              {/* One product order */}
+              <div className="flex justify-between">
+                <div className={`${cartBlock.images}  mt-2`}>
+                  <Image className="rounded-lg" src={productImage3}></Image>
+                </div>
+                <div className="w-4/5">
+                  <span className="block text-sm text-lg text-gray-700 my-2">
+                  EVOLUTOR, collar for dogs
+                  </span>
+                  <div className="w-full pr-5">
+                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                      <div>Price</div>
+                      <div>-</div>
+                      <div>
+                        <span>20,00</span>$
+                      </div>
+                    </div>
+                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                      <div>Quantity</div>
+                      <div>-</div>
+                      <input
+                        className="w-14 border rounded-xl"
+                        type={"number"}
+                      ></input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div className={`${cartBlock.line} w-full h-0.5`}></div>
+
+              {/* One product order */}
+              <div className="flex justify-between">
+                <div className={`${cartBlock.images} mt-2`}>
+                  <Image className="rounded-lg" src={productImage2}></Image>
+                </div>
+                <div className="w-4/5">
+                  <span className="block text-sm text-lg text-gray-700 my-2">
+                  EuroDog, beef flavor
+                  </span>
+                  <div className="w-full pr-5">
+                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                      <div>Price</div>
+                      <div>-</div>
+                      <div>
+                        <span>9.50</span>$
+                      </div>
+                    </div>
+                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                      <div>Quantity</div>
+                      <div>-</div>
+                      <input
+                        className="w-14 border rounded-xl"
+                        type={"number"}
+                      ></input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+            </div>
+          </div>
+          <div className="flex">
+            <div
+              className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
+            >
+              Buy
+            </div>
+          </div>
+        </div>
+      </div>)}
+      
+
+      {ShouldShowCart > 0 && (
+        <div
+          className={`${feedBack.feedButton} fixed bottom-11 right-12 p-2 rounded-full`}
+          onClick={() => {
+            setShouldNavButtons(false)
+            setIsCartOpened(true)
+          }}
+        >
+          <Image src={cartIcon} alt="FeedBackIcon"></Image>
+        </div>
+      )}
+
       {/* About Us */}
       <div className="container mx-auto" id="About">
         <div className="px-7 py-28">
@@ -291,6 +524,9 @@ export default function Home() {
               </span>
               <button
                 className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+                onClick={() => {
+                  addQuant(1);
+                }}
               >
                 Buy for <span> 13,50$</span>
               </button>
@@ -311,6 +547,9 @@ export default function Home() {
               </span>
               <button
                 className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+                onClick={() => {
+                  addQuant(1);
+                }}
               >
                 Buy for <span>9,50$</span>
               </button>
@@ -331,6 +570,9 @@ export default function Home() {
               </span>
               <button
                 className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+                onClick={() => {
+                  addQuant(1);
+                }}
               >
                 Buy for <span>20,00$</span>
               </button>
@@ -351,6 +593,9 @@ export default function Home() {
               </span>
               <button
                 className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+                onClick={() => {
+                  addQuant(1);
+                }}
               >
                 Buy for <span>20,99$</span>
               </button>
@@ -371,6 +616,9 @@ export default function Home() {
               </span>
               <button
                 className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+                onClick={() => {
+                  addQuant(1);
+                }}
               >
                 Buy for <span>8,00$</span>
               </button>
@@ -391,6 +639,9 @@ export default function Home() {
               </span>
               <button
                 className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+                onClick={() => {
+                  addQuant(1);
+                }}
               >
                 Buy for <span>9,40$</span>
               </button>
@@ -479,7 +730,7 @@ export default function Home() {
       <div className={`${shopBlock.shopContainer}`}>
         <div className="px-7 py-7 justify-center container mx-auto ">
           <div className="flex w-full justify-center">
-          <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
               <Image src={twitterIcon}></Image>
             </div>
             <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>

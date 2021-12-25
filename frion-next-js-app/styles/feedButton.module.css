@@ -1,0 +1,26 @@
+.feedButton{
+    background-color: lightgray;
+    width: 45px;
+    height: 45px;
+}
+.textPlace{
+    background-color: lightgray;
+    z-index: 1;
+}
+.messagesPlace{
+    height: 89%;
+}
+.icon{
+    background-color: #9999;
+    width: 30px;
+    height: 30px;
+}
+.sendMessage{
+    background-color: #281D2C;
+    width: 35px;
+    height: 35px;
+}
+
+.feedButton:hover{
+    transform: scale(1.1);
+}
