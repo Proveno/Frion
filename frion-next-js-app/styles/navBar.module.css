@@ -11,3 +11,12 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 25px;
 }
+.navButton{
+
+}
+.navButton:hover{
+    background-color: #EDEDED;
+    color: #19101d;
+    font-weight: bold;
+    transform: scale(1.1);
+}

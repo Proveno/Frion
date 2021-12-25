@@ -1,0 +1,8 @@
+.socNetworkIcon{
+    width: 35px;
+    height: 35px;
+}
+.socNetworkIcon:hover{
+    transform: scale(1.5);
+    background-color: #19101d;
+}

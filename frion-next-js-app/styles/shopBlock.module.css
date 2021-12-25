@@ -17,3 +17,11 @@
     color: #19101d;
     border: #EDEDED 5px solid;
 }
+.shopBuyButton:hover{
+    background-color: #EDEDED;
+    color: #19101d;
+    border: #EDEDED 5px solid;
+}
+.shopViewButton:hover{
+    transform: scale(1.1);
+}

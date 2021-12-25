@@ -6,10 +6,12 @@ import infBlock from "../styles/infoBlock.module.css";
 import instructBlock from "../styles/instructBlock.module.css";
 import formBlock from "../styles/requestForm.module.css";
 import shopBlock from "../styles/shopBlock.module.css";
+import footer from "../styles/footer.module.css";
 
 import MenuIcon from "../assets/logo.png";
 import CatImage from "../assets/InformationCat.jpeg";
 import requestImageInfo from "../assets/requestInfo.png";
+import shopImage from "../assets/shopImageEx.PNG";
 
 import productImage1 from "../assets/Product/1.png";
 import productImage2 from "../assets/Product/2.png";
@@ -17,6 +19,17 @@ import productImage3 from "../assets/Product/3.png";
 import productImage4 from "../assets/Product/4.png";
 import productImage5 from "../assets/Product/5.png";
 import productImage6 from "../assets/Product/6.png";
+
+import cartIcon from "../assets/Icons/Tilda_Icons_3st_cart.svg";
+import mapIcon from "../assets/Icons/Tilda_Icons_3st_map.svg";
+import feedbackIcon from "../assets/Icons/Tilda_Icons_3st_woman.svg";
+
+import twitterIcon from "../assets/Icons/Twit.png";
+import facebookIcon from "../assets/Icons/face.png";
+import instaIcon from "../assets/Icons/inst.png";
+import telegramIcon from "../assets/Icons/tel.png";
+import watsUpIcon from "../assets/Icons/wats.png";
+import youtubeIcon from "../assets/Icons/yout.png";
 
 import CloseIcon from "../assets/window-close-regular.svg";
 
@@ -42,22 +55,22 @@ export default function Home() {
         <div className={`flex justify-between w-9/12`}>
           <div className={`self-center`}>{/* Indent from logo */}</div>
           <Link href={"/#About"}>
-            <div className={`self-center`}>
+            <div className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}>
               <button>ABOUT US</button>
             </div>
           </Link>
           <Link href={"/#Registration"}>
-            <div className={`self-center`}>
+            <div className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}>
               <button>REGISTRATION</button>
             </div>
           </Link>
           <Link href={"/#Shop"}>
-            <div className={`self-center`}>
+            <div className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}>
               <button>SHOP</button>
             </div>
           </Link>
-          <Link href={"/#About"}>
-            <div className={`self-center`}>
+          <Link href={"/#Contacts"}>
+            <div className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}>
               <button>CONTACTS</button>
             </div>
           </Link>
@@ -180,6 +193,7 @@ export default function Home() {
                     type="text"
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                     placeholder="Enter your phone number here..."
+                    required
                   />
                 </label>
                 <label className="block my-3">
@@ -191,6 +205,7 @@ export default function Home() {
                     name="email"
                     id="email"
                     class="peer px-3 py-2 bg-white placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-lg invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+                    required
                     placeholder="you@example.com"
                   />
                   <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
@@ -218,6 +233,7 @@ export default function Home() {
                       type="radio"
                       name="feedback"
                       className="default:ring-2 ml-2"
+                      required
                     />
                   </div>
 
@@ -255,7 +271,7 @@ export default function Home() {
       {/*Shop*/}
       <div className={`${shopBlock.shopContainer}`} id="Shop">
         <div className="px-7 py-28 container mx-auto ">
-          <p className="text-3xl ml-4">You need something for your pet?</p>
+          <p className="text-3xl ml-4">Do you need something for your pet?</p>
           <div className="grid gap-4 grid-cols-3 justify-between py-12">
             {/* TODO: map first 10 products and shop them. If user wants to see more -> new page with full shop */}
             {/* Fix different height */}
@@ -359,7 +375,6 @@ export default function Home() {
                 Buy for <span>8,00$</span>
               </button>
             </div>
-
             {/* 6-th Product */}
             <div
               className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-3 mx-auto pt-3`}
@@ -382,15 +397,108 @@ export default function Home() {
             </div>
           </div>
           <div className="w-full flex justify-center">
-          <button className={`${shopBlock.shopViewButton} w-2/5 rounded-3xl py-1 font-bold`}>
-            View all products
-          </button>
+            <button
+              className={`${shopBlock.shopViewButton} w-2/5 rounded-3xl py-1 font-bold`}
+            >
+              View all products
+            </button>
           </div>
-          
         </div>
       </div>
-      <div className="container mx-auto h-96">
-        Text
+
+      <div className="container mx-auto" id="Contacts">
+        <div className="px-7 py-28">
+          <p className="text-3xl ml-4">Do you want to visit us?</p>
+          <div className="grid grid-cols-2 mt-10">
+            <div className="self-start justify-center">
+              <div
+                className={`${formBlock.form} border-none rounded-3xl self-start px-14 py-1 mx-5`}
+              >
+                <form className="my-7">
+                  <label className="block my-3">
+                    <span className="block text-sm font-medium text-gray-700">
+                      Country
+                    </span>
+                    <select
+                      className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                      required
+                    >
+                      <option>Ukraine</option>
+                      <option>England</option>
+                      <option>Germany</option>
+                    </select>
+                  </label>
+
+                  <label className="block my-3">
+                    <span className="block text-sm font-medium text-gray-700">
+                      City
+                    </span>
+                    <select
+                      className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                      required
+                    >
+                      <option>Kiev</option>
+                      <option>Zaporizhzhya</option>
+                      <option>London</option>
+                      <option>Berlin</option>
+                    </select>
+                  </label>
+
+                  <label className="block my-3">
+                    <span className="block text-sm font-medium text-gray-700">
+                      Department
+                    </span>
+                    <select
+                      className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                      required
+                    >
+                      <option>London SW1A 0AA</option>
+                      <option>Gendarmenmarkt, 10117 Berlin</option>
+                      <option>Vulytsia Solom'ianska, 24, Kiev</option>
+                      <option>
+                        Street Leonida Zhabotinsky, 19, Zaporizhzhia
+                      </option>
+                    </select>
+                  </label>
+                </form>
+              </div>
+            </div>
+            <div className="self-center text-right mx-5">
+              <div className="">
+                <Image
+                  className="border-none rounded-3xl"
+                  src={shopImage}
+                  alt="Picture with cat :>"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={`${shopBlock.shopContainer}`}>
+        <div className="px-7 py-7 justify-center container mx-auto ">
+          <div className="flex w-full justify-center">
+          <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+              <Image src={twitterIcon}></Image>
+            </div>
+            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+              <Image src={facebookIcon}></Image>
+            </div>
+            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+              <Image src={youtubeIcon}></Image>
+            </div>
+            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+              <Image src={telegramIcon}></Image>
+            </div>
+            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+              <Image src={watsUpIcon}></Image>
+            </div>
+            <div className={`${footer.socNetworkIcon} mx-3 rounded-full`}>
+              <Image src={instaIcon}></Image>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
