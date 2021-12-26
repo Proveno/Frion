@@ -120,9 +120,9 @@ export default function Home() {
                 <button>{t.contacts}</button>
               </div>
             </Link>
-            <div className={`${navBar.langButton} flex`}>
+            <div className={`flex`}>
               <select
-                className={`${navBar.langButton}`}
+                className={`${navBar.langButton} px-4 text`}
                 id="LanguageSelect"
                 onChange={() => {
                 
