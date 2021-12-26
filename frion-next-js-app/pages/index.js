@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+
+import { useRouter } from "next/router";
+import { en } from "../locales/en";
+import { ru } from "../locales/ru";
+import { uk } from "../locales/uk";
+import { de } from "../locales/de";
+
 import Link from "next/link";
 import Image from "next/image";
 import navBar from "../styles/navBar.module.css";
@@ -14,6 +21,7 @@ import MenuIcon from "../assets/logo.png";
 import CatImage from "../assets/InformationCat.jpeg";
 import requestImageInfo from "../assets/requestInfo.png";
 import shopImage from "../assets/shopImageEx.PNG";
+import langSelectIcon from "../assets/Icons/Tilda_Icons_9ta_globe.svg";
 
 import productImage1 from "../assets/Product/1.png";
 import productImage2 from "../assets/Product/2.png";
@@ -39,14 +47,30 @@ import youtubeIcon from "../assets/Icons/yout.png";
 import CloseIcon from "../assets/window-close-regular.svg";
 
 export default function Home() {
-  const [ShouldShowChat, setShouldShowChat] = useState(false);
-  const [ShouldNavButtons, setShouldNavButtons] = useState(true);
-  const [isCartOpened, setIsCartOpened] = useState(false);
-
-  const [ShouldShowCart, setShouldShowCart] = useState(0);
+  function getLang() {
+    switch (router.locale) {
+      case "en":
+        return en;
+      case "ru":
+        return ru;
+      case "de":
+        return de;
+      case "uk":
+        return uk;
+    }
+  }
   function addQuant(number) {
     setShouldShowCart(ShouldShowCart + number);
   }
+
+  const router = useRouter();
+  const t = getLang();
+
+  const [ShouldShowChat, setShouldShowChat] = useState(false);
+  const [ShouldNavButtons, setShouldNavButtons] = useState(true);
+  const [isCartOpened, setIsCartOpened] = useState(false);
+  const [ShouldShowCart, setShouldShowCart] = useState(0);
+
   return (
     <div>
       {/* NavBar */}
@@ -72,36 +96,54 @@ export default function Home() {
               <div
                 className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
               >
-                <button>ABOUT US</button>
+                <button>{t.aboutUs}</button>
               </div>
             </Link>
             <Link href={"/#Registration"}>
               <div
                 className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
               >
-                <button>REGISTRATION</button>
+                <button>{t.registrarion}</button>
               </div>
             </Link>
             <Link href={"/#Shop"}>
               <div
                 className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
               >
-                <button>SHOP</button>
+                <button>{t.shop}</button>
               </div>
             </Link>
             <Link href={"/#Contacts"}>
               <div
                 className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
               >
-                <button>CONTACTS</button>
+                <button>{t.contacts}</button>
               </div>
             </Link>
+            <div className={`${navBar.langButton} flex`}>
+              <select
+                className={`${navBar.langButton}`}
+                id="LanguageSelect"
+                onChange={() => {
+                
+                  router.push(`/${document.getElementById("LanguageSelect").value}`);
+                }}
+                defaultValue={router.locale}
+              >
+                <option value="en">{t.english}</option>
+                <option value="ru">{t.russian}</option>
+                <option value="de">{t.deutsch}</option>
+                <option value="uk">{t.ukrainian}</option>
+              </select>
+              
+            </div>
             <div className={`self-center`}>
               {/* Indent from right border */}
             </div>
           </div>
         </div>
       )}
+
       {/* feedBack chat */}
       {ShouldShowChat && (
         <div
@@ -109,7 +151,7 @@ export default function Home() {
         >
           <div className={`${feedBack.messagesPlace} pt-1 px-1`}>
             <div className="text-center text-sm font-bold text-gray-700">
-              Feedback
+              {t.feedBackLabel}
             </div>
 
             <div className="flex justify-start my-2">
@@ -146,7 +188,7 @@ export default function Home() {
               type="text"
               required
               className="my-auto ml-1 block w-5/6 px-3 py-2 bg-white rounded-l-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-              placeholder="Enter your message here..."
+              placeholder={`${t.feedBackLabelPlaceholder}`}
             />
             <div className={`${feedBack.sendMessage} my-auto p-1 rounded-r-lg`}>
               <Image src={telegramIcon}></Image>
@@ -168,142 +210,139 @@ export default function Home() {
         ></Image>
       </div>
 
-      {isCartOpened &&(<div
-        className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
-      >
-        <div className={`${cartBlock.cart} self-center w-2/5 rounded-3xl`}>
-          <div className={`${cartBlock.products} px-4 pt-2`}>
-            <div className="flex justify-between">
-            <div className="text-start text-2xl font-bold text-gray-700">
-              My order:
-            </div>
-            <div className={`${cartBlock.close} mt-1`}
-            onClick={()=>{
-              setShouldNavButtons(true);
-              setIsCartOpened(false);
-            }}>
-              <Image src={crossIcon} alt="Close"></Image>
-            </div>
-            </div>
-            
-            <div
-              className={`${cartBlock.product} bg-white mt-4 w-full py-2 rounded-lg`}
-            >
-              {/* One product order */}
+      {isCartOpened && (
+        <div
+          className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
+        >
+          <div className={`${cartBlock.cart} self-center w-2/5 rounded-3xl`}>
+            <div className={`${cartBlock.products} px-4 pt-2`}>
               <div className="flex justify-between">
-                <div className={`${cartBlock.images}  mt-2`}>
-                  <Image className="rounded-lg" src={productImage1}></Image>
+                <div className="text-start text-2xl font-bold text-gray-700">
+                  {t.myOrder}
                 </div>
-                <div className="w-4/5">
-                  <span className="block text-sm text-lg text-gray-700 my-2">
-                    Purina One Sterilcat
-                  </span>
-                  <div className="w-full pr-5">
-                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                      <div>Price</div>
-                      <div>-</div>
-                      <div>
-                        <span>13,5</span>$
+                <div
+                  className={`${cartBlock.close} mt-1`}
+                  onClick={() => {
+                    setShouldNavButtons(true);
+                    setIsCartOpened(false);
+                  }}
+                >
+                  <Image src={crossIcon} alt="Close"></Image>
+                </div>
+              </div>
+
+              <div
+                className={`${cartBlock.product} bg-white mt-4 w-full py-2 rounded-lg`}
+              >
+                {/* One product order */}
+                <div className="flex justify-between">
+                  <div className={`${cartBlock.images}  mt-2`}>
+                    <Image className="rounded-lg" src={productImage1}></Image>
+                  </div>
+                  <div className="w-4/5">
+                    <span className="block text-sm text-lg text-gray-700 my-2">
+                      Purina One Sterilcat
+                    </span>
+                    <div className="w-full pr-5">
+                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                        <div>{t.priceCart}</div>
+                        <div>-</div>
+                        <div>
+                          <span>13,5</span>$
+                        </div>
+                      </div>
+                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                        <div>{t.quantityCart}</div>
+                        <div>-</div>
+                        <input
+                          className="w-14 border rounded-xl"
+                          type={"number"}
+                        ></input>
                       </div>
                     </div>
-                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                      <div>Quantity</div>
-                      <div>-</div>
-                      <input
-                        className="w-14 border rounded-xl"
-                        type={"number"}
-                      ></input>
+                  </div>
+                </div>
+
+                <div className={`${cartBlock.line} w-full h-0.5`}></div>
+
+                {/* One product order */}
+                <div className="flex justify-between">
+                  <div className={`${cartBlock.images}  mt-2`}>
+                    <Image className="rounded-lg" src={productImage3}></Image>
+                  </div>
+                  <div className="w-4/5">
+                    <span className="block text-sm text-lg text-gray-700 my-2">
+                      EVOLUTOR, collar for dogs
+                    </span>
+                    <div className="w-full pr-5">
+                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                        <div>{t.priceCart}</div>
+                        <div>-</div>
+                        <div>
+                          <span>20,00</span>$
+                        </div>
+                      </div>
+                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                        <div>{t.quantityCart}</div>
+                        <div>-</div>
+                        <input
+                          className="w-14 border rounded-xl"
+                          type={"number"}
+                        ></input>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`${cartBlock.line} w-full h-0.5`}></div>
+
+                {/* One product order */}
+                <div className="flex justify-between">
+                  <div className={`${cartBlock.images} mt-2`}>
+                    <Image className="rounded-lg" src={productImage2}></Image>
+                  </div>
+                  <div className="w-4/5">
+                    <span className="block text-sm text-lg text-gray-700 my-2">
+                      EuroDog, beef flavor
+                    </span>
+                    <div className="w-full pr-5">
+                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                        <div>{t.priceCart}</div>
+                        <div>-</div>
+                        <div>
+                          <span>9.50</span>$
+                        </div>
+                      </div>
+                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                        <div>{t.quantityCart}</div>
+                        <div>-</div>
+                        <input
+                          className="w-14 border rounded-xl"
+                          type={"number"}
+                        ></input>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div className={`${cartBlock.line} w-full h-0.5`}></div>
-
-              {/* One product order */}
-              <div className="flex justify-between">
-                <div className={`${cartBlock.images}  mt-2`}>
-                  <Image className="rounded-lg" src={productImage3}></Image>
-                </div>
-                <div className="w-4/5">
-                  <span className="block text-sm text-lg text-gray-700 my-2">
-                  EVOLUTOR, collar for dogs
-                  </span>
-                  <div className="w-full pr-5">
-                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                      <div>Price</div>
-                      <div>-</div>
-                      <div>
-                        <span>20,00</span>$
-                      </div>
-                    </div>
-                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                      <div>Quantity</div>
-                      <div>-</div>
-                      <input
-                        className="w-14 border rounded-xl"
-                        type={"number"}
-                      ></input>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-              <div className={`${cartBlock.line} w-full h-0.5`}></div>
-
-              {/* One product order */}
-              <div className="flex justify-between">
-                <div className={`${cartBlock.images} mt-2`}>
-                  <Image className="rounded-lg" src={productImage2}></Image>
-                </div>
-                <div className="w-4/5">
-                  <span className="block text-sm text-lg text-gray-700 my-2">
-                  EuroDog, beef flavor
-                  </span>
-                  <div className="w-full pr-5">
-                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                      <div>Price</div>
-                      <div>-</div>
-                      <div>
-                        <span>9.50</span>$
-                      </div>
-                    </div>
-                    <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                      <div>Quantity</div>
-                      <div>-</div>
-                      <input
-                        className="w-14 border rounded-xl"
-                        type={"number"}
-                      ></input>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-
             </div>
-          </div>
-          <div className="flex">
-            <div
-              className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
-            >
-              Buy
+            <div className="flex">
+              <div
+                className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
+              >
+                {t.buyButtonCart}
+              </div>
             </div>
           </div>
         </div>
-      </div>)}
-      
+      )}
 
       {ShouldShowCart > 0 && (
         <div
           className={`${feedBack.feedButton} fixed bottom-11 right-12 p-2 rounded-full`}
           onClick={() => {
-            setShouldNavButtons(false)
-            setIsCartOpened(true)
+            setShouldNavButtons(false);
+            setIsCartOpened(true);
           }}
         >
           <Image src={cartIcon} alt="FeedBackIcon"></Image>
@@ -313,26 +352,14 @@ export default function Home() {
       {/* About Us */}
       <div className="container mx-auto" id="About">
         <div className="px-7 py-28">
-          <p className="text-3xl ml-4">What is Frion?</p>
+          <p className="text-3xl ml-4">{t.aboutQuestion}</p>
           <div className="flex mt-10">
             <div className="self-start justify-center w-3/4">
               <p
                 className={`whitespace-normal break-word indent-8 text-justify font-serif text-lg pr-14`}
               >
                 {/* TODO: Rewrite text!!! */}
-                There are many variations of passages of Lorem Ipsum available,
-                but the majority have suffered alteration in some form, by
-                injected humour, or randomised words which don't look even
-                slightly believable. If you are going to use a passage of Lorem
-                Ipsum, you need to be sure there isn't anything embarrassing
-                hidden in the middle of text. All the Lorem Ipsum generators on
-                the Internet tend to repeat predefined chunks as necessary,
-                making this the first true generator on the Internet. It uses a
-                dictionary of over 200 Latin words, combined with a handful of
-                model sentence structures, to generate Lorem Ipsum which looks
-                reasonable. The generated Lorem Ipsum is therefore always free
-                from repetition, injected humour, or non-characteristic words
-                etc.
+                {t.aboutText}
               </p>
             </div>
             <div className="self-center text-right ml-5">
@@ -351,7 +378,7 @@ export default function Home() {
       {/* Reg instruction */}
       <div className={`${instructBlock.container}`} id="Registration">
         <div className="px-7 py-28 container mx-auto">
-          <p className="text-3xl ml-4">How can I create request?</p>
+          <p className="text-3xl ml-4">{t.regInstructionQuestion}</p>
           <div className="flex mt-10">
             <div className="self-center text-right mr-5 static">
               <div className={`${infBlock.Image}`}>
@@ -369,19 +396,7 @@ export default function Home() {
                 className={`whitespace-normal break-word indent-8 text-justify font-serif text-lg pl-14`}
               >
                 {/* TODO: Rewrite text!!! */}
-                There are many variations of passages of Lorem Ipsum available,
-                but the majority have suffered alteration in some form, by
-                injected humour, or randomised words which don't look even
-                slightly believable. If you are going to use a passage of Lorem
-                Ipsum, you need to be sure there isn't anything embarrassing
-                hidden in the middle of text. All the Lorem Ipsum generators on
-                the Internet tend to repeat predefined chunks as necessary,
-                making this the first true generator on the Internet. It uses a
-                dictionary of over 200 Latin words, combined with a handful of
-                model sentence structures, to generate Lorem Ipsum which looks
-                reasonable. The generated Lorem Ipsum is therefore always free
-                from repetition, injected humour, or non-characteristic words
-                etc.
+                {t.regInstructionText}
               </p>
             </div>
           </div>
@@ -390,7 +405,7 @@ export default function Home() {
       {/* Request form */}
       <div className="container mx-auto" id="Form">
         <div className="px-7 py-28">
-          <p className="text-3xl text-center">Create request</p>
+          <p className="text-3xl text-center">{t.createRequest}</p>
           <div className="flex mt-10 justify-center">
             <div
               className={`${formBlock.form} border-none rounded-3xl self-start w-3/5 px-14`}
@@ -398,40 +413,40 @@ export default function Home() {
               <form className="my-7">
                 <label className="block my-3">
                   <span className="block text-sm font-medium text-gray-700">
-                    First name
+                    {t.firstNameLabel}
                   </span>
                   <input
                     type="text"
                     required
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                    placeholder="Enter your name here..."
+                    placeholder={`${t.firstNameLabelPlaceholder}`}
                   />
                 </label>
                 <label className="block my-3">
                   <span className="block text-sm font-medium text-gray-700">
-                    Second name
+                    {t.secondNameLabel}
                   </span>
                   <input
                     type="text"
                     required
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                    placeholder="Enter your surname here..."
+                    placeholder={`${t.secondNameLabelPlaceholder}`}
                   />
                 </label>
                 <label className="block my-3">
                   <span className="block text-sm font-medium text-gray-700">
-                    Phone number
+                    {t.phoneNumberLabel}
                   </span>
                   <input
                     type="text"
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                    placeholder="Enter your phone number here..."
+                    placeholder={`${t.phoneNumberLabelPlaceholder}`}
                     required
                   />
                 </label>
                 <label className="block my-3">
                   <span class="block text-sm font-medium text-gray-700">
-                    Email
+                    {t.emailLabel}
                   </span>
                   <input
                     type="email"
@@ -439,29 +454,29 @@ export default function Home() {
                     id="email"
                     class="peer px-3 py-2 bg-white placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-lg invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
                     required
-                    placeholder="you@example.com"
+                    placeholder={`${t.emailLabelPlaceholder}`}
                   />
                   <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
-                    Please provide a valid email address.
+                    {t.pleaseEnterRightEmail}
                   </p>
                 </label>
                 <label className="block my-3">
                   <span className="block text-sm font-medium text-gray-700">
-                    Pet
+                    {t.petType}
                   </span>
                   <select
                     className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                     required
                   >
-                    <option>Cat</option>
-                    <option>Dog</option>
-                    <option>Fish</option>
+                    <option>{t.catType}</option>
+                    <option>{t.dogType}</option>
+                    <option>{t.fishType}</option>
                   </select>
                 </label>
 
                 <label className="block my-5 flex justify-center">
                   <div className="w-1/3 block text-sm text-center font-medium text-gray-700">
-                    Taking
+                    {t.takingPet}
                     <input
                       type="radio"
                       name="feedback"
@@ -471,7 +486,7 @@ export default function Home() {
                   </div>
 
                   <div className="w-1/3 block text-sm text-center font-medium text-gray-700">
-                    Giving
+                    {t.givingPet}
                     <input
                       type="radio"
                       name="feedback"
@@ -479,7 +494,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="w-1/3 block text-sm text-center font-medium text-gray-700">
-                    Healing
+                    {t.healingPet}
                     <input
                       type="radio"
                       name="feedback"
@@ -493,7 +508,7 @@ export default function Home() {
                     type="submit"
                     className={`${formBlock.SubmitButton} w-full py-2 rounded-lg`}
                   >
-                    Submit
+                    {t.submitForm}
                   </button>
                 </div>
               </form>
@@ -504,7 +519,7 @@ export default function Home() {
       {/*Shop*/}
       <div className={`${shopBlock.shopContainer}`} id="Shop">
         <div className="px-7 py-28 container mx-auto ">
-          <p className="text-3xl ml-4">Do you need something for your pet?</p>
+          <p className="text-3xl ml-4">{t.shopQuestion}</p>
           <div className="grid gap-4 grid-cols-3 justify-between py-12">
             {/* TODO: map first 10 products and shop them. If user wants to see more -> new page with full shop */}
             {/* Fix different height */}
@@ -528,7 +543,8 @@ export default function Home() {
                   addQuant(1);
                 }}
               >
-                Buy for <span> 13,50$</span>
+                {t.buyFor}
+                <span> 13,50</span>$
               </button>
             </div>
             {/* 2-nd Product */}
@@ -551,7 +567,8 @@ export default function Home() {
                   addQuant(1);
                 }}
               >
-                Buy for <span>9,50$</span>
+                {t.buyFor}
+                <span> 9,50</span>$
               </button>
             </div>
             {/* 3-rd Product */}
@@ -574,7 +591,8 @@ export default function Home() {
                   addQuant(1);
                 }}
               >
-                Buy for <span>20,00$</span>
+                {t.buyFor}
+                <span> 20,00</span>$
               </button>
             </div>
             {/* 4-th Product */}
@@ -597,7 +615,8 @@ export default function Home() {
                   addQuant(1);
                 }}
               >
-                Buy for <span>20,99$</span>
+                {t.buyFor}
+                <span> 20,99</span>$
               </button>
             </div>
             {/* 5-th Product */}
@@ -620,7 +639,8 @@ export default function Home() {
                   addQuant(1);
                 }}
               >
-                Buy for <span>8,00$</span>
+                {t.buyFor}
+                <span> 8,00</span>$
               </button>
             </div>
             {/* 6-th Product */}
@@ -643,7 +663,8 @@ export default function Home() {
                   addQuant(1);
                 }}
               >
-                Buy for <span>9,40$</span>
+                {t.buyFor}
+                <span> 9,40</span>$
               </button>
             </div>
           </div>
@@ -651,7 +672,7 @@ export default function Home() {
             <button
               className={`${shopBlock.shopViewButton} w-2/5 rounded-3xl py-1 font-bold`}
             >
-              View all products
+              {t.viewAllProducts}
             </button>
           </div>
         </div>
@@ -659,7 +680,7 @@ export default function Home() {
 
       <div className="container mx-auto" id="Contacts">
         <div className="px-7 py-28">
-          <p className="text-3xl ml-4">Do you want to visit us?</p>
+          <p className="text-3xl ml-4">{t.contactQuestion}</p>
           <div className="grid grid-cols-2 mt-10">
             <div className="self-start justify-center">
               <div
@@ -668,7 +689,7 @@ export default function Home() {
                 <form className="my-7">
                   <label className="block my-3">
                     <span className="block text-sm font-medium text-gray-700">
-                      Country
+                      {t.contactCountry}
                     </span>
                     <select
                       className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
@@ -682,7 +703,7 @@ export default function Home() {
 
                   <label className="block my-3">
                     <span className="block text-sm font-medium text-gray-700">
-                      City
+                      {t.contactCity}
                     </span>
                     <select
                       className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
@@ -697,7 +718,7 @@ export default function Home() {
 
                   <label className="block my-3">
                     <span className="block text-sm font-medium text-gray-700">
-                      Department
+                      {t.contactDepartment}
                     </span>
                     <select
                       className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"

@@ -14,6 +14,14 @@
 .navButton{
 
 }
+.langButton{
+    background: none;
+    -webkit-appearance:none;
+}
+.langIcon{
+    height: 35px;
+    width: 35px;
+}
 .navButton:hover{
     background-color: #EDEDED;
     color: #19101d;
