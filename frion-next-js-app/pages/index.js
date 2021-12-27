@@ -125,8 +125,9 @@ export default function Home() {
                 className={`${navBar.langButton} px-4 text`}
                 id="LanguageSelect"
                 onChange={() => {
-                
-                  router.push(`/${document.getElementById("LanguageSelect").value}`);
+                  router.push(
+                    `/${document.getElementById("LanguageSelect").value}`
+                  );
                 }}
                 defaultValue={router.locale}
               >
@@ -135,7 +136,6 @@ export default function Home() {
                 <option value="de">{t.deutsch}</option>
                 <option value="uk">{t.ukrainian}</option>
               </select>
-              
             </div>
             <div className={`self-center`}>
               {/* Indent from right border */}
@@ -143,7 +143,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
       {/* feedBack chat */}
       {ShouldShowChat && (
         <div
@@ -354,11 +353,10 @@ export default function Home() {
         <div className="px-7 py-28">
           <p className="text-3xl ml-4">{t.aboutQuestion}</p>
           <div className="flex mt-10">
-            <div className="self-start justify-center w-3/4">
+            <div className="self-center justify-center w-3/4">
               <p
                 className={`whitespace-normal break-word indent-8 text-justify font-serif text-lg pr-14`}
               >
-                {/* TODO: Rewrite text!!! */}
                 {t.aboutText}
               </p>
             </div>
@@ -395,7 +393,6 @@ export default function Home() {
               <p
                 className={`whitespace-normal break-word indent-8 text-justify font-serif text-lg pl-14`}
               >
-                {/* TODO: Rewrite text!!! */}
                 {t.regInstructionText}
               </p>
             </div>
