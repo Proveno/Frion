@@ -391,7 +391,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="self-start justify-center w-3/4">
+            <div className="self-center justify-center w-3/4">
               <p
                 className={`whitespace-normal break-word indent-8 text-justify font-serif text-lg pl-14`}
               >
