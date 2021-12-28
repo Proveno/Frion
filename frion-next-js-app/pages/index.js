@@ -528,7 +528,7 @@ export default function Home() {
                 width={500}
                 height={500}
                 className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src={productImage1}
+                src="https://i.ibb.co/FwLzWNm/1.png"
                 alt="Product picture"
               ></Image>
               <span className="block text-sm text-lg text-gray-700 my-2">
@@ -552,7 +552,7 @@ export default function Home() {
                 width={500}
                 height={500}
                 className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src={productImage2}
+                src="https://i.ibb.co/2SHdCQ1/2.png"
                 alt="Product picture"
               ></Image>
               <span className="block text-sm text-lg text-gray-700 my-2">
@@ -576,7 +576,7 @@ export default function Home() {
                 width={500}
                 height={500}
                 className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src={productImage3}
+                src="https://i.ibb.co/0qNjcT1/3.png"
                 alt="Product picture"
               ></Image>
               <span className="block text-sm text-lg text-gray-700 my-2">
@@ -600,7 +600,7 @@ export default function Home() {
                 width={500}
                 height={500}
                 className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src={productImage4}
+                src="https://i.ibb.co/LJQK54N/4.png"
                 alt="Product picture"
               ></Image>
               <span className="block text-sm text-lg text-gray-700 my-2">
@@ -624,7 +624,7 @@ export default function Home() {
                 width={500}
                 height={500}
                 className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src={productImage5}
+                src="https://i.ibb.co/KhzhWbr/5.png"
                 alt="Product picture"
               ></Image>
               <span className="block text-sm text-lg text-gray-700 my-2">
@@ -648,7 +648,7 @@ export default function Home() {
                 width={500}
                 height={500}
                 className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src={productImage6}
+                src="https://i.ibb.co/9NFfbFh/6.png"
                 alt="Product picture"
               ></Image>
               <span className="block text-sm text-lg text-gray-700 my-2">
