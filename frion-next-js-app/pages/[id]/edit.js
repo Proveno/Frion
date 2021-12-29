@@ -14,7 +14,6 @@ const EditProduct = ({ product }) => {
         if (isSubmitting) {
             if (Object.keys(errors).length === 0) {
                 updateProduct();
-                console.log('Submi');
             }
             else {
                 setIsSubmitting(false);
@@ -52,7 +51,6 @@ const handleChange = (e) => {
 };
 const validate = () => {
     let err = {};
-    console.log(form);
     if (!form.description) {
         err.description = "Description is required"
     }
@@ -65,7 +63,6 @@ const validate = () => {
     if (!form.photo) {
         err.photo = "Photo url is required"
     }
-    console.log(err);
     // TODO: length
     return err;
 }

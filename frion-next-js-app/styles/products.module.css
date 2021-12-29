@@ -1,0 +1,22 @@
+.shopFilter{
+    border: solid #999 1px;
+}
+.shopItems{
+    background-color: white;
+    max-width: 300px;
+    border: solid #999 1px;
+}
+.searchButton{
+    background-color: white;
+    color: #19101d;
+}
+.shopBuyButton{
+    background-color: #19101d;
+    color: #EDEDED;
+    border: #19101d 5px solid;
+}
+.shopBuyButton:hover{
+    background-color: #EDEDED;
+    color: #19101d;
+    border: #EDEDED 5px solid;
+}

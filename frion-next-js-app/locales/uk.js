@@ -1,8 +1,8 @@
 export const uk = {
-  english: "English",
-  russian: "Русский",
-  deutsch: "Deutsch",
-  ukrainian: "Українська",
+  english: "EN",
+  russian: "RU",
+  deutsch: "DE",
+  ukrainian: "UK",
 
   aboutUs: "ПРО НАС",
   registrarion: "РЕЄСТРАЦІЯ",
@@ -52,4 +52,9 @@ export const uk = {
   priceCart: "Ціна",
   quantityCart: "Кількість",
   buyButtonCart: "Купити",
+
+  
+
+
+  home: "HOME",
 };

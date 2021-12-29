@@ -14,7 +14,7 @@ const NewProduct = () => {
         if (isSubmitting) {
             if (Object.keys(errors).length === 0) {
                 createProduct();
-                console.log('Submi');
+                console.log("F");
             }
             else {
                 setIsSubmitting(false);
@@ -24,7 +24,7 @@ const NewProduct = () => {
 
     const createProduct = async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/products', {
+            const res = await fetch('http://localhost:3000/api/products/', {
                 method: 'POST',
                 headers: {
                     "Accept": "application/json",
@@ -39,8 +39,10 @@ const NewProduct = () => {
 }
 
 const handleSubmit = (e) => {
+    console.log("FFF");
     e.preventDefault();
     let errs = validate();
+    console.log(errs);
     setErrors(errs);
     setIsSubmitting(true);
 };
@@ -52,20 +54,19 @@ const handleChange = (e) => {
 };
 const validate = () => {
     let err = {};
-    console.log(form);
     if (!form.description) {
         err.description = "Description is required"
     }
-    if (!form.price) {
+    if (parseFloat(form.price)<0.0) {
         err.price = "Price is required"
     }
+    console.log(form.category)
     if (!form.category) {
-        err.price = "Price is required"
+        err.price = "Category is required"
     }
     if (!form.photo) {
         err.photo = "Photo url is required"
     }
-    console.log(err);
     // TODO: length
     return err;
 }

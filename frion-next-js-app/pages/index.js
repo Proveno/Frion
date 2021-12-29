@@ -196,9 +196,8 @@ export default function Home() {
         </div>
       )}
       <div
-        className={`${feedBack.feedButton} fixed bottom-12 mb-12 right-12 ${
-          ShouldShowChat ? `p-3` : `p-2`
-        } rounded-full`}
+        className={`${feedBack.feedButton} fixed bottom-12 mb-12 right-12 ${ShouldShowChat ? `p-3` : `p-2`
+          } rounded-full`}
         onClick={() => {
           setShouldShowChat(!ShouldShowChat);
         }}
@@ -666,11 +665,13 @@ export default function Home() {
             </div>
           </div>
           <div className="w-full flex justify-center">
-            <button
-              className={`${shopBlock.shopViewButton} w-2/5 rounded-3xl py-1 font-bold`}
-            >
-              {t.viewAllProducts}
-            </button>
+            <Link href={`/products`}>
+              <button
+                className={`${shopBlock.shopViewButton} w-2/5 rounded-3xl py-1 font-bold`}
+              >
+                {t.viewAllProducts}
+              </button>
+            </Link>
           </div>
         </div>
       </div>
