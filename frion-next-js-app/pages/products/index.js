@@ -115,6 +115,7 @@ const Index = ({ products }) => {
                                         className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
                                     >
                                         {t.buyFor}
+                                        {product.price}
                                         <span> {`${parseFloat(product.price["$numberDecimal"])}`}</span>$
                                     </button>
                                 </div>

@@ -3,28 +3,26 @@ const mongoose = require('mongoose');
 const ProductSchema = new mongoose.Schema({
     title:{
         type: String,
-        required: [true, 'Please add title'],
+        required: [true, 'Please add a title'],
         trim: true,
-        maxlength: [60, 'Title cannot be more than 60 characters']
+        maxlength: [40, 'Title can not be more than 40 characters']
+    },
+    name:{
+        type: String,
+        required: [true, 'Please add name'],
+        unique: true,
+        trim: true,
+        maxlength: [40, 'Name can not be more than 40 characters']
     },
     description:{
         type: String,
-        required: [true, 'Please add description'],
-        trim: true,
+        require: true,
         maxlength: [400, 'Description can not be more than 400 characters']
     },
     price:{
-        type: mongoose.Decimal128,
-        required: true,
-        min: [0.0, 'Price must be > 0']
-    },
-    category:{
-        type: String,
-        required: true
-    },
-    photo:{
-        type: String ,
-        required: true
+        type: Number,
+        require: true,
+        min: [0,'Price must be more than 0']
     }
 })
 
