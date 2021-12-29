@@ -1,8 +1,8 @@
 export const de = {
-  english: "English",
-  russian: "Русский",
-  deutsch: "Deutsch",
-  ukrainian: "Українська",
+  english: "EN",
+  russian: "RU",
+  deutsch: "DE",
+  ukrainian: "UK",
 
   aboutUs: "ÜBER UNS",
   registrarion: "REGISTRIERUNG",
@@ -52,4 +52,8 @@ export const de = {
   priceCart: "Preis",
   quantityCart: "Menge",
   buyButtonCart: "Kauf",
+  
+
+
+  home: "HOME",
 };

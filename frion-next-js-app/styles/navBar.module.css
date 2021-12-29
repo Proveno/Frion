@@ -17,6 +17,10 @@
 .langButton{
     background-color: #281D2C;
     -webkit-appearance:none;
+    font-size: 17px;
+}
+.langButton:hover{
+    transform: scale(1.1);
 }
 .langIcon{
     height: 35px;

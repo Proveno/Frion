@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import Image from "next/image";
 
 const Product = ({ product }) => {
-    const [confirm, setConfirm] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(()=>{

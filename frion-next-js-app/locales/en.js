@@ -1,8 +1,8 @@
 export const en = {
-  english: "English",
-  russian: "Русский",
-  deutsch: "Deutsch",
-  ukrainian: "Українська",
+  english: "EN",
+  russian: "RU",
+  deutsch: "DE",
+  ukrainian: "UK",
 
   aboutUs: "ABOUT US",
   registrarion: "REGISTRATION",
@@ -52,4 +52,9 @@ export const en = {
   priceCart: "Price",
   quantityCart: "Quantity",
   buyButtonCart: "Buy",
+
+
+
+  home: "HOME",
+
 };
