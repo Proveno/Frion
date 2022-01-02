@@ -37,7 +37,7 @@ export const de = {
   submitForm: "Senden",
 
   shopQuestion: "Sie brauchen etwas für Ihr Haustier?",
-  buyFor: "Kaufen für",
+  buyFor: "Kaufen für ",
   viewAllProducts: "Alle Produkte anzeigen",
 
   contactQuestion: "Sie möchten uns besuchen?",

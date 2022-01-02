@@ -20,7 +20,6 @@ const Product = ({ product }) => {
             const deleted = await fetch(`http://localhost:3000/api/products/${productId}`,{
                 method: "Delete"
             })
-            router.push("/");
         }catch(error){
             console.log(error);
         }
@@ -38,7 +37,7 @@ const Product = ({ product }) => {
             <div>
                 <span>Title: {product.title}</span>
                 <p>Description: {product.description}</p>
-                <span>Price: {`${parseFloat(product.price["$numberDecimal"])}`}</span>
+                <span>Price: {product.price["$numberDecimal"]}</span>
                 <Image src={product.photo} width={500} height={500}></Image>
                 <button onClick={handleDelete}>DELETE</button>
             </div>

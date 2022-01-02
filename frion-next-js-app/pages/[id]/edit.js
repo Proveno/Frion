@@ -4,7 +4,7 @@ import fetch from 'isomorphic-unfetch';
 import { useRouter } from 'next/router';
 
 const EditProduct = ({ product }) => {
-    const [form, setForm] = useState({ title: product.title, description: product.description, price: parseFloat(product.price["$numberDecimal"]), category: product.category, photo: product.photo });
+    const [form, setForm] = useState({ title: product.title, description: product.description, price: product.price["$numberDecimal"], category: product.category, photo: product.photo });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
@@ -30,7 +30,7 @@ const EditProduct = ({ product }) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(form)});
-            router.push("/");
+            router.push("/products");
         }catch(error){
             console.log(console.error());
 

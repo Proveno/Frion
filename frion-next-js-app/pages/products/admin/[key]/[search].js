@@ -1,21 +1,20 @@
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { en } from "../../locales/en";
-import { ru } from "../../locales/ru";
-import { uk } from "../../locales/uk";
-import { de } from "../../locales/de";
+import { useState } from "react";
+import { en } from "../../../../locales/en";
+import { ru } from "../../../../locales/ru";
+import { uk } from "../../../../locales/uk";
+import { de } from "../../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
 import Image from "next/image";
 
-import navBar from "../../styles/navBar.module.css";
-import MenuIcon from "../../assets/logo.png";
+import navBar from "../../../../styles/navBar.module.css";
+import MenuIcon from "../../../../assets/logo.png";
+import shopBlock from "../../../../styles/products.module.css";
+import cartIcon from "../../../../assets/Icons/Tilda_Icons_3st_cart.png";
 
-import shopBlock from "../../styles/products.module.css";
-import cartIcon from "../../assets/Icons/Tilda_Icons_3st_cart.png";
-
-const UserProductList = ({ products }) => {
+const ProductSearch = ({ Akey, isKeyValid, products }) => {
   function getLang() {
     switch (router.locale) {
       case "en":
@@ -38,19 +37,6 @@ const UserProductList = ({ products }) => {
       [e.target.name]: e.target.value,
     });
   };
-  const [deletingProductId, setDeletingProductId] = useState();
-  useEffect(async () => {
-    if (deletingProductId) {
-      const deleted = await fetch(
-        `http://localhost:3000/api/products/${deletingProductId}`,
-        {
-          method: "Delete",
-        }
-      );
-      router.push("/products");
-    }
-  }, [deletingProductId]);
-
   return (
     <div>
       <div
@@ -79,7 +65,7 @@ const UserProductList = ({ products }) => {
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
                 placeholder="Enter title..."
               ></input>
-              <Link href={`/products/${search.searchRequest}`}>
+              <Link href={`/products/admin/${Akey}/${search.searchRequest}`}>
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
@@ -108,60 +94,63 @@ const UserProductList = ({ products }) => {
                 <option value="uk">{t.ukrainian}</option>
               </select>
             </div>
-            <div className={`self-center mx-4`}>
-              <Image
-                width={35}
-                height={35}
-                src={cartIcon}
-                layout="fixed"
-              ></Image>
-            </div>
           </div>
         </div>
       </div>
-      <div
-        className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
-      >
-        <div className={`grid auto-rows-max grid-cols-4`}>
-          {products.map((product) => {
-            return (
-              <div
-                className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-              >
-                <Link href={`/${product._id}`}>
-                  <Image
-                    width={500}
-                    height={500}
-                    className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                    src={product.photo}
-                    alt="Product picture"
-                  ></Image>
-                </Link>
-                <span className="block text-sm text-lg text-gray-700 my-2">
-                  {product.title}
-                </span>
-                <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                  <button
-                    className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
+      {isKeyValid ? (
+        <div>
+          <div
+            className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
+          >
+            <div className={`grid auto-rows-max grid-cols-4`}>
+              {products.map((product) => {
+                return (
+                  <div
+                    className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                   >
-                    {t.buyFor}
-                    <span>{product.price["$numberDecimal"]}</span>$
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+                    <Link href={`/${product._id}`}>
+                      <Image
+                        width={500}
+                        height={500}
+                        className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                        src={product.photo}
+                        alt="Product picture"
+                      ></Image>
+                    </Link>
+                    <span className="block text-sm text-lg text-gray-700 my-2">
+                      {product.title}
+                    </span>
+                    <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                      <button
+                        className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
+                      >
+                        {t.buyFor}
+                        <span>{product.price["$numberDecimal"]}</span>$
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex justify-center">
+          <div className="text-2xl">Admin key is incorrect</div>
+        </div>
+      )}
     </div>
   );
 };
 
-UserProductList.getInitialProps = async () => {
-  const res = await fetch(`http://localhost:3000/api/products`);
+ProductSearch.getInitialProps = async ({ query: { key, search } }) => {
+  const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
+  const res = await fetch(
+    `http://localhost:3000/api/products/search/${search}`
+  );
   const { data } = await res.json();
-
-  return { products: data };
+  const { success } = await keyRes.json();
+  return { Akey: key, isKeyValid: success, products: data };
 };
 
-export default UserProductList;
+export default ProductSearch;

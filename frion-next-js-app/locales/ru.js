@@ -38,7 +38,7 @@ export const ru = {
   submitForm: "Отправить",
 
   shopQuestion: "Вам нужно что нибудь для вашего питомца?",
-  buyFor: "Купить за",
+  buyFor: "Купить за ",
   viewAllProducts: "Посмотреть все продукты",
 
   contactQuestion: "Хотите посетить нас?",

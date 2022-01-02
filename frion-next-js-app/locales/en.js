@@ -37,7 +37,7 @@ export const en = {
   submitForm: "Submit",
 
   shopQuestion: "Do you need something for your pet?",
-  buyFor: "Buy for",
+  buyFor: "Buy for ",
   viewAllProducts: "View all products",
 
   contactQuestion: "Do you want to visit us?",

@@ -1,6 +1,21 @@
 .shopFilter{
     border: solid #999 1px;
 }
+.shopCartIcon{
+    width: 35px;
+    height: 35px;
+}
+.searchInput{
+    color: #19101d;
+}
+.deleteButton{
+    background-color: #e63e32;
+    color: #EDEDED;
+}
+.deleteButton:hover{
+    background-color: #EDEDED;
+    color: #e63e32;
+}
 .shopItems{
     background-color: white;
     max-width: 300px;

@@ -37,7 +37,7 @@ export const uk = {
   submitForm: "Відправити",
 
   shopQuestion: "Вам потрібно що-небудь для вашого улюбленця?",
-  buyFor: "Купити за",
+  buyFor: "Купити за ",
   viewAllProducts: "Переглянути всі продукти",
 
   contactQuestion: "Бажаєте відвідати нас?",
