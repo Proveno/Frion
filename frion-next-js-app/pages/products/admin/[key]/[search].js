@@ -13,6 +13,7 @@ import navBar from "../../../../styles/navBar.module.css";
 import MenuIcon from "../../../../assets/logo.png";
 import shopBlock from "../../../../styles/products.module.css";
 import cartIcon from "../../../../assets/Icons/Tilda_Icons_3st_cart.png";
+import dataIcon from "../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
 const ProductSearch = ({ Akey, isKeyValid, products }) => {
   function getLang() {
@@ -103,6 +104,31 @@ const ProductSearch = ({ Akey, isKeyValid, products }) => {
             className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
           >
             <div className={`grid auto-rows-max grid-cols-4`}>
+            <div
+                className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+              >
+                <Link href={`/products/admin/${Akey}/newProduct`}>
+                  <Image
+                    width={500}
+                    height={500}
+                    className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                    src={dataIcon}
+                    alt="Product picture"
+                  ></Image>
+                </Link>
+                <span className="block text-sm text-lg text-gray-700 my-2">
+                  Add new product
+                </span>
+                <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                  <Link href={`/products/newProduct`}>
+                    <button
+                      className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
+                    >
+                      ADD
+                    </button>
+                  </Link>
+                </div>
+              </div>
               {products.map((product) => {
                 return (
                   <div
@@ -121,12 +147,23 @@ const ProductSearch = ({ Akey, isKeyValid, products }) => {
                       {product.title}
                     </span>
                     <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                      <button
-                        className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
-                      >
-                        {t.buyFor}
-                        <span>{product.price["$numberDecimal"]}</span>$
-                      </button>
+                      <div className="w-full py-1 flex">
+                        <Link href={`/${product._id}/edit`}>
+                          <button
+                            className={`${shopBlock.shopBuyButton} w-1/2 rounded-l-lg`}
+                          >
+                            EDIT
+                          </button>
+                        </Link>
+                        <button
+                          className={`${shopBlock.deleteButton} w-1/2 rounded-r-lg`}
+                          onClick={() => {
+                            setDeletingProductId(product._id);
+                          }}
+                        >
+                          DELETE
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );

@@ -18,7 +18,6 @@ import magnifierIcon from "../../../../assets/Icons/Tilda_Icons_2web_magnifier.p
 import dataIcon from "../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
 const AdminProductList = ({ Akey, isKeyValid, products }) => {
-  console.log(isKeyValid);
   function getLang() {
     switch (router.locale) {
       case "en":
@@ -41,9 +40,6 @@ const AdminProductList = ({ Akey, isKeyValid, products }) => {
       [e.target.name]: e.target.value,
     });
   };
-
-  const isAdmin = true;
-
   const [deletingProductId, setDeletingProductId] = useState();
   useEffect(async () => {
     if (deletingProductId) {
@@ -60,96 +56,94 @@ const AdminProductList = ({ Akey, isKeyValid, products }) => {
   return (
     <div>
       <div
-            className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
-          >
-            {/* Logo/Home */}
-            <Link href={`/`}>
-              <div className={`flex`}>
-                <div className={`${navBar.imageLogo}`}>
-                  <Image src={MenuIcon} alt="Logo picture :>" />
-                </div>
-                <div className={`ml-2 ${navBar.textLogo}`}>
-                  <a>Frion</a>
-                </div>
-              </div>
-            </Link>
-
-            {/* NavButtons */}
-            {/* TODO: replace links to scroll */}
-            <div className={`flex justify-between w-full`}>
-              <div className={`w-full self-center flex justify-end`}>
-                <div className="flex w-1/2 mx-4">
-                  <input
-                    onChange={handleChange}
-                    name="searchRequest"
-                    className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
-                    placeholder="Enter title..."
-                  ></input>
-                  <Link href={`/products/admin/${Akey}/${search.searchRequest}`}>
-                    <button
-                      className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
-                    >
-                      Search
-                    </button>
-                  </Link>
-                </div>
-              </div>
-              <div className="flex justify-center w-1/6">
-                <div className="self-center mx-4">
-                  <select
-                    className={`${navBar.langButton} px-4 text`}
-                    id="LanguageSelect"
-                    onChange={() => {
-                      router.push(
-                        `/${
-                          document.getElementById("LanguageSelect").value
-                        }/products`
-                      );
-                    }}
-                    defaultValue={router.locale}
-                  >
-                    <option value="en">{t.english}</option>
-                    <option value="ru">{t.russian}</option>
-                    <option value="de">{t.deutsch}</option>
-                    <option value="uk">{t.ukrainian}</option>
-                  </select>
-                </div>
-              </div>
+        className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
+      >
+        {/* Logo/Home */}
+        <Link href={`/`}>
+          <div className={`flex`}>
+            <div className={`${navBar.imageLogo}`}>
+              <Image src={MenuIcon} alt="Logo picture :>" />
+            </div>
+            <div className={`ml-2 ${navBar.textLogo}`}>
+              <a>Frion</a>
             </div>
           </div>
+        </Link>
+
+        {/* NavButtons */}
+        {/* TODO: replace links to scroll */}
+        <div className={`flex justify-between w-full`}>
+          <div className={`w-full self-center flex justify-end`}>
+            <div className="flex w-1/2 mx-4">
+              <input
+                onChange={handleChange}
+                name="searchRequest"
+                className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
+                placeholder="Enter title..."
+              ></input>
+              <Link href={`/products/admin/${Akey}/${search.searchRequest}`}>
+                <button
+                  className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
+                >
+                  Search
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="flex justify-center w-1/6">
+            <div className="self-center mx-4">
+              <select
+                className={`${navBar.langButton} px-4 text`}
+                id="LanguageSelect"
+                onChange={() => {
+                  router.push(
+                    `/${
+                      document.getElementById("LanguageSelect").value
+                    }/products`
+                  );
+                }}
+                defaultValue={router.locale}
+              >
+                <option value="en">{t.english}</option>
+                <option value="ru">{t.russian}</option>
+                <option value="de">{t.deutsch}</option>
+                <option value="uk">{t.ukrainian}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
       {isKeyValid ? (
         <div>
           <div
             className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
           >
             <div className={`grid auto-rows-max grid-cols-4`}>
-              {isAdmin && (
-                <div
-                  className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-                >
+              <div
+                className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+              >
+                <Link href={`/products/admin/${Akey}/newProduct`}>
+                  <Image
+                    width={500}
+                    height={500}
+                    className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                    src={dataIcon}
+                    alt="Product picture"
+                  ></Image>
+                </Link>
+                <span className="block text-sm text-lg text-gray-700 my-2">
+                  Add new product
+                </span>
+                <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                   <Link href={`/products/newProduct`}>
-                    <Image
-                      width={500}
-                      height={500}
-                      className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                      src={dataIcon}
-                      alt="Product picture"
-                    ></Image>
+                    <button
+                      className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
+                    >
+                      ADD
+                    </button>
                   </Link>
-                  <span className="block text-sm text-lg text-gray-700 my-2">
-                    Add new product
-                  </span>
-                  <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                    <Link href={`/products/newProduct`}>
-                      <button
-                        className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
-                      >
-                        ADD
-                      </button>
-                    </Link>
-                  </div>
                 </div>
-              )}
+              </div>
               {products.map((product) => {
                 return (
                   <div
@@ -168,32 +162,23 @@ const AdminProductList = ({ Akey, isKeyValid, products }) => {
                       {product.title}
                     </span>
                     <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                      {isAdmin ? (
-                        <div className="w-full py-1 flex">
-                          <Link href={`/${product._id}/edit`}>
-                            <button
-                              className={`${shopBlock.shopBuyButton} w-1/2 rounded-l-lg`}
-                            >
-                              EDIT
-                            </button>
-                          </Link>
+                      <div className="w-full py-1 flex">
+                        <Link href={`/${product._id}/edit`}>
                           <button
-                            className={`${shopBlock.deleteButton} w-1/2 rounded-r-lg`}
-                            onClick={() => {
-                              setDeletingProductId(product._id);
-                            }}
+                            className={`${shopBlock.shopBuyButton} w-1/2 rounded-l-lg`}
                           >
-                            DELETE
+                            EDIT
                           </button>
-                        </div>
-                      ) : (
+                        </Link>
                         <button
-                          className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
+                          className={`${shopBlock.deleteButton} w-1/2 rounded-r-lg`}
+                          onClick={() => {
+                            setDeletingProductId(product._id);
+                          }}
                         >
-                          {t.buyFor}
-                          <span>{product.price["$numberDecimal"]}</span>$
+                          DELETE
                         </button>
-                      )}
+                      </div>
                     </div>
                   </div>
                 );
@@ -203,9 +188,7 @@ const AdminProductList = ({ Akey, isKeyValid, products }) => {
         </div>
       ) : (
         <div className="flex justify-center">
-          <div className="text-2xl">
-            Admin key is incorrect
-          </div>
+          <div className="text-2xl">Admin key is incorrect</div>
         </div>
       )}
     </div>

@@ -20,7 +20,6 @@ export default async (req, res) => {
 
                 const product = await Product.find({ title: regex});
 
-                console.log(product);
                 if (!product.length>0) {
                     return res.status(404).json({ success: false });
                 }

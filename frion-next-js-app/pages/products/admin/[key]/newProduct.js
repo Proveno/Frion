@@ -2,6 +2,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import formStyle from "../../../../styles/requestForm.module.css";
 
 const NewProduct = ({ isKeyValid }) => {
   const [form, setForm] = useState({
@@ -13,6 +15,7 @@ const NewProduct = ({ isKeyValid }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [photoUrl,setPhotoUrl] = useState("https://i.ibb.co/");
 
   const router = useRouter();
 
@@ -20,7 +23,6 @@ const NewProduct = ({ isKeyValid }) => {
     if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
         createProduct();
-        console.log("F");
       } else {
         setIsSubmitting(false);
       }
@@ -37,7 +39,6 @@ const NewProduct = ({ isKeyValid }) => {
         },
         body: JSON.stringify(form),
       });
-      console.log("res", res);
       router.push("/products");
     } catch (error) {
       console.log(console.error());
@@ -45,7 +46,6 @@ const NewProduct = ({ isKeyValid }) => {
   };
 
   const handleSubmit = (e) => {
-    console.log("FFF");
     e.preventDefault();
     let errs = validate();
     console.log(errs);
@@ -66,7 +66,6 @@ const NewProduct = ({ isKeyValid }) => {
     if (parseFloat(form.price) < 0.0) {
       err.price = "Price is required";
     }
-    console.log(form.category);
     if (!form.category) {
       err.price = "Category is required";
     }
@@ -80,7 +79,7 @@ const NewProduct = ({ isKeyValid }) => {
   return (
     <div>
       {isKeyValid ? (
-        <div className="flex mt-10 justify-center">
+        <div className="flex mt-10 justify-center px-10">
           <div
             className={`bg-gray-300 border-none rounded-3xl self-start w-3/5 px-14`}
           >
@@ -89,7 +88,7 @@ const NewProduct = ({ isKeyValid }) => {
                 <span className="block text-sm font-medium text-gray-700">
                   Title:
                 </span>
-                <input
+                <textarea
                   name="title"
                   onChange={handleChange}
                   type="text"
@@ -101,10 +100,11 @@ const NewProduct = ({ isKeyValid }) => {
                 <span className="block text-sm font-medium text-gray-700">
                   Description:
                 </span>
-                <input
+                <textarea
                   name="description"
                   onChange={handleChange}
                   type="text"
+                  rows="5" 
                   required
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   placeholder={`Enter description...`}
@@ -144,6 +144,7 @@ const NewProduct = ({ isKeyValid }) => {
                 <span className="block text-sm font-medium text-gray-700">
                   Photo URL:
                 </span>
+                <div className="flex">
                 <input
                   name="photo"
                   onChange={handleChange}
@@ -152,13 +153,22 @@ const NewProduct = ({ isKeyValid }) => {
                   placeholder={`Enter photo url...`}
                   required
                 />
+                <button className={`${formStyle.SubmitButton} rounded-lg mt-1 ml-2 px-2`} onClick={()=>{
+                  setPhotoUrl(form.photo)
+                }}>Check</button>
+                </div>
               </label>
               <div className="justify-center flex w-full">
-                <button type="submit" className={`w-full py-2 rounded-lg`}>
+                <button type="submit" className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}>
                   Create
                 </button>
               </div>
             </form>
+          </div>
+          <div className="w-1/3">
+            <div>
+            <Image width={500} height={500} src={`${photoUrl}`}></Image>
+            </div>
           </div>
         </div>
       ) : (
