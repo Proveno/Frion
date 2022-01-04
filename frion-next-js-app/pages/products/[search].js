@@ -14,7 +14,7 @@ import MenuIcon from "../../assets/logo.png";
 import shopBlock from "../../styles/products.module.css";
 import cartIcon from "../../assets/Icons/Tilda_Icons_3st_cart.png";
 
-const ProductSearch = ({ products }) => {
+const ProductSearch = ({ products, searchText }) => {
   function getLang() {
     switch (router.locale) {
       case "en":
@@ -64,6 +64,7 @@ const ProductSearch = ({ products }) => {
                 name="searchRequest"
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
                 placeholder="Enter title..."
+                defaultValue={searchText}
               ></input>
               <Link href={`/products/${search.searchRequest}`}>
                 <button
@@ -114,7 +115,7 @@ const ProductSearch = ({ products }) => {
               <div
                 className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
               >
-                <Link href={`/${product._id}`}>
+                <Link href={`/products/product/${product._id}`}>
                   <Image
                     width={500}
                     height={500}
@@ -148,7 +149,7 @@ ProductSearch.getInitialProps = async ({ query: { search } }) => {
     `http://localhost:3000/api/products/search/${search}`
   );
   const { data } = await res.json();
-  return { products: data };
+  return { products: data, searchText: search };
 };
 
 export default ProductSearch;

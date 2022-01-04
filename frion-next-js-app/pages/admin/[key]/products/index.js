@@ -151,7 +151,7 @@ const AdminProductList = ({ Akey, isKeyValid, products }) => {
                       <div
                         className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                       >
-                        <Link href={`/${product._id}`}>
+                        <Link href={`/products/product/${product._id}`}>
                           <Image
                             width={500}
                             height={500}
@@ -165,7 +165,7 @@ const AdminProductList = ({ Akey, isKeyValid, products }) => {
                         </span>
                         <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                           <div className="w-full py-1 flex">
-                            <Link href={`/${product._id}/edit`}>
+                            <Link href={`/admin/${Akey}/products/edit/${product._id}`}>
                               <button
                                 className={`${shopBlock.shopBuyButton} w-1/2 rounded-l-lg`}
                               >

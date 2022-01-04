@@ -128,7 +128,7 @@ const UserProductList = ({ products }) => {
               <div
                 className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
               >
-                <Link href={`/${product._id}`}>
+                <Link href={`/products/product/${product._id}`}>
                   <Image
                     width={500}
                     height={500}
