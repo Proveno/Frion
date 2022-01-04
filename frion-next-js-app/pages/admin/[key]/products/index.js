@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { en } from "../../../../locales/en";
 import { ru } from "../../../../locales/ru";
 import { uk } from "../../../../locales/uk";
@@ -11,11 +11,13 @@ import Image from "next/image";
 
 import navBar from "../../../../styles/navBar.module.css";
 import MenuIcon from "../../../../assets/logo.png";
+
 import shopBlock from "../../../../styles/products.module.css";
 import cartIcon from "../../../../assets/Icons/Tilda_Icons_3st_cart.png";
+import magnifierIcon from "../../../../assets/Icons/Tilda_Icons_2web_magnifier.png";
 import dataIcon from "../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
-const ProductSearch = ({ Akey, isKeyValid, products }) => {
+const AdminProductList = ({ Akey, isKeyValid, products }) => {
   function getLang() {
     switch (router.locale) {
       case "en":
@@ -38,6 +40,19 @@ const ProductSearch = ({ Akey, isKeyValid, products }) => {
       [e.target.name]: e.target.value,
     });
   };
+  const [deletingProductId, setDeletingProductId] = useState();
+  useEffect(async () => {
+    if (deletingProductId) {
+      const deleted = await fetch(
+        `http://localhost:3000/api/products/${deletingProductId}`,
+        {
+          method: "Delete",
+        }
+      );
+      router.push("/products");
+    }
+  }, [deletingProductId]);
+
   return (
     <div>
       <div
@@ -66,7 +81,7 @@ const ProductSearch = ({ Akey, isKeyValid, products }) => {
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
                 placeholder="Enter title..."
               ></input>
-              <Link href={`/products/admin/${Akey}/${search.searchRequest}`}>
+              <Link href={`/admin/${Akey}/products/${search.searchRequest}`}>
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
@@ -104,10 +119,10 @@ const ProductSearch = ({ Akey, isKeyValid, products }) => {
             className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
           >
             <div className={`grid auto-rows-max grid-cols-4`}>
-            <div
+              <div
                 className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
               >
-                <Link href={`/products/admin/${Akey}/newProduct`}>
+                <Link href={`/admin/${Akey}/products/newProduct`}>
                   <Image
                     width={500}
                     height={500}
@@ -120,7 +135,7 @@ const ProductSearch = ({ Akey, isKeyValid, products }) => {
                   Add new product
                 </span>
                 <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                  <Link href={`/products/newProduct`}>
+                  <Link href={`/admin/${Akey}/products/newProduct`}>
                     <button
                       className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
                     >
@@ -129,45 +144,52 @@ const ProductSearch = ({ Akey, isKeyValid, products }) => {
                   </Link>
                 </div>
               </div>
-              {products.map((product) => {
-                return (
-                  <div
-                    className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-                  >
-                    <Link href={`/${product._id}`}>
-                      <Image
-                        width={500}
-                        height={500}
-                        className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                        src={product.photo}
-                        alt="Product picture"
-                      ></Image>
-                    </Link>
-                    <span className="block text-sm text-lg text-gray-700 my-2">
-                      {product.title}
-                    </span>
-                    <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                      <div className="w-full py-1 flex">
-                        <Link href={`/${product._id}/edit`}>
-                          <button
-                            className={`${shopBlock.shopBuyButton} w-1/2 rounded-l-lg`}
-                          >
-                            EDIT
-                          </button>
+              {products ? (
+                <>
+                  {products.map((product) => {
+                    return (
+                      <div
+                        className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+                      >
+                        <Link href={`/${product._id}`}>
+                          <Image
+                            width={500}
+                            height={500}
+                            className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                            src={product.photo}
+                            alt="Product picture"
+                          ></Image>
                         </Link>
-                        <button
-                          className={`${shopBlock.deleteButton} w-1/2 rounded-r-lg`}
-                          onClick={() => {
-                            setDeletingProductId(product._id);
-                          }}
-                        >
-                          DELETE
-                        </button>
+                        <span className="block text-sm text-lg text-gray-700 my-2">
+                          {product.title}
+                        </span>
+                        <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                          <div className="w-full py-1 flex">
+                            <Link href={`/${product._id}/edit`}>
+                              <button
+                                className={`${shopBlock.shopBuyButton} w-1/2 rounded-l-lg`}
+                              >
+                                EDIT
+                              </button>
+                            </Link>
+                            <button
+                              className={`${shopBlock.deleteButton} w-1/2 rounded-r-lg`}
+                              onClick={() => {
+                                setDeletingProductId(product._id);
+                              }}
+                            >
+                              DELETE
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })}
+                    );
+                  })}
+                </>
+              ) : (
+                // TODO: make beautifyll exeption
+                <div>Nothing here</div>
+              )}
             </div>
           </div>
         </div>
@@ -180,14 +202,12 @@ const ProductSearch = ({ Akey, isKeyValid, products }) => {
   );
 };
 
-ProductSearch.getInitialProps = async ({ query: { key, search } }) => {
+AdminProductList.getInitialProps = async ({ query: { key } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
-  const res = await fetch(
-    `http://localhost:3000/api/products/search/${search}`
-  );
+  const res = await fetch(`http://localhost:3000/api/products`);
   const { data } = await res.json();
   const { success } = await keyRes.json();
   return { Akey: key, isKeyValid: success, products: data };
 };
 
-export default ProductSearch;
+export default AdminProductList;

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import formStyle from "../../../../styles/requestForm.module.css";
 
-const NewProduct = ({ isKeyValid }) => {
+const NewProduct = ({ isKeyValid, allCategories }) => {
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -44,7 +44,6 @@ const NewProduct = ({ isKeyValid }) => {
       console.log(console.error());
     }
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     let errs = validate();
@@ -133,11 +132,11 @@ const NewProduct = ({ isKeyValid }) => {
                   className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   required
                 >
-                  {/* TODO: chooseType (get request) */}
-                  <option>Cats</option>
-                  <option>Dogs</option>
-                  <option>Birds</option>
-                  <option>Hamsters</option>
+                  {allCategories.map((category)=>{
+                    if(category.categoryLocale == router.locale){
+                      return (<option>{category.category}</option>)
+                    }
+                  })}
                 </select>
               </label>
               <label className="block my-3">
@@ -182,7 +181,10 @@ const NewProduct = ({ isKeyValid }) => {
 
 NewProduct.getInitialProps = async ({ query: { key } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
+  const allCategories = await fetch(`http://localhost:3000/api/categories/`);
+
+  const { dataCategories } = await allCategories.json();
   const { success } = await keyRes.json();
-  return { isKeyValid: success };
+  return { isKeyValid: success, allCategories:dataCategories};
 };
 export default NewProduct;

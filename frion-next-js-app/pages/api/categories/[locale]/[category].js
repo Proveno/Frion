@@ -13,7 +13,7 @@ export default async (req, res) => {
     case "GET":
       try {
         const categoryR = await Category.find({ category: category, categoryLocale:locale });
-        res.status(200).json({ success: true, data: categoryR });
+        res.status(200).json({ success: true, dataCategories: categoryR });
       } catch (error) {
         res.status(400).json({ success: false });
       }
@@ -29,7 +29,7 @@ export default async (req, res) => {
           return res.status(400).json({ success: false });
         }
 
-        res.status(200).json({ success: true, data: category });
+        res.status(200).json({ success: true, dataCategories: category });
       } catch (error) {
         res.status(400).json({ success: false });
       }
