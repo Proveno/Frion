@@ -10,7 +10,7 @@ function escapeRegex(text){
 
 export default async (req, res) => {
     const {
-        query: { searchText },
+        query: { locale, searchText },
         method
     } = req;
     switch (method) {
@@ -18,7 +18,7 @@ export default async (req, res) => {
             try {
                 const regex = new RegExp(escapeRegex(searchText), 'gi');
 
-                const product = await Product.find({ title: regex});
+                const product = await Product.find({ title: regex, productLocale: locale}).sort({'_id': -1});
 
                 if (!product.length>0) {
                     return res.status(404).json({ success: false });

@@ -126,7 +126,7 @@ export default function Home() {
                 id="LanguageSelect"
                 onChange={() => {
                   router.push(
-                    `/${document.getElementById("LanguageSelect").value}`
+                    `${document.getElementById("LanguageSelect").value}`
                   );
                 }}
                 defaultValue={router.locale}
@@ -665,7 +665,7 @@ export default function Home() {
             </div>
           </div>
           <div className="w-full flex justify-center">
-            <Link href={`/products`}>
+            <Link href={`/products/${router.locale}`}>
               <button
                 className={`${shopBlock.shopViewButton} w-2/5 rounded-3xl py-1 font-bold`}
               >

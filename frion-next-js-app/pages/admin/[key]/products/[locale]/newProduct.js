@@ -3,21 +3,21 @@ import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import formStyle from "../../../../styles/requestForm.module.css";
+import formStyle from "../../../../../styles/requestForm.module.css";
 
-const NewProduct = ({ isKeyValid, allCategories }) => {
+const NewProduct = ({Akey, isKeyValid, allCategories,locale }) => {
+  const router = useRouter();
   const [form, setForm] = useState({
     title: "",
     description: "",
     price: 0.0,
     category: "",
     photo: "",
+    productLocale: locale,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  const [photoUrl,setPhotoUrl] = useState("https://i.ibb.co/");
-
-  const router = useRouter();
+  const [photoUrl, setPhotoUrl] = useState("https://i.ibb.co/");
 
   useEffect(() => {
     if (isSubmitting) {
@@ -30,6 +30,7 @@ const NewProduct = ({ isKeyValid, allCategories }) => {
   }, [errors]);
 
   const createProduct = async () => {
+    console.log(form);
     try {
       const res = await fetch("http://localhost:3000/api/products/", {
         method: "POST",
@@ -39,9 +40,10 @@ const NewProduct = ({ isKeyValid, allCategories }) => {
         },
         body: JSON.stringify(form),
       });
-      router.push("/products");
+      console.log("RES",res);
+      router.push(`/admin/${Akey}/products/${locale}`);
     } catch (error) {
-      console.log(console.error());
+      console.log("HERE",console.error());
     }
   };
   const handleSubmit = (e) => {
@@ -103,7 +105,7 @@ const NewProduct = ({ isKeyValid, allCategories }) => {
                   name="description"
                   onChange={handleChange}
                   type="text"
-                  rows="5" 
+                  rows="5"
                   required
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   placeholder={`Enter description...`}
@@ -132,10 +134,8 @@ const NewProduct = ({ isKeyValid, allCategories }) => {
                   className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   required
                 >
-                  {allCategories.map((category)=>{
-                    if(category.categoryLocale == router.locale){
-                      return (<option>{category.category}</option>)
-                    }
+                  {allCategories.map((category) => {
+                    return <option>{category.category}</option>;
                   })}
                 </select>
               </label>
@@ -144,21 +144,29 @@ const NewProduct = ({ isKeyValid, allCategories }) => {
                   Photo URL:
                 </span>
                 <div className="flex">
-                <input
-                  name="photo"
-                  onChange={handleChange}
-                  type="text"
-                  className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter photo url...`}
-                  required
-                />
-                <button className={`${formStyle.SubmitButton} rounded-lg mt-1 ml-2 px-2`} onClick={()=>{
-                  setPhotoUrl(form.photo)
-                }}>Check</button>
+                  <input
+                    name="photo"
+                    onChange={handleChange}
+                    type="text"
+                    className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                    placeholder={`Enter photo url...`}
+                    required
+                  />
+                  <button
+                    className={`${formStyle.SubmitButton} rounded-lg mt-1 ml-2 px-2`}
+                    onClick={() => {
+                      setPhotoUrl(form.photo);
+                    }}
+                  >
+                    Check
+                  </button>
                 </div>
               </label>
               <div className="justify-center flex w-full">
-                <button type="submit" className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}>
+                <button
+                  type="submit"
+                  className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}
+                >
                   Create
                 </button>
               </div>
@@ -166,7 +174,7 @@ const NewProduct = ({ isKeyValid, allCategories }) => {
           </div>
           <div className="w-1/3">
             <div>
-            <Image width={500} height={500} src={`${photoUrl}`}></Image>
+              <Image width={500} height={500} src={`${photoUrl}`}></Image>
             </div>
           </div>
         </div>
@@ -179,12 +187,14 @@ const NewProduct = ({ isKeyValid, allCategories }) => {
   );
 };
 
-NewProduct.getInitialProps = async ({ query: { key } }) => {
+NewProduct.getInitialProps = async ({ query: { key, locale } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
-  const allCategories = await fetch(`http://localhost:3000/api/categories/`);
+  const categories = await fetch(
+    `http://localhost:3000/api/categories/${locale}/`
+  );
 
-  const { dataCategories } = await allCategories.json();
+  const { dataCategories } = await categories.json();
   const { success } = await keyRes.json();
-  return { isKeyValid: success, allCategories:dataCategories};
+  return { Akey: key,isKeyValid: success, allCategories: dataCategories, locale: locale };
 };
 export default NewProduct;

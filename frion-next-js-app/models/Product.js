@@ -25,6 +25,10 @@ const ProductSchema = new mongoose.Schema({
     photo:{
         type: String ,
         required: true
+    },
+    productLocale:{
+        type: String,
+        required: true
     }
 })
 

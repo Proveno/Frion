@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import formStyle from "../../../../../styles/requestForm.module.css";
+import formStyle from "../../../../../../styles/requestForm.module.css";
 const EditProduct = ({ Akey, isKeyValid, product, allCategories }) => {
   const [form, setForm] = useState({
     title: product.title,
