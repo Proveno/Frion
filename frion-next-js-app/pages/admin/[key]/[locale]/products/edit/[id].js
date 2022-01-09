@@ -3,53 +3,53 @@ import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import formStyle from "../../../../../styles/requestForm.module.css";
-
-const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
-  const router = useRouter();
+import formStyle from "../../../../../../styles/requestForm.module.css";
+const EditProduct = ({ Akey, isKeyValid, product, allCategories }) => {
   const [form, setForm] = useState({
-    title: "",
-    description: "",
-    price: 0.0,
-    category: "",
-    photo: "",
-    productLocale: locale,
+    title: product.title,
+    description: product.description,
+    price: product.price["$numberDecimal"],
+    category: product.category,
+    photo: product.photo,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  const [photoUrl, setPhotoUrl] = useState("https://i.ibb.co/");
+  const [photoUrl, setPhotoUrl] = useState(form.photo);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
-        createProduct();
+        updateProduct();
       } else {
         setIsSubmitting(false);
       }
     }
   }, [errors]);
 
-  const createProduct = async () => {
-    console.log(form);
+  const updateProduct = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/products/", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-      console.log("RES",res);
-      router.push(`/admin/${Akey}/products/${locale}`);
+      const res = await fetch(
+        `http://localhost:3000/api/products/product/${router.query.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
+      router.push(`/admin/${Akey}/${locale}/products`);
     } catch (error) {
-      console.log("HERE",console.error());
+      console.log(console.error());
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     let errs = validate();
-    console.log(errs);
     setErrors(errs);
     setIsSubmitting(true);
   };
@@ -64,11 +64,11 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
     if (!form.description) {
       err.description = "Description is required";
     }
-    if (parseFloat(form.price) < 0.0) {
+    if (!form.price) {
       err.price = "Price is required";
     }
     if (!form.category) {
-      err.price = "Category is required";
+      err.price = "Price is required";
     }
     if (!form.photo) {
       err.photo = "Photo url is required";
@@ -78,9 +78,8 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
   };
 
   return (
-    <div>
-      {isKeyValid &&
-      (keyData[0].addAndUpdateProducts || keyData[0].deleteProducts) ? (
+    <>
+      {isKeyValid ? (
         <div className="flex mt-10 justify-center px-10">
           <div
             className={`bg-gray-300 border-none rounded-3xl self-start w-3/5 px-14`}
@@ -94,6 +93,8 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                   name="title"
                   onChange={handleChange}
                   type="text"
+                  required
+                  value={form.title}
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   placeholder={`Enter title ...`}
                 />
@@ -108,6 +109,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                   type="text"
                   rows="5"
                   required
+                  value={form.description}
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   placeholder={`Enter description...`}
                 />
@@ -120,6 +122,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                   name="price"
                   onChange={handleChange}
                   type="text"
+                  value={form.price}
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   placeholder={`Enter price...`}
                   required
@@ -131,12 +134,15 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                 </span>
                 <select
                   name="category"
+                  value={form.category}
                   onChange={handleChange}
                   className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   required
                 >
                   {allCategories.map((category) => {
-                    return <option>{category.category}</option>;
+                    if (category.categoryLocale == router.locale) {
+                      return <option>{category.category}</option>;
+                    }
                   })}
                 </select>
               </label>
@@ -149,6 +155,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                     name="photo"
                     onChange={handleChange}
                     type="text"
+                    value={form.photo}
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                     placeholder={`Enter photo url...`}
                     required
@@ -168,7 +175,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                   type="submit"
                   className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}
                 >
-                  Create
+                  Update
                 </button>
               </div>
             </form>
@@ -184,18 +191,26 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
           <div className="text-2xl">Admin key is incorrect</div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
-NewProduct.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
-  const categories = await fetch(
-    `http://localhost:3000/api/categories/${locale}/`
-  );
+EditProduct.getInitialProps = async ({ query: { key, id } }) => {
+  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
+  const res = await fetch(`http://localhost:3000/api/products/product/${id}`);
 
-  const { dataCategories } = await categories.json();
-  const { success, keyData } = await keyRes.json();
-  return { Akey: key,isKeyValid: success, keyData: keyData, allCategories: dataCategories, locale: locale };
+  const allCategories = await fetch(`http://localhost:3000/api/categories/`);
+
+  const { dataCategories } = await allCategories.json();
+  const { data } = await res.json();
+  const { success } = await keyRes.json();
+
+  return {
+    Akey: key,
+    isKeyValid: success,
+    product: data,
+    allCategories: dataCategories,
+  };
 };
-export default NewProduct;
+
+export default EditProduct;

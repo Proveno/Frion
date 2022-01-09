@@ -83,30 +83,18 @@ const AdminList = ({ Akey, isKeyValid, keyData }) => {
             <div
               className={`grid auto-rows-max grid-cols-4 justify-between w-full`}
             >
-              {keyData[0].addKeys && (
-                <div
-                  className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
-                >
-                  <button className="">Add key</button>
-                </div>
-              )}
-              {keyData[0].updateKeys && (
-                <div
-                  className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
-                >
-                  <button className="">Update key</button>
-                </div>
-              )}
-              {keyData[0].deleteKeys && (
-                <div
-                  className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
-                >
-                  <button className="">Delete key</button>
-                </div>
+              {(keyData[0].addAndUpdateKeys || keyData[0].deleteKeys) && (
+                <Link href={`/admin/${Akey}/${router.locale}/keys/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Edit keys</button>
+                  </div>
+                </Link>
               )}
               {(keyData[0].addAndUpdateProducts ||
                 keyData[0].deleteProducts) && (
-                <Link href={`/admin/${Akey}/products/${router.locale}/`}>
+                <Link href={`/admin/${Akey}/${router.locale}/products/`}>
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
                   >
@@ -156,7 +144,7 @@ const AdminList = ({ Akey, isKeyValid, keyData }) => {
 };
 
 AdminList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
+  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
   const { success, keyData } = await keyRes.json();
   return { Akey: key, isKeyValid: success, keyData: keyData };
 };

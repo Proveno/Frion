@@ -7,11 +7,12 @@ const KeySchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    addKeys:{
-        type: Boolean,
-        required: false
+    owner:{
+        type: String,
+        required: [true, 'Please enter owner'],
+        trim: true,
     },
-    updateKeys:{
+    addAndUpdateKeys:{
         type: Boolean,
         required: false
     },

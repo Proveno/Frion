@@ -27,7 +27,7 @@ const adminLogin = () => {
 
   const checkKey = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/keys/${key}`, {
+      const res = await fetch(`http://localhost:3000/api/keys/findKey/${key}`, {
         method: "GET",
       });
       const { success } = await res.json();

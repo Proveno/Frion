@@ -31,7 +31,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories }) => {
   const updateProduct = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/products/${router.query.id}`,
+        `http://localhost:3000/api/products/product/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -41,7 +41,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories }) => {
           body: JSON.stringify(form),
         }
       );
-      router.push("/products");
+      router.push(`/admin/${Akey}/${locale}/products`);
     } catch (error) {
       console.log(console.error());
     }
@@ -196,8 +196,8 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories }) => {
 };
 
 EditProduct.getInitialProps = async ({ query: { key, id } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
-  const res = await fetch(`http://localhost:3000/api/products/product/${id}`);
+  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
+  const res = await fetch(`http://localhost:3000/api/keys/key/${id}`);
 
   const allCategories = await fetch(`http://localhost:3000/api/categories/`);
 

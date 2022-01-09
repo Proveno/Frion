@@ -1,5 +1,5 @@
-import dbConnect from "../../../utils/dbConnect";
-import Key from "../../../models/Key";
+import dbConnect from "../../../../utils/dbConnect";
+import Key from "../../../../models/Key";
 import hexSha1 from "hex-sha1";
 dbConnect();
 

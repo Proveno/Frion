@@ -1,5 +1,5 @@
-import dbConnect from "../../../../utils/dbConnect";
-import Product from "../../../../models/Product";
+import dbConnect from "../../../utils/dbConnect";
+import Product from "../../../models/Product";
 
 dbConnect();
 
@@ -10,21 +10,21 @@ function escapeRegex(text){
 
 export default async (req, res) => {
     const {
-        query: { locale, searchText },
+        query: { search },
         method
     } = req;
     switch (method) {
         case 'GET':
             try {
-                const regex = new RegExp(escapeRegex(searchText), 'gi');
+                const regex = new RegExp(escapeRegex(search), 'gi');
 
-                const product = await Product.find({ title: regex, productLocale: locale});
+                const keys = await Key.find({ owner: regex});
 
-                if (!product.length>0) {
+                if (!keys.length>0) {
                     return res.status(404).json({ success: false });
                 }
 
-                res.status(200).json({ success: true, data: product });
+                res.status(200).json({ success: true, keysData: keys });
             }
             catch (error) {
                 res.status(400).json({ success: false });
