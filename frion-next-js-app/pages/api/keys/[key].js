@@ -1,6 +1,6 @@
 import dbConnect from "../../../utils/dbConnect";
 import Key from "../../../models/Key";
-import hexSha1 from 'hex-sha1';
+import hexSha1 from "hex-sha1";
 dbConnect();
 
 export default async (req, res) => {
@@ -12,10 +12,26 @@ export default async (req, res) => {
     case "GET":
       try {
         const FoundKey = await Key.find({ key: hexSha1(key) });
-        if (!FoundKey.length>0) {
+        if (!FoundKey.length > 0) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: FoundKey });
+        res.status(200).json({ success: true, keyData: FoundKey });
+      } catch (error) {
+        res.status(400).json({ success: false });
+      }
+      break;
+    case "PUT":
+      try {
+        const FoundKey = await Key.findOneAndUpdate({ key: hexSha1(key) }, req.body, {
+          new: true,
+          runValidators: true,
+        });
+
+        if (!FoundKey) {
+          return res.status(400).json({ success: false });
+        }
+
+        res.status(200).json({ success: true, keyData: FoundKey });
       } catch (error) {
         res.status(400).json({ success: false });
       }
@@ -27,7 +43,7 @@ export default async (req, res) => {
         if (!deletedProduct) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: {} });
+        res.status(200).json({ success: true, keyData: {} });
       } catch (error) {
         res.status(400).json({ success: false });
       }

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { en } from "../../../../../locales/en";
 import { ru } from "../../../../../locales/ru";
 import { uk } from "../../../../../locales/uk";
@@ -15,7 +15,14 @@ import shopBlock from "../../../../../styles/products.module.css";
 import cartIcon from "../../../../../assets/Icons/Tilda_Icons_3st_cart.png";
 import dataIcon from "../../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
-const ProductSearch = ({ Akey, isKeyValid, products, searchText, locale }) => {
+const ProductSearch = ({
+  Akey,
+  isKeyValid,
+  keyData,
+  products,
+  searchText,
+  locale,
+}) => {
   const router = useRouter();
   function getLang(selectedLocale) {
     switch (selectedLocale) {
@@ -79,7 +86,9 @@ const ProductSearch = ({ Akey, isKeyValid, products, searchText, locale }) => {
                 defaultValue={searchText}
                 placeholder="Enter title..."
               ></input>
-              <Link href={`/admin/${Akey}/products/${locale}/${search.searchRequest}`}>
+              <Link
+                href={`/admin/${Akey}/products/${locale}/${search.searchRequest}`}
+              >
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
@@ -94,7 +103,9 @@ const ProductSearch = ({ Akey, isKeyValid, products, searchText, locale }) => {
                 className={`${navBar.langButton} px-4 text`}
                 id="LanguageSelect"
                 onChange={() => {
-                  setT(getLang(document.getElementById("LanguageSelect").value));
+                  setT(
+                    getLang(document.getElementById("LanguageSelect").value)
+                  );
                   router.push(
                     `/admin/${Akey}/products/${
                       document.getElementById("LanguageSelect").value
@@ -112,37 +123,40 @@ const ProductSearch = ({ Akey, isKeyValid, products, searchText, locale }) => {
           </div>
         </div>
       </div>
-      {isKeyValid ? (
+      {isKeyValid &&
+      (keyData[0].addAndUpdateProducts || keyData[0].deleteProducts) ? (
         <div>
           <div
             className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
           >
             <div className={`grid auto-rows-max grid-cols-4`}>
-              <div
-                className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-              >
-                <Link href={`/admin/${Akey}/products/${locale}/newProduct`}>
-                  <Image
-                    width={500}
-                    height={500}
-                    className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                    src={dataIcon}
-                    alt="Product picture"
-                  ></Image>
-                </Link>
-                <span className="block text-sm text-lg text-gray-700 my-2">
-                  Add new product
-                </span>
-                <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+              {keyData[0].addAndUpdateProducts && (
+                <div
+                  className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+                >
                   <Link href={`/admin/${Akey}/products/${locale}/newProduct`}>
-                    <button
-                      className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
-                    >
-                      ADD
-                    </button>
+                    <Image
+                      width={500}
+                      height={500}
+                      className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                      src={dataIcon}
+                      alt="Product picture"
+                    ></Image>
                   </Link>
+                  <span className="block text-sm text-lg text-gray-700 my-2">
+                    Add new product
+                  </span>
+                  <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                    <Link href={`/admin/${Akey}/products/${locale}/newProduct`}>
+                      <button
+                        className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
+                      >
+                        ADD
+                      </button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              )}
               {products ? (
                 <>
                   {products.map((product) => {
@@ -150,7 +164,9 @@ const ProductSearch = ({ Akey, isKeyValid, products, searchText, locale }) => {
                       <div
                         className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                       >
-                        <Link href={`/products/${locale}/product/${product._id}`}>
+                        <Link
+                          href={`/products/${locale}/product/${product._id}`}
+                        >
                           <Image
                             width={500}
                             height={500}
@@ -164,21 +180,35 @@ const ProductSearch = ({ Akey, isKeyValid, products, searchText, locale }) => {
                         </span>
                         <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                           <div className="w-full py-1 flex">
-                            <Link href={`/admin/${Akey}/products/${locale}/edit/${product._id}`}>
-                              <button
-                                className={`${shopBlock.shopBuyButton} w-1/2 rounded-l-lg`}
+                            {keyData[0].addAndUpdateProducts && (
+                              <Link
+                                href={`/admin/${Akey}/products/${locale}/edit/${product._id}`}
                               >
-                                EDIT
+                                <button
+                                  className={`${shopBlock.shopBuyButton} ${
+                                    keyData[0].deleteProducts
+                                      ? `w-1/2 rounded-l-lg`
+                                      : `w-full rounded-lg`
+                                  }`}
+                                >
+                                  EDIT
+                                </button>
+                              </Link>
+                            )}
+                            {keyData[0].deleteProducts && (
+                              <button
+                                className={`${shopBlock.deleteButton} ${
+                                  keyData[0].addAndUpdateProducts
+                                    ? `w-1/2 rounded-r-lg`
+                                    : `w-full rounded-lg`
+                                }`}
+                                onClick={() => {
+                                  setDeletingProductId(product._id);
+                                }}
+                              >
+                                DELETE
                               </button>
-                            </Link>
-                            <button
-                              className={`${shopBlock.deleteButton} w-1/2 rounded-r-lg`}
-                              onClick={() => {
-                                setDeletingProductId(product._id);
-                              }}
-                            >
-                              DELETE
-                            </button>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -207,8 +237,15 @@ ProductSearch.getInitialProps = async ({ query: { key, locale, search } }) => {
     `http://localhost:3000/api/products/${locale}/${search}`
   );
   const { data } = await res.json();
-  const { success } = await keyRes.json();
-  return { Akey: key, isKeyValid: success, products: data, searchText: search, locale: locale };
+  const { success, keyData } = await keyRes.json();
+  return {
+    Akey: key,
+    isKeyValid: success,
+    keyData: keyData,
+    products: data,
+    searchText: search,
+    locale: locale,
+  };
 };
 
 export default ProductSearch;

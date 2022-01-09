@@ -197,7 +197,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories }) => {
 
 EditProduct.getInitialProps = async ({ query: { key, id } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
-  const res = await fetch(`http://localhost:3000/api/products/${id}`);
+  const res = await fetch(`http://localhost:3000/api/products/product/${id}`);
 
   const allCategories = await fetch(`http://localhost:3000/api/categories/`);
 

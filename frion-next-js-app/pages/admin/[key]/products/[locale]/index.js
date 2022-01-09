@@ -17,9 +17,9 @@ import cartIcon from "../../../../../assets/Icons/Tilda_Icons_3st_cart.png";
 import magnifierIcon from "../../../../../assets/Icons/Tilda_Icons_2web_magnifier.png";
 import dataIcon from "../../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
-const AdminProductList = ({ Akey, isKeyValid, products, locale }) => {
+const AdminProductList = ({ Akey, isKeyValid, keyData, products, locale }) => {
   const router = useRouter();
-  function getSelectedLang(){
+  function getSelectedLang() {
     return document.getElementById("LanguageSelect").value;
   }
   function getLang(selectedLocale) {
@@ -84,7 +84,9 @@ const AdminProductList = ({ Akey, isKeyValid, products, locale }) => {
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
                 placeholder="Enter title..."
               ></input>
-              <Link href={`/admin/${Akey}/products/${locale}/${search.searchRequest}`}>
+              <Link
+                href={`/admin/${Akey}/products/${locale}/${search.searchRequest}`}
+              >
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
@@ -99,7 +101,9 @@ const AdminProductList = ({ Akey, isKeyValid, products, locale }) => {
                 className={`${navBar.langButton} px-4 text`}
                 id="LanguageSelect"
                 onChange={() => {
-                  setT(getLang(document.getElementById("LanguageSelect").value));
+                  setT(
+                    getLang(document.getElementById("LanguageSelect").value)
+                  );
                   router.push(
                     `/admin/${Akey}/products/${
                       document.getElementById("LanguageSelect").value
@@ -117,37 +121,40 @@ const AdminProductList = ({ Akey, isKeyValid, products, locale }) => {
           </div>
         </div>
       </div>
-      {isKeyValid ? (
+      {isKeyValid &&
+      (keyData[0].addAndUpdateProducts || keyData[0].deleteProducts) ? (
         <div>
           <div
             className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
           >
             <div className={`grid auto-rows-max grid-cols-4`}>
-              <div
-                className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-              >
-                <Link href={`/admin/${Akey}/products/${locale}/newProduct`}>
-                  <Image
-                    width={500}
-                    height={500}
-                    className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                    src={dataIcon}
-                    alt="Product picture"
-                  ></Image>
-                </Link>
-                <span className="block text-sm text-lg text-gray-700 my-2">
-                  Add new product
-                </span>
-                <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+              {keyData[0].addAndUpdateProducts && (
+                <div
+                  className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+                >
                   <Link href={`/admin/${Akey}/products/${locale}/newProduct`}>
-                    <button
-                      className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
-                    >
-                      ADD
-                    </button>
+                    <Image
+                      width={500}
+                      height={500}
+                      className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                      src={dataIcon}
+                      alt="Product picture"
+                    ></Image>
                   </Link>
+                  <span className="block text-sm text-lg text-gray-700 my-2">
+                    Add new product
+                  </span>
+                  <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                    <Link href={`/admin/${Akey}/products/${locale}/newProduct`}>
+                      <button
+                        className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
+                      >
+                        ADD
+                      </button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              )}
               {products ? (
                 <>
                   {products.map((product) => {
@@ -155,7 +162,9 @@ const AdminProductList = ({ Akey, isKeyValid, products, locale }) => {
                       <div
                         className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                       >
-                        <Link href={`/products/${locale}/product/${product._id}`}>
+                        <Link
+                          href={`/products/${locale}/product/${product._id}`}
+                        >
                           <Image
                             width={500}
                             height={500}
@@ -169,21 +178,27 @@ const AdminProductList = ({ Akey, isKeyValid, products, locale }) => {
                         </span>
                         <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                           <div className="w-full py-1 flex">
-                            <Link href={`/admin/${Akey}/products/${locale}/edit/${product._id}`}>
-                              <button
-                                className={`${shopBlock.shopBuyButton} w-1/2 rounded-l-lg`}
+                            {keyData[0].addAndUpdateProducts && (
+                              <Link
+                                href={`/admin/${Akey}/products/${locale}/edit/${product._id}`}
                               >
-                                EDIT
+                                <button
+                                  className={`${shopBlock.shopBuyButton} ${keyData[0].deleteProducts ? `w-1/2 rounded-l-lg`:`w-full rounded-lg`}`}
+                                >
+                                  EDIT
+                                </button>
+                              </Link>
+                            )}
+                            {keyData[0].deleteProducts && (
+                              <button
+                                className={`${shopBlock.deleteButton} ${keyData[0].addAndUpdateProducts ? `w-1/2 rounded-r-lg`:`w-full rounded-lg`}`}
+                                onClick={() => {
+                                  setDeletingProductId(product._id);
+                                }}
+                              >
+                                DELETE
                               </button>
-                            </Link>
-                            <button
-                              className={`${shopBlock.deleteButton} w-1/2 rounded-r-lg`}
-                              onClick={() => {
-                                setDeletingProductId(product._id);
-                              }}
-                            >
-                              DELETE
-                            </button>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -210,8 +225,14 @@ AdminProductList.getInitialProps = async ({ query: { key, locale } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/${key}`);
   const res = await fetch(`http://localhost:3000/api/products/${locale}`);
   const { data } = await res.json();
-  const { success } = await keyRes.json();
-  return { Akey: key, isKeyValid: success, products: data, locale: locale };
+  const { success, keyData } = await keyRes.json();
+  return {
+    Akey: key,
+    isKeyValid: success,
+    keyData: keyData,
+    products: data,
+    locale: locale,
+  };
 };
 
 export default AdminProductList;

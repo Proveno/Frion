@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import formStyle from "../../../../../styles/requestForm.module.css";
 
-const NewProduct = ({Akey, isKeyValid, allCategories,locale }) => {
+const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",
@@ -79,7 +79,8 @@ const NewProduct = ({Akey, isKeyValid, allCategories,locale }) => {
 
   return (
     <div>
-      {isKeyValid ? (
+      {isKeyValid &&
+      (keyData[0].addAndUpdateProducts || keyData[0].deleteProducts) ? (
         <div className="flex mt-10 justify-center px-10">
           <div
             className={`bg-gray-300 border-none rounded-3xl self-start w-3/5 px-14`}
@@ -194,7 +195,7 @@ NewProduct.getInitialProps = async ({ query: { key, locale } }) => {
   );
 
   const { dataCategories } = await categories.json();
-  const { success } = await keyRes.json();
-  return { Akey: key,isKeyValid: success, allCategories: dataCategories, locale: locale };
+  const { success, keyData } = await keyRes.json();
+  return { Akey: key,isKeyValid: success, keyData: keyData, allCategories: dataCategories, locale: locale };
 };
 export default NewProduct;

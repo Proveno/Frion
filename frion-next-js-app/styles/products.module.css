@@ -11,10 +11,12 @@
 .deleteButton{
     background-color: #e63e32;
     color: #EDEDED;
+    border: #e63e32 5px solid;
 }
 .deleteButton:hover{
     background-color: #EDEDED;
     color: #e63e32;
+    border: #EDEDED 5px solid;
 }
 .shopItems{
     background-color: white;
