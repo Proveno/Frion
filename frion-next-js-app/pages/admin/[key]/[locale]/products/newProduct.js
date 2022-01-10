@@ -30,7 +30,6 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
   }, [errors]);
 
   const createProduct = async () => {
-    console.log(form);
     try {
       const res = await fetch("http://localhost:3000/api/products/", {
         method: "POST",
@@ -40,10 +39,9 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
         },
         body: JSON.stringify(form),
       });
-      console.log("RES",res);
       router.push(`/admin/${Akey}/${locale}/products/`);
     } catch (error) {
-      console.log("HERE",console.error());
+      console.log(console.error());
     }
   };
   const handleSubmit = (e) => {

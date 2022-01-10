@@ -4,11 +4,12 @@ import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import formStyle from "../../../../../styles/requestForm.module.css";
+import cartBlock from "../../../../../styles/cartState.module.css";
 
-const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
+const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
   const router = useRouter();
   const [form, setForm] = useState({
-      key: "",
+    key: "",
     owner: "",
     addAndUpdateKeys: false,
     deleteKeys: false,
@@ -21,16 +22,15 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
     healingReq: false,
     deletingHealingReq: false,
     addPlaces: false,
-    deletePlaces: false
+    deletePlaces: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-
+  const [generatedKey, setGeneratedKey] = useState("");
 
   useEffect(() => {
     if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
-          console.log(form);
         createKey();
       } else {
         setIsSubmitting(false);
@@ -49,10 +49,9 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
         body: JSON.stringify(form),
       });
       const { data } = await res.json();
-      console.log("RES", data);
-      router.push(`/admin/${Akey}/${locale}/keys/`);
-    } catch (error) {
-    }
+      setGeneratedKey(data);
+      //router.push(`/admin/${Akey}/${locale}/keys/`);
+    } catch (error) {}
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,7 +63,7 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
 
   const validate = () => {
     let err = {};
-    
+
     // TODO: length
     return err;
   };
@@ -72,7 +71,7 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
   return (
     <div>
       {isKeyValid &&
-      (keyData[0].addAndUpdateProducts || keyData[0].deleteProducts) ? (
+      (keyData[0].addAndUpdateProducts) ? (
         <div className="flex mt-10 justify-center px-10">
           <div
             className={`bg-gray-300 border-none rounded-3xl self-start w-3/5 px-14`}
@@ -89,7 +88,8 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       owner: e.target.value,
                     });
-                  }}                  type="text"
+                  }}
+                  type="text"
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                   placeholder={`Enter title ...`}
                 />
@@ -112,7 +112,7 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can delete keys:
+                  Can delete keys:
                 </span>
                 <input
                   name="deleteKeys"
@@ -121,13 +121,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       deleteKeys: !form.deleteKeys,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can add and update products:
+                  Can add and update products:
                 </span>
                 <input
                   name="addAndUpdateProducts"
@@ -136,13 +137,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       addAndUpdateProducts: !form.addAndUpdateProducts,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can delete products:
+                  Can delete products:
                 </span>
                 <input
                   name="deleteProducts"
@@ -151,13 +153,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       deleteProducts: !form.deleteProducts,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can add and update taking requests:
+                  Can add and update taking requests:
                 </span>
                 <input
                   name="takingReq"
@@ -166,13 +169,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       takingReq: !form.takingReq,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can delete taking requests:
+                  Can delete taking requests:
                 </span>
                 <input
                   name="deletingTakingReq"
@@ -181,13 +185,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       deletingTakingReq: !form.deletingTakingReq,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can add and update giving requests:
+                  Can add and update giving requests:
                 </span>
                 <input
                   name="givingReq"
@@ -196,13 +201,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       givingReq: !form.givingReq,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can delete giving requests:
+                  Can delete giving requests:
                 </span>
                 <input
                   name="deletingGivingReq"
@@ -211,13 +217,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       deletingGivingReq: !form.deletingGivingReq,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can add and update healing requests:
+                  Can add and update healing requests:
                 </span>
                 <input
                   name="healingReq"
@@ -226,13 +233,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       healingReq: !form.healingReq,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can delete healing requests:
+                  Can delete healing requests:
                 </span>
                 <input
                   name="deletingHealingReq"
@@ -241,13 +249,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       deletingHealingReq: !form.deletingHealingReq,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can add and update place information:
+                  Can add and update place information:
                 </span>
                 <input
                   name="addPlaces"
@@ -256,13 +265,14 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       addPlaces: !form.addPlaces,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can delete place information:
+                  Can delete place information:
                 </span>
                 <input
                   name="deletePlaces"
@@ -271,11 +281,11 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
                       ...form,
                       deletePlaces: !form.deletePlaces,
                     });
-                  }}                  type="checkbox"
+                  }}
+                  type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
                 />
               </div>
-
 
               <div className="justify-center flex w-full">
                 <button
@@ -287,6 +297,32 @@ const NewKey = ({Akey, isKeyValid, keyData, locale }) => {
               </div>
             </form>
           </div>
+          {generatedKey && (
+            <div
+              className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
+            >
+              <div
+                className={`bg-gray-300 border-none rounded-3xl self-start w-3/5 px-14 py-7`}
+              >
+                {/* <form className="my-7"> */}
+                <label className="block my-3">
+                  <span className="block text-sm font-medium text-gray-700">
+                      Generated admin key:
+                  </span>
+                  <div>
+                  {generatedKey}
+                  </div>
+                </label>
+                <div className="justify-center flex w-full">
+                    <Link href={`/admin/${Akey}/${locale}/keys/`}>
+                    <button
+                  className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}>OK</button>
+                    </Link>
+                </div>
+                {/* </form> */}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex justify-center">
@@ -301,6 +337,6 @@ NewKey.getInitialProps = async ({ query: { key, locale } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
 
   const { success, keyData } = await keyRes.json();
-  return { Akey: key,isKeyValid: success, keyData: keyData, locale: locale };
+  return { Akey: key, isKeyValid: success, keyData: keyData, locale: locale };
 };
 export default NewKey;

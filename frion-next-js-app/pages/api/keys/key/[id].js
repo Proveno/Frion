@@ -21,7 +21,10 @@ export default async (req, res) => {
       break;
     case "PUT":
       try {
-        const key = await Key.findById(id);
+        const key = await Key.findByIdAndUpdate(id, req.body, {
+          new: true,
+          runValidators: true
+      });
 
         if (!key) {
           return res.status(400).json({ success: false });

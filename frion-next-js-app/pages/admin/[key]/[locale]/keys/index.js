@@ -123,13 +123,13 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale }) => {
         </div>
       </div>
       {isKeyValid &&
-      (keyData[0].addAndUpdateProducts || keyData[0].deleteProducts) ? (
+      (keyData[0].addAndUpdateKeys || keyData[0].deleteKeys) ? (
         <div>
           <div
             className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
           >
             <div className={`grid auto-rows-max grid-cols-4`}>
-              {keyData[0].addAndUpdateProducts && (
+              {keyData[0].addAndUpdateKeys && (
                 <div
                   className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                 >
@@ -143,7 +143,7 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale }) => {
                     ></Image>
                   </Link>
                   <span className="block text-sm text-lg text-gray-700 my-2">
-                    Add new product
+                    Add new key
                   </span>
                   <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                     <Link href={`/admin/${Akey}/${locale}/keys/newKey`}>

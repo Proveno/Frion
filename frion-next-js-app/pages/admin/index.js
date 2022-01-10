@@ -14,7 +14,6 @@ const adminLogin = () => {
 
   useEffect(() => {
     if (isSubmitting) {
-      console.log("Start");
       if (key) {
         setError(false);
         checkKey();
