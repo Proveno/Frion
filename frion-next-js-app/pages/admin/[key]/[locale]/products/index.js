@@ -19,9 +19,6 @@ import dataIcon from "../../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
 const AdminProductList = ({ Akey, isKeyValid, keyData, products, locale }) => {
   const router = useRouter();
-  function getSelectedLang() {
-    return document.getElementById("LanguageSelect").value;
-  }
   function getLang(selectedLocale) {
     switch (selectedLocale) {
       case "en":
@@ -62,7 +59,7 @@ const AdminProductList = ({ Akey, isKeyValid, keyData, products, locale }) => {
         className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
       >
         {/* Logo/Home */}
-        <Link href={`/admin/${Akey}/`}>
+        <Link href={`/admin/${Akey}/${locale}`}>
           <div className={`flex`}>
             <div className={`${navBar.imageLogo}`}>
               <Image src={MenuIcon} alt="Logo picture :>" />

@@ -1,5 +1,5 @@
 import dbConnect from "../../../utils/dbConnect";
-import Product from "../../../models/Product";
+import Key from "../../../models/Key";
 
 dbConnect();
 
@@ -19,7 +19,6 @@ export default async (req, res) => {
                 const regex = new RegExp(escapeRegex(search), 'gi');
 
                 const keys = await Key.find({ owner: regex});
-
                 if (!keys.length>0) {
                     return res.status(404).json({ success: false });
                 }

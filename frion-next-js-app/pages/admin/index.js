@@ -31,7 +31,7 @@ const adminLogin = () => {
       });
       const { success } = await res.json();
       if(success){
-        router.push(`/admin/${key}`);
+        router.push(`/admin/${key}/${router.locale}`);
       }
     } catch (error) {
       console.log(error);

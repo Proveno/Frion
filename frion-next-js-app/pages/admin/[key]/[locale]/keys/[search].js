@@ -11,18 +11,14 @@ import Image from "next/image";
 
 import navBar from "../../../../../styles/navBar.module.css";
 import MenuIcon from "../../../../../assets/logo.png";
+
 import shopBlock from "../../../../../styles/products.module.css";
 import cartIcon from "../../../../../assets/Icons/Tilda_Icons_3st_cart.png";
+import manIcon from "../../../../../assets/Icons/Tilda_Icons_3st_man.svg"
+import magnifierIcon from "../../../../../assets/Icons/Tilda_Icons_2web_magnifier.png";
 import dataIcon from "../../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
-const ProductSearch = ({
-  Akey,
-  isKeyValid,
-  keyData,
-  products,
-  searchText,
-  locale,
-}) => {
+const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale, searchText }) => {
   const router = useRouter();
   function getLang(selectedLocale) {
     switch (selectedLocale) {
@@ -36,27 +32,28 @@ const ProductSearch = ({
         return uk;
     }
   }
-  const [t, setT] = useState(getLang(router.locale));
+  const [t, setT] = useState(getLang('en'));
 
-  const [search, setSearch] = useState({ searchRequest: searchText });
+  const [search, setSearch] = useState({ searchRequest: "" });
   const handleChange = (e) => {
     setSearch({
       ...search,
       [e.target.name]: e.target.value,
     });
   };
-  const [deletingProductId, setDeletingProductId] = useState();
+  const [deletingKeyId, setDeletingKeyId] = useState();
   useEffect(async () => {
-    if (deletingProductId) {
+    if (deletingKeyId) {
       const deleted = await fetch(
-        `http://localhost:3000/api/products/product/${deletingProductId}`,
+        `http://localhost:3000/api/keys/key/${deletingKeyId}`,
         {
           method: "Delete",
         }
       );
-      router.push(`/admin/${Akey}/${locale}/products/${searchText}`);
+      router.push(`/admin/${Akey}/${locale}/keys`);
     }
-  }, [deletingProductId]);
+  }, [deletingKeyId]);
+
   return (
     <div>
       <div
@@ -83,11 +80,11 @@ const ProductSearch = ({
                 onChange={handleChange}
                 name="searchRequest"
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
+                placeholder="Enter owner..."
                 defaultValue={searchText}
-                placeholder="Enter title..."
               ></input>
               <Link
-                href={`/admin/${Akey}/${locale}/products/${search.searchRequest}`}
+                href={`/admin/${Akey}/${locale}/keys/${search.searchRequest}`}
               >
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
@@ -109,7 +106,7 @@ const ProductSearch = ({
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/products/${searchText}`
+                    }/keys/${searchText}`
                   );
                 }}
                 defaultValue={locale}
@@ -124,17 +121,17 @@ const ProductSearch = ({
         </div>
       </div>
       {isKeyValid &&
-      (keyData[0].addAndUpdateProducts || keyData[0].deleteProducts) ? (
+      (keyData[0].addAndUpdateKeys || keyData[0].deleteKeys) ? (
         <div>
           <div
             className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
           >
             <div className={`grid auto-rows-max grid-cols-4`}>
-              {keyData[0].addAndUpdateProducts && (
+              {keyData[0].addAndUpdateKeys && (
                 <div
                   className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                 >
-                  <Link href={`/admin/${Akey}/${locale}/products/newProduct`}>
+                  <Link href={`/admin/${Akey}/${locale}/keys/newKey`}>
                     <Image
                       width={500}
                       height={500}
@@ -144,10 +141,10 @@ const ProductSearch = ({
                     ></Image>
                   </Link>
                   <span className="block text-sm text-lg text-gray-700 my-2">
-                    Add new product
+                    Add new key
                   </span>
                   <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                    <Link href={`/admin/${Akey}/${locale}/products/newProduct`}>
+                    <Link href={`/admin/${Akey}/${locale}/keys/newKey`}>
                       <button
                         className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
                       >
@@ -157,53 +154,45 @@ const ProductSearch = ({
                   </div>
                 </div>
               )}
-              {products ? (
+              {keys ? (
                 <>
-                  {products.map((product) => {
+                  {keys.map((key) => {
                     return (
                       <div
                         className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                       >
                         <Link
-                          href={`/admin/${Akey}/${locale}/products/edit/${product._id}`}
+                          href={`/admin/${Akey}/${locale}/keys/edit/${key._id}`}
                         >
                           <Image
                             width={500}
                             height={500}
                             className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                            src={product.photo}
+                            src={manIcon}
                             alt="Product picture"
                           ></Image>
                         </Link>
                         <span className="block text-sm text-lg text-gray-700 my-2">
-                          {product.title}
+                          {key.owner}
                         </span>
                         <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                           <div className="w-full py-1 flex">
-                            {keyData[0].addAndUpdateProducts && (
+                            {keyData[0].addAndUpdateKeys && (
                               <Link
-                                href={`/admin/${Akey}/${locale}/products/edit/${product._id}`}
+                                href={`/admin/${Akey}/${locale}/keys/edit/${key._id}`}
                               >
                                 <button
-                                  className={`${shopBlock.shopBuyButton} ${
-                                    keyData[0].deleteProducts
-                                      ? `w-1/2 rounded-l-lg`
-                                      : `w-full rounded-lg`
-                                  }`}
+                                  className={`${shopBlock.shopBuyButton} ${keyData[0].deleteKeys ? `w-1/2 rounded-l-lg`:`w-full rounded-lg`}`}
                                 >
                                   EDIT
                                 </button>
                               </Link>
                             )}
-                            {keyData[0].deleteProducts && (
+                            {keyData[0].deleteKeys && (
                               <button
-                                className={`${shopBlock.deleteButton} ${
-                                  keyData[0].addAndUpdateProducts
-                                    ? `w-1/2 rounded-r-lg`
-                                    : `w-full rounded-lg`
-                                }`}
+                                className={`${shopBlock.deleteButton} ${keyData[0].addAndUpdateKeys ? `w-1/2 rounded-r-lg`:`w-full rounded-lg`}`}
                                 onClick={() => {
-                                  setDeletingProductId(product._id);
+                                  setDeletingKeyId(key._id);
                                 }}
                               >
                                 DELETE
@@ -231,21 +220,19 @@ const ProductSearch = ({
   );
 };
 
-ProductSearch.getInitialProps = async ({ query: { key, locale, search } }) => {
+AdminKeyList.getInitialProps = async ({ query: { key, locale, search } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const res = await fetch(
-    `http://localhost:3000/api/products/${locale}/${search}`
-  );
-  const { data } = await res.json();
+  const keys = await fetch(`http://localhost:3000/api/keys/${search}`);
   const { success, keyData } = await keyRes.json();
+  const { keysData } = await keys.json();
   return {
     Akey: key,
     isKeyValid: success,
     keyData: keyData,
-    products: data,
+    keys: keysData,
     searchText: search,
-    locale: locale,
+    locale: locale
   };
 };
 
-export default ProductSearch;
+export default AdminKeyList;

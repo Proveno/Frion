@@ -20,9 +20,7 @@ import dataIcon from "../../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
 const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale }) => {
   const router = useRouter();
-  function getSelectedLang() {
-    return document.getElementById("LanguageSelect").value;
-  }
+
   function getLang(selectedLocale) {
     switch (selectedLocale) {
       case "en":
@@ -63,7 +61,7 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale }) => {
         className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
       >
         {/* Logo/Home */}
-        <Link href={`/`}>
+        <Link href={`/admin/${Akey}/${locale}`}>
           <div className={`flex`}>
             <div className={`${navBar.imageLogo}`}>
               <Image src={MenuIcon} alt="Logo picture :>" />
@@ -83,7 +81,7 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale }) => {
                 onChange={handleChange}
                 name="searchRequest"
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
-                placeholder="Enter title..."
+                placeholder="Enter owner..."
               ></input>
               <Link
                 href={`/admin/${Akey}/${locale}/keys/${search.searchRequest}`}
@@ -222,7 +220,7 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale }) => {
   );
 };
 
-AdminKeyList.getInitialProps = async ({ query: { key } }) => {
+AdminKeyList.getInitialProps = async ({ query: { key, locale } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
   const keys = await fetch(`http://localhost:3000/api/keys/`);
   const { success, keyData } = await keyRes.json();
@@ -231,7 +229,8 @@ AdminKeyList.getInitialProps = async ({ query: { key } }) => {
     Akey: key,
     isKeyValid: success,
     keyData: keyData,
-    keys: keysData
+    keys: keysData,
+    locale: locale
   };
 };
 

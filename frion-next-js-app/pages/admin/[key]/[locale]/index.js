@@ -1,28 +1,25 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { en } from "../../../locales/en";
-import { ru } from "../../../locales/ru";
-import { uk } from "../../../locales/uk";
-import { de } from "../../../locales/de";
+import { en } from "../../../../locales/en";
+import { ru } from "../../../../locales/ru";
+import { uk } from "../../../../locales/uk";
+import { de } from "../../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
 import Image from "next/image";
 
-import navBar from "../../../styles/navBar.module.css";
-import MenuIcon from "../../../assets/logo.png";
+import navBar from "../../../../styles/navBar.module.css";
+import MenuIcon from "../../../../assets/logo.png";
 
-import adminMenu from "../../../styles/adminMenu.module.css";
-import shopBlock from "../../../styles/products.module.css";
-import cartIcon from "../../../assets/Icons/Tilda_Icons_3st_cart.png";
-import magnifierIcon from "../../../assets/Icons/Tilda_Icons_2web_magnifier.png";
-import dataIcon from "../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
+import adminMenu from "../../../../styles/adminMenu.module.css";
+import shopBlock from "../../../../styles/products.module.css";
+import cartIcon from "../../../../assets/Icons/Tilda_Icons_3st_cart.png";
+import magnifierIcon from "../../../../assets/Icons/Tilda_Icons_2web_magnifier.png";
+import dataIcon from "../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
-const AdminList = ({ Akey, isKeyValid, keyData }) => {
+const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
   const router = useRouter();
-  function getSelectedLang() {
-    return document.getElementById("LanguageSelect").value;
-  }
   function getLang(selectedLocale) {
     switch (selectedLocale) {
       case "en":
@@ -35,7 +32,7 @@ const AdminList = ({ Akey, isKeyValid, keyData }) => {
         return uk;
     }
   }
-  const [t, setT] = useState(getLang(router.locale));
+  const [t, setT] = useState(getLang(locale));
 
   return (
     <div>
@@ -43,7 +40,7 @@ const AdminList = ({ Akey, isKeyValid, keyData }) => {
         className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
       >
         {/* Logo/Home */}
-        <Link href={`/`}>
+        <Link href={`/admin/${Akey}`}>
           <div className={`flex`}>
             <div className={`${navBar.imageLogo}`}>
               <Image src={MenuIcon} alt="Logo picture :>" />
@@ -64,7 +61,13 @@ const AdminList = ({ Akey, isKeyValid, keyData }) => {
                 id="LanguageSelect"
                 onChange={(e) => {
                   setT(getLang(e.target.value));
+                  router.push(
+                    `/admin/${Akey}/${
+                      document.getElementById("LanguageSelect").value
+                    }`
+                  );
                 }}
+                defaultValue={locale}
               >
                 <option value="en">{t.english}</option>
                 <option value="ru">{t.russian}</option>
@@ -84,7 +87,7 @@ const AdminList = ({ Akey, isKeyValid, keyData }) => {
               className={`grid auto-rows-max grid-cols-4 justify-between w-full`}
             >
               {(keyData[0].addAndUpdateKeys || keyData[0].deleteKeys) && (
-                <Link href={`/admin/${Akey}/${router.locale}/keys/`}>
+                <Link href={`/admin/${Akey}/${locale}/keys/`}>
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
@@ -94,7 +97,7 @@ const AdminList = ({ Akey, isKeyValid, keyData }) => {
               )}
               {(keyData[0].addAndUpdateProducts ||
                 keyData[0].deleteProducts) && (
-                <Link href={`/admin/${Akey}/${router.locale}/products/`}>
+                <Link href={`/admin/${Akey}/${locale}/products/`}>
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
                   >
@@ -146,7 +149,7 @@ const AdminList = ({ Akey, isKeyValid, keyData }) => {
 AdminList.getInitialProps = async ({ query: { key, locale } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
   const { success, keyData } = await keyRes.json();
-  return { Akey: key, isKeyValid: success, keyData: keyData };
+  return { Akey: key, isKeyValid: success, keyData: keyData,locale: locale };
 };
 
 export default AdminList;
