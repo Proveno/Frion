@@ -157,6 +157,7 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale }) => {
               {keys ? (
                 <>
                   {keys.map((key) => {
+                    if(key._id != keyData[0]._id){
                     return (
                       <div
                         className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
@@ -201,7 +202,7 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale }) => {
                           </div>
                         </div>
                       </div>
-                    );
+                    );}
                   })}
                 </>
               ) : (

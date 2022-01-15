@@ -1,0 +1,22 @@
+.requestItems{
+    background-color: white;
+    width: 200px;
+    border: solid #999 1px;
+}
+.searchInput{
+    color: #19101d;
+}
+.searchButton{
+    background-color: white;
+    color: #19101d;
+}
+.shopBuyButton{
+    background-color: #19101d;
+    color: #EDEDED;
+    border: #19101d 5px solid;
+}
+.deleteButton{
+    background-color: #e63e32;
+    color: #EDEDED;
+    border: #e63e32 5px solid;
+}

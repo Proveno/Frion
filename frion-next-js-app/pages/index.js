@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useRouter } from "next/router";
 import { en } from "../locales/en";
@@ -71,6 +71,100 @@ export default function Home() {
   const [isCartOpened, setIsCartOpened] = useState(false);
   const [ShouldShowCart, setShouldShowCart] = useState(0);
 
+  const [form, setForm] = useState({
+    name: "",
+    surname: "",
+    phone: "",
+    email: "",
+    category: "",
+    requestLocale: router.locale,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [type, setType] = useState();
+
+  useEffect(() => {
+    if (isSubmitting) {
+      if (Object.keys(errors).length === 0) {
+        
+        console.log(form);
+        createRequest();
+      } else {
+        setIsSubmitting(false);
+      }
+    }
+  }, [errors]);
+  const [categories, setCategories] = useState();
+  const getCategories = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/categories/${
+          document.getElementById("LanguageSelect").value
+        }`,
+        {
+          method: "GET",
+        }
+      );
+      const { dataCategories } = await res.json();
+      setCategories(dataCategories);
+    } catch (error) {
+      console.log(console.error());
+    }
+  };
+  if (!categories) {
+    getCategories();
+  }
+
+  const createRequest = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/${type}/`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+      router.reload(`/${router.locale}/`);
+    } catch (error) {
+      console.log(console.error());
+    }
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let errs = validate();
+    console.log(errs);
+    setErrors(errs);
+    setIsSubmitting(true);
+  };
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const validate = () => {
+    let err = {};
+    if (!form.name) {
+      err.name = "Description is required";
+    }
+    if (!form.surname) {
+      err.surname = "Description is required";
+    }
+    if (!form.phone) {
+      err.phone = "Description is required";
+    }
+    if (!form.email) {
+      err.email = "Description is required";
+    }
+    if (!form.category) {
+      err.category = "Description is required";
+    }
+
+    // TODO: length
+    return err;
+  };
+
   return (
     <div>
       {/* NavBar */}
@@ -126,7 +220,7 @@ export default function Home() {
                 id="LanguageSelect"
                 onChange={() => {
                   router.push(
-                    `${document.getElementById("LanguageSelect").value}`
+                    `/${document.getElementById("LanguageSelect").value}/`
                   );
                 }}
                 defaultValue={router.locale}
@@ -143,70 +237,6 @@ export default function Home() {
           </div>
         </div>
       )}
-      {/* feedBack chat */}
-      {ShouldShowChat && (
-        <div
-          className={`${feedBack.textPlace} fixed bottom-36 w-64 h-96 right-12 rounded-t-3xl rounded-b-lg`}
-        >
-          <div className={`${feedBack.messagesPlace} pt-1 px-1`}>
-            <div className="text-center text-sm font-bold text-gray-700">
-              {t.feedBackLabel}
-            </div>
-
-            <div className="flex justify-start my-2">
-              <div className={`${feedBack.icon} rounded-full p-1`}>
-                <Image src={feedbackIcon}></Image>
-              </div>
-              <div className="w-full px-2 bg-white mx-2 rounded-lg text-sm">
-                it is a long established fact that a reader will be distracted
-                by the readable content.
-              </div>
-            </div>
-            <div className="flex justify-end my-2">
-              <div className="w-full px-2 bg-white mx-2 rounded-lg text-sm">
-                Many desktop publishing packages and web page editors
-              </div>
-              <div className={`${feedBack.icon} rounded-full p-1`}>
-                <Image src={feedbackClientIcon}></Image>
-              </div>
-            </div>
-
-            <div className="flex justify-start my-2">
-              <div className={`${feedBack.icon} rounded-full p-1`}>
-                <Image src={feedbackIcon}></Image>
-              </div>
-              <div className="w-full px-2 bg-white mx-2 rounded-lg text-sm">
-                is simply dummy text of the printing and typesetting industry.
-                Lorem Ipsum has been the industry's standard dummy text ever
-                since the 1500s
-              </div>
-            </div>
-          </div>
-          <div className="flex self-end">
-            <input
-              type="text"
-              required
-              className="my-auto ml-1 block w-5/6 px-3 py-2 bg-white rounded-l-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-              placeholder={`${t.feedBackLabelPlaceholder}`}
-            />
-            <div className={`${feedBack.sendMessage} my-auto p-1 rounded-r-lg`}>
-              <Image src={telegramIcon}></Image>
-            </div>
-          </div>
-        </div>
-      )}
-      <div
-        className={`${feedBack.feedButton} fixed bottom-12 mb-12 right-12 ${ShouldShowChat ? `p-3` : `p-2`
-          } rounded-full`}
-        onClick={() => {
-          setShouldShowChat(!ShouldShowChat);
-        }}
-      >
-        <Image
-          src={ShouldShowChat ? crossIcon : feedbackIcon}
-          alt="FeedBackIcon"
-        ></Image>
-      </div>
 
       {isCartOpened && (
         <div
@@ -406,12 +436,14 @@ export default function Home() {
             <div
               className={`${formBlock.form} border-none rounded-3xl self-start w-3/5 px-14`}
             >
-              <form className="my-7">
+              <form className="my-7" onSubmit={handleSubmit}>
                 <label className="block my-3">
                   <span className="block text-sm font-medium text-gray-700">
                     {t.firstNameLabel}
                   </span>
                   <input
+                    name="name"
+                    onChange={handleChange}
                     type="text"
                     required
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
@@ -423,6 +455,8 @@ export default function Home() {
                     {t.secondNameLabel}
                   </span>
                   <input
+                    name="surname"
+                    onChange={handleChange}
                     type="text"
                     required
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
@@ -434,6 +468,8 @@ export default function Home() {
                     {t.phoneNumberLabel}
                   </span>
                   <input
+                    name="phone"
+                    onChange={handleChange}
                     type="text"
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                     placeholder={`${t.phoneNumberLabelPlaceholder}`}
@@ -445,6 +481,7 @@ export default function Home() {
                     {t.emailLabel}
                   </span>
                   <input
+                    onChange={handleChange}
                     type="email"
                     name="email"
                     id="email"
@@ -461,12 +498,15 @@ export default function Home() {
                     {t.petType}
                   </span>
                   <select
+                    name="category"
+                    onChange={handleChange}
                     className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
                     required
                   >
-                    <option>{t.catType}</option>
-                    <option>{t.dogType}</option>
-                    <option>{t.fishType}</option>
+                    {categories &&
+                      categories.map((category) => {
+                        return <option>{category.category}</option>;
+                      })}
                   </select>
                 </label>
 
@@ -478,6 +518,10 @@ export default function Home() {
                       name="feedback"
                       className="default:ring-2 ml-2"
                       required
+                      value="taking"
+                      onClick={()=>{
+                        setType("taking");
+                      }}
                     />
                   </div>
 
@@ -487,6 +531,10 @@ export default function Home() {
                       type="radio"
                       name="feedback"
                       className="default:ring-2 ml-2"
+                      value="giving"
+                      onClick={()=>{
+                        setType("giving");
+                      }}
                     />
                   </div>
                   <div className="w-1/3 block text-sm text-center font-medium text-gray-700">
@@ -495,6 +543,10 @@ export default function Home() {
                       type="radio"
                       name="feedback"
                       className="default:ring-2 ml-2"
+                      value="healing"
+                      onClick={()=>{
+                        setType("healing");
+                      }}
                     />
                   </div>
                 </label>

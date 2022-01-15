@@ -107,11 +107,13 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
               )}
 
               {(keyData[0].takingReq || keyData[0].deletingTakingReq) && (
+                <Link href={`/admin/${Akey}/${locale}/taking/`}>
                 <div
                   className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                 >
                   <button className="">Taking requests</button>
                 </div>
+                </Link>
               )}
               {(keyData[0].givingReq || keyData[0].deletingGivingReq) && (
                 <div

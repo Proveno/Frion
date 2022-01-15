@@ -14,11 +14,18 @@ import MenuIcon from "../../../../../assets/logo.png";
 
 import shopBlock from "../../../../../styles/products.module.css";
 import cartIcon from "../../../../../assets/Icons/Tilda_Icons_3st_cart.png";
-import manIcon from "../../../../../assets/Icons/Tilda_Icons_3st_man.svg"
+import manIcon from "../../../../../assets/Icons/Tilda_Icons_3st_man.svg";
 import magnifierIcon from "../../../../../assets/Icons/Tilda_Icons_2web_magnifier.png";
 import dataIcon from "../../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
-const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale, searchText }) => {
+const AdminKeyList = ({
+  Akey,
+  isKeyValid,
+  keyData,
+  keys,
+  locale,
+  searchText,
+}) => {
   const router = useRouter();
   function getLang(selectedLocale) {
     switch (selectedLocale) {
@@ -32,7 +39,7 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale, searchText }) =
         return uk;
     }
   }
-  const [t, setT] = useState(getLang('en'));
+  const [t, setT] = useState(getLang("en"));
 
   const [search, setSearch] = useState({ searchRequest: "" });
   const handleChange = (e) => {
@@ -120,8 +127,7 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale, searchText }) =
           </div>
         </div>
       </div>
-      {isKeyValid &&
-      (keyData[0].addAndUpdateKeys || keyData[0].deleteKeys) ? (
+      {isKeyValid && (keyData[0].addAndUpdateKeys || keyData[0].deleteKeys) ? (
         <div>
           <div
             className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
@@ -157,51 +163,61 @@ const AdminKeyList = ({ Akey, isKeyValid, keyData, keys, locale, searchText }) =
               {keys ? (
                 <>
                   {keys.map((key) => {
-                    return (
-                      <div
-                        className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-                      >
-                        <Link
-                          href={`/admin/${Akey}/${locale}/keys/edit/${key._id}`}
+                    if (key._id != keyData[0]._id) {
+                      return (
+                        <div
+                          className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                         >
-                          <Image
-                            width={500}
-                            height={500}
-                            className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                            src={manIcon}
-                            alt="Product picture"
-                          ></Image>
-                        </Link>
-                        <span className="block text-sm text-lg text-gray-700 my-2">
-                          {key.owner}
-                        </span>
-                        <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                          <div className="w-full py-1 flex">
-                            {keyData[0].addAndUpdateKeys && (
-                              <Link
-                                href={`/admin/${Akey}/${locale}/keys/edit/${key._id}`}
-                              >
-                                <button
-                                  className={`${shopBlock.shopBuyButton} ${keyData[0].deleteKeys ? `w-1/2 rounded-l-lg`:`w-full rounded-lg`}`}
+                          <Link
+                            href={`/admin/${Akey}/${locale}/keys/edit/${key._id}`}
+                          >
+                            <Image
+                              width={500}
+                              height={500}
+                              className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                              src={manIcon}
+                              alt="Product picture"
+                            ></Image>
+                          </Link>
+                          <span className="block text-sm text-lg text-gray-700 my-2">
+                            {key.owner}
+                          </span>
+                          <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                            <div className="w-full py-1 flex">
+                              {keyData[0].addAndUpdateKeys && (
+                                <Link
+                                  href={`/admin/${Akey}/${locale}/keys/edit/${key._id}`}
                                 >
-                                  EDIT
+                                  <button
+                                    className={`${shopBlock.shopBuyButton} ${
+                                      keyData[0].deleteKeys
+                                        ? `w-1/2 rounded-l-lg`
+                                        : `w-full rounded-lg`
+                                    }`}
+                                  >
+                                    EDIT
+                                  </button>
+                                </Link>
+                              )}
+                              {keyData[0].deleteKeys && (
+                                <button
+                                  className={`${shopBlock.deleteButton} ${
+                                    keyData[0].addAndUpdateKeys
+                                      ? `w-1/2 rounded-r-lg`
+                                      : `w-full rounded-lg`
+                                  }`}
+                                  onClick={() => {
+                                    setDeletingKeyId(key._id);
+                                  }}
+                                >
+                                  DELETE
                                 </button>
-                              </Link>
-                            )}
-                            {keyData[0].deleteKeys && (
-                              <button
-                                className={`${shopBlock.deleteButton} ${keyData[0].addAndUpdateKeys ? `w-1/2 rounded-r-lg`:`w-full rounded-lg`}`}
-                                onClick={() => {
-                                  setDeletingKeyId(key._id);
-                                }}
-                              >
-                                DELETE
-                              </button>
-                            )}
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
+                      );
+                    }
                   })}
                 </>
               ) : (
@@ -231,7 +247,7 @@ AdminKeyList.getInitialProps = async ({ query: { key, locale, search } }) => {
     keyData: keyData,
     keys: keysData,
     searchText: search,
-    locale: locale
+    locale: locale,
   };
 };
 
