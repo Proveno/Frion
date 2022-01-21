@@ -37,35 +37,35 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
       [e.target.name]: e.target.value,
     });
   };
-  const [archivingTakingId, setArchivingTakingId] = useState();
   const [deletingTakingId, setDeletingTakingId] = useState();
+  const [acceptingTakingId, setAcceptingTakingId] = useState();
   useEffect(async () => {
-    if (archivingTakingId) {
-      const archived = await fetch(
-        `http://localhost:3000/api/taking/request/${archivingTakingId}`,
+    if (deletingTakingId) {
+      const deleted = await fetch(
+        `http://localhost:3000/api/taking/request/${deletingTakingId}`,
+        {
+          method: "DELETE"
+        }
+      );
+      router.push(`/admin/${Akey}/${locale}/taking/`);
+    }
+  }, [deletingTakingId]);
+  useEffect(async () => {
+    if (acceptingTakingId) {
+      const accepted = await fetch(
+        `http://localhost:3000/api/taking/request/${acceptingTakingId}`,
         {
           method: "PUT",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({archivedAt: new Date()}),
+          body: JSON.stringify({accepted: true}),
         }
       );
       router.push(`/admin/${Akey}/${locale}/taking/`);
     }
-  }, [archivingTakingId]);
-  useEffect(async () => {
-    if (deletingTakingId) {
-      const archived = await fetch(
-        `http://localhost:3000/api/taking/request/${deletingTakingId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      router.push(`/admin/${Akey}/${locale}/taking/`);
-    }
-  }, [deletingTakingId]);
+  }, [acceptingTakingId]);
 
   return (
     <div>
@@ -142,52 +142,44 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
               {requests ? (
                 <>
                   {requests.map((request) => {
-                      if(true){
+                      if(!request.accepted && request.archivedAt == undefined){
                         return (
                             <div
-                              className={`${requestStyle.requestItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-                              onClick={()=>{
-                                  router.push(`/admin/${Akey}/${
-                                    document.getElementById("LanguageSelect").value
-                                  }/taking/request/${request._id}`)
-                              }}
+                              className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+                              // onClick={()=>{
+                              //     router.push(`/admin/${Akey}/${
+                              //       document.getElementById("LanguageSelect").value
+                              //     }/taking/request/${request._id}`)
+                              // }}
                             > 
-                              <span className="block text-sm text-lg text-gray-700 my-2">
+                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
                                 {request.phone}
                               </span>
-                              <span className="block text-sm text-lg text-gray-700 my-2">
+                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
                                 {request.email}
+                              </span>
+                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
+                                {request.createdAt}
                               </span>
                               <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                                 <div className="w-full py-1 flex">
-                                  {keyData[0].takingReq && (
                                       <button
-                                        className={`${requestStyle.shopBuyButton} ${
-                                          keyData[0].deleteProducts
-                                            ? `w-1/2 rounded-l-lg`
-                                            : `w-full rounded-lg`
-                                        }`}
+                                        className={`${requestStyle.shopBuyButton} ${`w-1/2 rounded-l-lg`}`}
                                         onClick={() => {
-                                          setArchivingTakingId(request._id);
+                                          setAcceptingTakingId(request._id);
                                         }}
                                       >
-                                        ARCHIVE
+                                        ACCEPT
                                       </button>
-                                  )}
-                                  {keyData[0].deletingTakingReq && (
+                                  
                                     <button
-                                      className={`${requestStyle.deleteButton} ${
-                                        keyData[0].takingReq
-                                          ? `w-1/2 rounded-r-lg`
-                                          : `w-full rounded-lg`
-                                      }`}
+                                      className={`${requestStyle.deleteButton} ${`w-1/2 rounded-r-lg`}`}
                                       onClick={() => {
-                                          setDeletingTakingId(request._id);
+                                        setDeletingTakingId(request._id);
                                       }}
                                     >
                                       DELETE
                                     </button>
-                                  )}
                                 </div>
                               </div>
                             </div>

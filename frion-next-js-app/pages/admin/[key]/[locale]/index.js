@@ -106,29 +106,62 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                 </Link>
               )}
 
-              {(keyData[0].takingReq || keyData[0].deletingTakingReq) && (
+              {keyData[0].takingReq && (
                 <Link href={`/admin/${Akey}/${locale}/taking/`}>
-                <div
-                  className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
-                >
-                  <button className="">Taking requests</button>
-                </div>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Taking requests</button>
+                  </div>
                 </Link>
               )}
-              {(keyData[0].givingReq || keyData[0].deletingGivingReq) && (
-                <div
-                  className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
-                >
-                  <button className="">Giving requests</button>
-                </div>
+              {keyData[0].acceptedTakingReq && (
+                <Link href={`/admin/${Akey}/${locale}/acceptedTaking/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Accepted taking requests</button>
+                  </div>
+                </Link>
               )}
-              {(keyData[0].healingReq || keyData[0].deletingHealingReq) && (
-                <div
-                  className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
-                >
-                  <button className="">Healing requests</button>
-                </div>
+              {keyData[0].givingReq && (
+                <Link href={`/admin/${Akey}/${locale}/giving/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Giving requests</button>
+                  </div>
+                </Link>
               )}
+              {keyData[0].acceptedGivingReq && (
+                <Link href={`/admin/${Akey}/${locale}/acceptedGiving/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Accepted giving requests</button>
+                  </div>
+                </Link>
+              )}
+
+              {keyData[0].healingReq && (
+                <Link href={`/admin/${Akey}/${locale}/healing/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Healing requests</button>
+                  </div>
+                </Link>
+              )}
+              {keyData[0].acceptedHealingReq && (
+                <Link href={`/admin/${Akey}/${locale}/acceptedHealing/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Accepted healing requests</button>
+                  </div>
+                </Link>
+              )}
+
               {(keyData[0].addPlaces || keyData[0].deletePlaces) && (
                 <div
                   className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
@@ -151,7 +184,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
 AdminList.getInitialProps = async ({ query: { key, locale } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
   const { success, keyData } = await keyRes.json();
-  return { Akey: key, isKeyValid: success, keyData: keyData,locale: locale };
+  return { Akey: key, isKeyValid: success, keyData: keyData, locale: locale };
 };
 
 export default AdminList;

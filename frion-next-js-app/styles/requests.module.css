@@ -1,6 +1,6 @@
 .requestItems{
     background-color: white;
-    width: 200px;
+    max-width: 300px;
     border: solid #999 1px;
 }
 .searchInput{

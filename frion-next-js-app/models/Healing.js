@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const TakingSchema = new mongoose.Schema({
+const HealingSchema = new mongoose.Schema({
     name:{
         type: String,
         required: [true, 'Please enter name'],
@@ -43,4 +43,4 @@ const TakingSchema = new mongoose.Schema({
     
 })
 
-module.exports = mongoose.models.Taking || mongoose.model('Taking', TakingSchema);
+module.exports = mongoose.models.Healing || mongoose.model('Healing', HealingSchema);

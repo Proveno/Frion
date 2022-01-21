@@ -16,11 +16,11 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
     addAndUpdateProducts: false,
     deleteProducts: false,
     takingReq: false,
-    deletingTakingReq: false,
+    acceptedTakingReq: false,
     givingReq: false,
-    deletingGivingReq: false,
+    acceptedGivingReq: false,
     healingReq: false,
-    deletingHealingReq: false,
+    acceptedHealingReq: false,
     addPlaces: false,
     deletePlaces: false,
   });
@@ -183,7 +183,7 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      deletingTakingReq: !form.deletingTakingReq,
+                      acceptedTakingReq: !form.deletingTakingReq,
                     });
                   }}
                   type="checkbox"
@@ -215,7 +215,7 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      deletingGivingReq: !form.deletingGivingReq,
+                      acceptedGivingReq: !form.deletingGivingReq,
                     });
                   }}
                   type="checkbox"
@@ -247,7 +247,7 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      deletingHealingReq: !form.deletingHealingReq,
+                      acceptedHealingReq: !form.deletingHealingReq,
                     });
                   }}
                   type="checkbox"

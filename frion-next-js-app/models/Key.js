@@ -32,7 +32,7 @@ const KeySchema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
-    deletingTakingReq:{
+    acceptedTakingReq:{
         type: Boolean,
         required: false
     },
@@ -40,7 +40,7 @@ const KeySchema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
-    deletingGivingReq:{
+    acceptedGivingReq:{
         type: Boolean,
         required: false
     },
@@ -48,7 +48,7 @@ const KeySchema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
-    deletingHealingReq:{
+    acceptedHealingReq:{
         type: Boolean,
         required: false
     },

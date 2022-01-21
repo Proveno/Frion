@@ -14,7 +14,7 @@ import MenuIcon from "../../../../../assets/logo.png";
 
 import requestStyle from "../../../../../styles/requests.module.css";
 
-const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText, locale }) => {
+const AdminAcceptHealingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText, locale }) => {
   const router = useRouter();
   function getLang(selectedLocale) {
     switch (selectedLocale) {
@@ -37,23 +37,28 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
       [e.target.name]: e.target.value,
     });
   };
-  const [deletingTakingId, setDeletingTakingId] = useState();
-  const [acceptingTakingId, setAcceptingTakingId] = useState();
+  const [archivingHealingId, setArchivingHealingId] = useState();
+  const [acceptingHealingId, setAcceptingHealingId] = useState();
   useEffect(async () => {
-    if (deletingTakingId) {
-      const deleted = await fetch(
-        `http://localhost:3000/api/taking/request/${deletingTakingId}`,
+    if (archivingHealingId) {
+      const archived = await fetch(
+        `http://localhost:3000/api/healing/request/${archivingHealingId}`,
         {
-          method: "DELETE"
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({archivedAt: new Date()}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/taking/`);
+      router.push(`/admin/${Akey}/${locale}/healing/`);
     }
-  }, [deletingTakingId]);
+  }, [archivingHealingId]);
   useEffect(async () => {
-    if (acceptingTakingId) {
+    if (acceptingHealingId) {
       const accepted = await fetch(
-        `http://localhost:3000/api/taking/request/${acceptingTakingId}`,
+        `http://localhost:3000/api/healing/request/${acceptingHealingId}`,
         {
           method: "PUT",
           headers: {
@@ -63,9 +68,9 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
           body: JSON.stringify({accepted: true}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/taking/`);
+      router.push(`/admin/${Akey}/${locale}/healing/`);
     }
-  }, [acceptingTakingId]);
+  }, [acceptingHealingId]);
 
   return (
     <div>
@@ -97,7 +102,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                 defaultValue={searchText}
               ></input>
               <Link
-                href={`/admin/${Akey}/${locale}/taking/${search.searchRequest}`}
+                href={`/admin/${Akey}/${locale}/healing/${search.searchRequest}`}
               >
                 <button
                   className={`${requestStyle.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
@@ -119,7 +124,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/taking/`
+                    }/healing/`
                   );
                 }}
                 defaultValue={locale}
@@ -134,7 +139,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
         </div>
       </div>
       {isKeyValid &&
-      (keyData[0].takingReq || keyData[0].deletingTakingReq) ? (
+      (keyData[0].acceptedHealingReq) ? (
         <div>
           <div
             className={`container mx-auto flex py-12 justify-center`}
@@ -143,14 +148,14 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
               {requests ? (
                 <>
                   {requests.map((request) => {
-                      if(!request.accepted && request.archivedAt == undefined){
+                      if(request.accepted && request.archivedAt == undefined){
                         return (
                             <div
                               className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                               // onClick={()=>{
                               //     router.push(`/admin/${Akey}/${
                               //       document.getElementById("LanguageSelect").value
-                              //     }/taking/request/${request._id}`)
+                              //     }/acceptedHealing/request/${request._id}`)
                               // }}
                             > 
                               <span className="break-words block text-sm text-lg text-gray-700 my-2">
@@ -164,22 +169,13 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                               </span>
                               <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                                 <div className="w-full py-1 flex">
-                                      <button
-                                        className={`${requestStyle.shopBuyButton} ${`w-1/2 rounded-l-lg`}`}
-                                        onClick={() => {
-                                          setAcceptingTakingId(request._id);
-                                        }}
-                                      >
-                                        ACCEPT
-                                      </button>
-                                  
-                                    <button
-                                      className={`${requestStyle.deleteButton} ${`w-1/2 rounded-r-lg`}`}
+                                  <button
+                                      className={`${requestStyle.deleteButton} ${`w-full rounded-lg`}`}
                                       onClick={() => {
-                                        setDeletingTakingId(request._id);
+                                        setArchivingHealingId(request._id);
                                       }}
                                     >
-                                      DELETE
+                                      ARCHIVE
                                     </button>
                                 </div>
                               </div>
@@ -204,19 +200,19 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
   );
 };
 
-AdminTakingSearchList.getInitialProps = async ({ query: { key, locale, search } }) => {
+AdminAcceptHealingSearchList.getInitialProps = async ({ query: { key, locale, search } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const res = await fetch(`http://localhost:3000/api/taking/${locale}/${search}`);
-  const { takingRequestData } = await res.json();
+  const res = await fetch(`http://localhost:3000/api/healing/${locale}/${search}`);
+  const { healingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {
     Akey: key,
     isKeyValid: success,
     keyData: keyData,
-    requests: takingRequestData,
+    requests: healingRequestData,
     searchText: search,
     locale: locale,
   };
 };
 
-export default AdminTakingSearchList;
+export default AdminAcceptHealingSearchList;

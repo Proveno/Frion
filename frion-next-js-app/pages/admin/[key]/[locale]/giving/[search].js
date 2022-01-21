@@ -14,7 +14,7 @@ import MenuIcon from "../../../../../assets/logo.png";
 
 import requestStyle from "../../../../../styles/requests.module.css";
 
-const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText, locale }) => {
+const AdminGivingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText, locale }) => {
   const router = useRouter();
   function getLang(selectedLocale) {
     switch (selectedLocale) {
@@ -37,23 +37,23 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
       [e.target.name]: e.target.value,
     });
   };
-  const [deletingTakingId, setDeletingTakingId] = useState();
-  const [acceptingTakingId, setAcceptingTakingId] = useState();
+  const [deletingGivingId, setDeletingGivingId] = useState();
+  const [acceptingGivingId, setAcceptingGivingId] = useState();
   useEffect(async () => {
-    if (deletingTakingId) {
+    if (deletingGivingId) {
       const deleted = await fetch(
-        `http://localhost:3000/api/taking/request/${deletingTakingId}`,
+        `http://localhost:3000/api/giving/request/${deletingGivingId}`,
         {
           method: "DELETE"
         }
       );
-      router.push(`/admin/${Akey}/${locale}/taking/`);
+      router.push(`/admin/${Akey}/${locale}/giving/`);
     }
-  }, [deletingTakingId]);
+  }, [deletingGivingId]);
   useEffect(async () => {
-    if (acceptingTakingId) {
+    if (acceptingGivingId) {
       const accepted = await fetch(
-        `http://localhost:3000/api/taking/request/${acceptingTakingId}`,
+        `http://localhost:3000/api/giving/request/${acceptingGivingId}`,
         {
           method: "PUT",
           headers: {
@@ -63,9 +63,9 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
           body: JSON.stringify({accepted: true}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/taking/`);
+      router.push(`/admin/${Akey}/${locale}/giving/`);
     }
-  }, [acceptingTakingId]);
+  }, [acceptingGivingId]);
 
   return (
     <div>
@@ -97,7 +97,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                 defaultValue={searchText}
               ></input>
               <Link
-                href={`/admin/${Akey}/${locale}/taking/${search.searchRequest}`}
+                href={`/admin/${Akey}/${locale}/giving/${search.searchRequest}`}
               >
                 <button
                   className={`${requestStyle.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
@@ -119,7 +119,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/taking/`
+                    }/giving/`
                   );
                 }}
                 defaultValue={locale}
@@ -134,7 +134,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
         </div>
       </div>
       {isKeyValid &&
-      (keyData[0].takingReq || keyData[0].deletingTakingReq) ? (
+      (keyData[0].givingReq || keyData[0].deletingGivingReq) ? (
         <div>
           <div
             className={`container mx-auto flex py-12 justify-center`}
@@ -150,7 +150,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                               // onClick={()=>{
                               //     router.push(`/admin/${Akey}/${
                               //       document.getElementById("LanguageSelect").value
-                              //     }/taking/request/${request._id}`)
+                              //     }/giving/request/${request._id}`)
                               // }}
                             > 
                               <span className="break-words block text-sm text-lg text-gray-700 my-2">
@@ -167,7 +167,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                                       <button
                                         className={`${requestStyle.shopBuyButton} ${`w-1/2 rounded-l-lg`}`}
                                         onClick={() => {
-                                          setAcceptingTakingId(request._id);
+                                          setAcceptingGivingId(request._id);
                                         }}
                                       >
                                         ACCEPT
@@ -176,7 +176,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                                     <button
                                       className={`${requestStyle.deleteButton} ${`w-1/2 rounded-r-lg`}`}
                                       onClick={() => {
-                                        setDeletingTakingId(request._id);
+                                        setDeletingGivingId(request._id);
                                       }}
                                     >
                                       DELETE
@@ -204,19 +204,19 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
   );
 };
 
-AdminTakingSearchList.getInitialProps = async ({ query: { key, locale, search } }) => {
+AdminGivingSearchList.getInitialProps = async ({ query: { key, locale, search } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const res = await fetch(`http://localhost:3000/api/taking/${locale}/${search}`);
-  const { takingRequestData } = await res.json();
+  const res = await fetch(`http://localhost:3000/api/giving/${locale}/${search}`);
+  const { givingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {
     Akey: key,
     isKeyValid: success,
     keyData: keyData,
-    requests: takingRequestData,
+    requests: givingRequestData,
     searchText: search,
     locale: locale,
   };
 };
 
-export default AdminTakingSearchList;
+export default AdminGivingSearchList;

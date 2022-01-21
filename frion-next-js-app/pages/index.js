@@ -77,6 +77,8 @@ export default function Home() {
     phone: "",
     email: "",
     category: "",
+    accepted: false,
+    createdAt: new Date(),
     requestLocale: router.locale,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
