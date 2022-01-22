@@ -12,10 +12,16 @@ import Image from "next/image";
 import navBar from "../../../../../styles/navBar.module.css";
 import MenuIcon from "../../../../../assets/logo.png";
 
-import requestStyle from "../../../../../styles/requests.module.css";
+import shopBlock from "../../../../../styles/products.module.css";
+import cartIcon from "../../../../../assets/Icons/Tilda_Icons_3st_cart.png";
+import manIcon from "../../../../../assets/Icons/Tilda_Icons_3st_man.svg";
+import magnifierIcon from "../../../../../assets/Icons/Tilda_Icons_2web_magnifier.png";
+import dataIcon from "../../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
-const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
+import requestStyle from "../../../../../styles/requests.module.css";
+const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
   const router = useRouter();
+
   function getLang(selectedLocale) {
     switch (selectedLocale) {
       case "en":
@@ -28,7 +34,7 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
         return uk;
     }
   }
-  const [t, setT] = useState(getLang(locale));
+  const [t, setT] = useState(getLang("en"));
 
   const [search, setSearch] = useState({ searchRequest: "" });
   const handleChange = (e) => {
@@ -37,11 +43,11 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
       [e.target.name]: e.target.value,
     });
   };
-  const [archivingGivingId, setArchivingGivingId] = useState();
+  const [archivingOrderId, setArchivingOrderId] = useState();
   useEffect(async () => {
-    if (archivingGivingId) {
+    if (archivingOrderId) {
       const archived = await fetch(
-        `http://localhost:3000/api/giving/request/${archivingGivingId}`,
+        `http://localhost:3000/api/cart/order/${archivingOrderId}`,
         {
           method: "PUT",
           headers: {
@@ -51,9 +57,10 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
           body: JSON.stringify({archivedAt: new Date()}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/acceptedGiving/`);
+      router.push(`/admin/${Akey}/${locale}/acceptedOrders/`);
     }
-  }, [archivingGivingId]);
+  }, [archivingOrderId]);
+
   return (
     <div>
       <div
@@ -79,14 +86,14 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
               <input
                 onChange={handleChange}
                 name="searchRequest"
-                className={`${requestStyle.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
-                placeholder="Enter title..."
+                className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
+                placeholder="Enter owner..."
               ></input>
               <Link
-                href={`/admin/${Akey}/${locale}/giving/${search.searchRequest}`}
+                href={`/admin/${Akey}/${locale}/acceptedOrders/${search.searchRequest}`}
               >
                 <button
-                  className={`${requestStyle.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
+                  className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
                   Search
                 </button>
@@ -105,7 +112,7 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/giving/`
+                    }/acceptedOrders`
                   );
                 }}
                 defaultValue={locale}
@@ -119,50 +126,58 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
           </div>
         </div>
       </div>
-      {isKeyValid &&
-      (keyData[0].acceptedGivingReq) ? (
+      {isKeyValid && keyData[0].acceptedOrders ? (
         <div>
           <div
-            className={`container mx-auto flex py-12 justify-center`}
+            className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
           >
             <div className={`grid auto-rows-max grid-cols-4`}>
-              {requests ? (
+              {orders ? (
                 <>
-                  {requests.map((request) => {
-                      if(request.accepted && request.archivedAt == undefined){
-                        return (
-                            <div
-                              className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-                              // onClick={()=>{
-                              //     router.push(`/admin/${Akey}/${
-                              //       document.getElementById("LanguageSelect").value
-                              //     }/acceptedGiving/request/${request._id}`)
-                              // }}
-                            > 
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.phone}
-                              </span>
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.email}
-                              </span>
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.createdAt}
-                              </span>
-                              <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                                <div className="w-full py-1 flex">
-                                  <button
-                                      className={`${requestStyle.deleteButton} ${`w-full rounded-lg`}`}
-                                      onClick={() => {
-                                        setArchivingGivingId(request._id);
-                                      }}
-                                    >
-                                      ARCHIVE
-                                    </button>
-                                </div>
-                              </div>
+                  {orders.map((order) => {
+                    if (order.accepted && order.archivedAt == undefined) {
+                      return (
+                        <div
+                          className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+                          // onClick={()=>{
+                          //     router.push(`/admin/${Akey}/${
+                          //       document.getElementById("LanguageSelect").value
+                          //     }/giving/request/${request._id}`)
+                          // }}
+                        >
+                            <Image
+                            width={500}
+                            height={500}
+                            className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                            src={manIcon}
+                            alt="Product picture"
+                          ></Image>
+                          <span className="break-words block text-sm text-lg text-gray-700 my-2">
+                            {order.phone}
+                          </span>
+                          <span className="break-words block text-sm text-lg text-gray-700 my-2">
+                            {order.email}
+                          </span>
+                          <span className="break-words block text-sm text-lg text-gray-700 my-2">
+                            {order.sum["$numberDecimal"]}
+                          </span>
+                          <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                            <div className="w-full py-1 flex">
+                              <button
+                                className={`${
+                                  requestStyle.deleteButton
+                                } ${`w-full rounded-lg`}`}
+                                onClick={() => {
+                                    setArchivingOrderId(order._id);
+                                }}
+                              >
+                                ARCHIVE
+                              </button>
                             </div>
-                          );
-                      }
+                          </div>
+                        </div>
+                      );
+                    }
                   })}
                 </>
               ) : (
@@ -181,18 +196,18 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
   );
 };
 
-AdminGivingList.getInitialProps = async ({ query: { key, locale } }) => {
+AdminOrdersList.getInitialProps = async ({ query: { key, locale } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const res = await fetch(`http://localhost:3000/api/giving/${locale}`);
-  const { givingRequestData } = await res.json();
+  const orders = await fetch(`http://localhost:3000/api/cart/${locale}`);
   const { success, keyData } = await keyRes.json();
+  const { ordersData } = await orders.json();
   return {
     Akey: key,
     isKeyValid: success,
     keyData: keyData,
-    requests: givingRequestData,
+    orders: ordersData,
     locale: locale,
   };
 };
 
-export default AdminGivingList;
+export default AdminOrdersList;

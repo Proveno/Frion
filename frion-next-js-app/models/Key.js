@@ -59,6 +59,14 @@ const KeySchema = new mongoose.Schema({
     addCategories:{
         type: Boolean,
         required: false
+    },
+    orders:{
+        type: Boolean,
+        required: false
+    },
+    acceptedOrders:{
+        type: Boolean,
+        required: false
     }
 })
 

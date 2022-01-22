@@ -171,6 +171,25 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   </div>
                 </Link>
               )}
+
+              {(keyData[0].orders) && (
+                <Link href={`/admin/${Akey}/${locale}/orders/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Orders</button>
+                  </div>
+                </Link>
+              )}
+                            {(keyData[0].acceptedOrders) && (
+                <Link href={`/admin/${Akey}/${locale}/acceptedOrders/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Accepted orders</button>
+                  </div>
+                </Link>
+              )}
             </div>
           </div>
         </div>
