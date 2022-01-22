@@ -52,7 +52,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
           body: JSON.stringify({archivedAt: new Date()}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/healing/`);
+      router.push(`/admin/${Akey}/${locale}/acceptedHealing/`);
     }
   }, [archivingHealingId]);
   useEffect(async () => {
@@ -68,7 +68,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
           body: JSON.stringify({accepted: true}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/healing/`);
+      router.push(`/admin/${Akey}/${locale}/acceptedHealing/`);
     }
   }, [acceptingHealingId]);
 

@@ -52,11 +52,11 @@ const KeySchema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
-    addPlaces:{
+    categories:{
         type: Boolean,
         required: false
     },
-    deletePlaces:{
+    addCategories:{
         type: Boolean,
         required: false
     }

@@ -52,7 +52,7 @@ const AdminAcceptGivingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
           body: JSON.stringify({archivedAt: new Date()}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/giving/`);
+      router.push(`/admin/${Akey}/${locale}/acceptedGiving/`);
     }
   }, [archivingGivingId]);
   useEffect(async () => {
@@ -68,7 +68,7 @@ const AdminAcceptGivingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
           body: JSON.stringify({accepted: true}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/giving/`);
+      router.push(`/admin/${Akey}/${locale}/acceptedGiving/`);
     }
   }, [acceptingGivingId]);
 

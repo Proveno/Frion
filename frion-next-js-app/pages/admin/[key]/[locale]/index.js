@@ -40,7 +40,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
         className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
       >
         {/* Logo/Home */}
-        <Link href={`/admin/${Akey}`}>
+        <Link href={`/admin/${Akey}/${locale}`}>
           <div className={`flex`}>
             <div className={`${navBar.imageLogo}`}>
               <Image src={MenuIcon} alt="Logo picture :>" />
@@ -162,12 +162,14 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                 </Link>
               )}
 
-              {(keyData[0].addPlaces || keyData[0].deletePlaces) && (
-                <div
-                  className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
-                >
-                  <button className="">Places</button>
-                </div>
+              {(keyData[0].categories || keyData[0].addCategories) && (
+                <Link href={`/admin/${Akey}/${locale}/categories/`}>
+                  <div
+                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                  >
+                    <button className="">Edit categories</button>
+                  </div>
+                </Link>
               )}
             </div>
           </div>

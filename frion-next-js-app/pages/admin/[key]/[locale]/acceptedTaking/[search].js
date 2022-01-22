@@ -52,7 +52,7 @@ const AdminAcceptTakingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
           body: JSON.stringify({archivedAt: new Date()}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/taking/`);
+      router.push(`/admin/${Akey}/${locale}/acceptedTaking/`);
     }
   }, [archivingTakingId]);
   useEffect(async () => {
@@ -68,7 +68,7 @@ const AdminAcceptTakingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
           body: JSON.stringify({accepted: true}),
         }
       );
-      router.push(`/admin/${Akey}/${locale}/taking/`);
+      router.push(`/admin/${Akey}/${locale}/acceptedTaking/`);
     }
   }, [acceptingTakingId]);
 

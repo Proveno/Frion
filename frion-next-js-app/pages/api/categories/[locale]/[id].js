@@ -5,14 +5,14 @@ dbConnect();
 
 export default async (req, res) => {
   const {
-    query: { locale, category },
+    query: { locale, id },
     method,
   } = req;
 
   switch (method) {
     case "GET":
       try {
-        const categoryR = await Category.find({ category: category, categoryLocale:locale });
+        const categoryR = await Category.findById(id);
         res.status(200).json({ success: true, dataCategories: categoryR });
       } catch (error) {
         res.status(400).json({ success: false });
@@ -20,16 +20,32 @@ export default async (req, res) => {
       break;
     case "PUT":
       try {
-        const category = await Category.findOneAndUpdate({category: categoryText, categoryLocale:locale }, req.body, {
-          new: true,
-          runValidators: true,
-        });
+        console.log(req.body);
+        const category = await Category.findByIdAndUpdate(
+          id,
+          req.body, {
+            new: true,
+            runValidators: true
+        }
+        );
 
         if (!category) {
           return res.status(400).json({ success: false });
         }
 
         res.status(200).json({ success: true, dataCategories: category });
+      } catch (error) {
+        res.status(400).json({ success: false });
+      }
+      break;
+    case "DELETE":
+      try {
+        const deleted = await Category.deleteOne({ category: category });
+
+        if (!deleted) {
+          return res.status(400).json({ success: false });
+        }
+        res.status(200).json({ success: true, data: {} });
       } catch (error) {
         res.status(400).json({ success: false });
       }
