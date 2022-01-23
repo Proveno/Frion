@@ -21,6 +21,7 @@ import MenuIcon from "../assets/logo.png";
 import CatImage from "../assets/InformationCat.jpeg";
 import requestImageInfo from "../assets/requestInfo.png";
 import shopImage from "../assets/shopImageEx.PNG";
+import shopImage2 from "../assets/shopImageEx2.png";
 import langSelectIcon from "../assets/Icons/Tilda_Icons_9ta_globe.svg";
 
 import productImage1 from "../assets/Product/1.png";
@@ -59,9 +60,6 @@ export default function Home() {
         return uk;
     }
   }
-  function addQuant(number) {
-    setShouldShowCart(ShouldShowCart + number);
-  }
 
   const router = useRouter();
   const t = getLang();
@@ -69,7 +67,6 @@ export default function Home() {
   const [ShouldShowChat, setShouldShowChat] = useState(false);
   const [ShouldNavButtons, setShouldNavButtons] = useState(true);
   const [isCartOpened, setIsCartOpened] = useState(false);
-  const [ShouldShowCart, setShouldShowCart] = useState(0);
 
   const [form, setForm] = useState({
     name: "",
@@ -88,7 +85,6 @@ export default function Home() {
   useEffect(() => {
     if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
-        
         console.log(form);
         createRequest();
       } else {
@@ -115,6 +111,27 @@ export default function Home() {
   };
   if (!categories) {
     getCategories();
+  }
+
+  const [products, setProducts] = useState();
+  const getProducts = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/products/${
+          document.getElementById("LanguageSelect").value
+        }/mainPage`,
+        {
+          method: "GET",
+        }
+      );
+      const { data } = await res.json();
+      setProducts(data);
+    } catch (error) {
+      console.log(console.error());
+    }
+  };
+  if (!products) {
+    getProducts();
   }
 
   const createRequest = async () => {
@@ -167,6 +184,8 @@ export default function Home() {
     return err;
   };
 
+  const [cart, setCart] = useState([]);
+  console.log(cart);
   return (
     <div>
       {/* NavBar */}
@@ -221,6 +240,8 @@ export default function Home() {
                 className={`${navBar.langButton} px-4 text`}
                 id="LanguageSelect"
                 onChange={() => {
+                  setProducts();
+                  setCategories();
                   router.push(
                     `/${document.getElementById("LanguageSelect").value}/`
                   );
@@ -265,95 +286,50 @@ export default function Home() {
                 className={`${cartBlock.product} bg-white mt-4 w-full py-2 rounded-lg`}
               >
                 {/* One product order */}
-                <div className="flex justify-between">
-                  <div className={`${cartBlock.images}  mt-2`}>
-                    <Image className="rounded-lg" src={productImage1}></Image>
-                  </div>
-                  <div className="w-4/5">
-                    <span className="block text-sm text-lg text-gray-700 my-2">
-                      Purina One Sterilcat
-                    </span>
-                    <div className="w-full pr-5">
-                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                        <div>{t.priceCart}</div>
-                        <div>-</div>
-                        <div>
-                          <span>13,5</span>$
+                {cart.map((product) => {
+                  return (
+                    <>
+                      <div className="flex justify-between">
+                        <div className={`${cartBlock.images}  mt-2`}>
+                          <Image
+                            className="rounded-lg"
+                            src={product.photo}
+                            width={130}
+                            height={130}
+                          ></Image>
+                        </div>
+                        <div className="w-4/5">
+                          <span className="block text-sm text-lg text-gray-700 my-2">
+                            {product.title}
+                          </span>
+                          <div className="w-full pr-5">
+                            <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                              <div>{t.priceCart}</div>
+                              <div>
+                                <span>{product.price["$numberDecimal"]}</span>$
+                              </div>
+                            </div>
+                            <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                              <div>{t.quantityCart}</div>
+                              <input
+                                className="w-14 border rounded-xl pl-3"
+                                type={"number"}
+                                defaultValue={product.number}
+                                onChange={(e)=>{
+                                  product.number = e.target.value;
+                                  console.log(product.number);
+                                }}
+                              ></input>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                        <div>{t.quantityCart}</div>
-                        <div>-</div>
-                        <input
-                          className="w-14 border rounded-xl"
-                          type={"number"}
-                        ></input>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={`${cartBlock.line} w-full h-0.5`}></div>
-
-                {/* One product order */}
-                <div className="flex justify-between">
-                  <div className={`${cartBlock.images}  mt-2`}>
-                    <Image className="rounded-lg" src={productImage3}></Image>
-                  </div>
-                  <div className="w-4/5">
-                    <span className="block text-sm text-lg text-gray-700 my-2">
-                      EVOLUTOR, collar for dogs
-                    </span>
-                    <div className="w-full pr-5">
-                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                        <div>{t.priceCart}</div>
-                        <div>-</div>
-                        <div>
-                          <span>20,00</span>$
-                        </div>
-                      </div>
-                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                        <div>{t.quantityCart}</div>
-                        <div>-</div>
-                        <input
-                          className="w-14 border rounded-xl"
-                          type={"number"}
-                        ></input>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={`${cartBlock.line} w-full h-0.5`}></div>
-
-                {/* One product order */}
-                <div className="flex justify-between">
-                  <div className={`${cartBlock.images} mt-2`}>
-                    <Image className="rounded-lg" src={productImage2}></Image>
-                  </div>
-                  <div className="w-4/5">
-                    <span className="block text-sm text-lg text-gray-700 my-2">
-                      EuroDog, beef flavor
-                    </span>
-                    <div className="w-full pr-5">
-                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                        <div>{t.priceCart}</div>
-                        <div>-</div>
-                        <div>
-                          <span>9.50</span>$
-                        </div>
-                      </div>
-                      <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                        <div>{t.quantityCart}</div>
-                        <div>-</div>
-                        <input
-                          className="w-14 border rounded-xl"
-                          type={"number"}
-                        ></input>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                      {cart[cart.length - 1] != product && (
+                        <div className={`${cartBlock.line} w-full h-0.5`}></div>
+                      )}
+                    </>
+                  );
+                })}
               </div>
             </div>
             <div className="flex">
@@ -367,7 +343,7 @@ export default function Home() {
         </div>
       )}
 
-      {ShouldShowCart > 0 && (
+      {cart.length > 0 && (
         <div
           className={`${feedBack.feedButton} fixed bottom-11 right-12 p-2 rounded-full`}
           onClick={() => {
@@ -521,7 +497,7 @@ export default function Home() {
                       className="default:ring-2 ml-2"
                       required
                       value="taking"
-                      onClick={()=>{
+                      onClick={() => {
                         setType("taking");
                       }}
                     />
@@ -534,7 +510,7 @@ export default function Home() {
                       name="feedback"
                       className="default:ring-2 ml-2"
                       value="giving"
-                      onClick={()=>{
+                      onClick={() => {
                         setType("giving");
                       }}
                     />
@@ -546,7 +522,7 @@ export default function Home() {
                       name="feedback"
                       className="default:ring-2 ml-2"
                       value="healing"
-                      onClick={()=>{
+                      onClick={() => {
                         setType("healing");
                       }}
                     />
@@ -573,150 +549,38 @@ export default function Home() {
           <div className="grid gap-4 grid-cols-3 justify-between py-12">
             {/* TODO: map first 10 products and shop them. If user wants to see more -> new page with full shop */}
             {/* Fix different height */}
-            {/* 1-st Product */}
-            <div
-              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3`}
-            >
-              <Image
-                width={500}
-                height={500}
-                className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src="https://i.ibb.co/FwLzWNm/1.png"
-                alt="Product picture"
-              ></Image>
-              <span className="block text-sm text-lg text-gray-700 my-2">
-                Purina One Sterilcat
-              </span>
-              <button
-                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
-                onClick={() => {
-                  addQuant(1);
-                }}
-              >
-                {t.buyFor}
-                <span> 13,50</span>$
-              </button>
-            </div>
-            {/* 2-nd Product */}
-            <div
-              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3`}
-            >
-              <Image
-                width={500}
-                height={500}
-                className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src="https://i.ibb.co/2SHdCQ1/2.png"
-                alt="Product picture"
-              ></Image>
-              <span className="block text-sm text-lg text-gray-700 my-2">
-                EuroDog, beef flavor
-              </span>
-              <button
-                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
-                onClick={() => {
-                  addQuant(1);
-                }}
-              >
-                {t.buyFor}
-                <span> 9,50</span>$
-              </button>
-            </div>
-            {/* 3-rd Product */}
-            <div
-              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3`}
-            >
-              <Image
-                width={500}
-                height={500}
-                className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src="https://i.ibb.co/0qNjcT1/3.png"
-                alt="Product picture"
-              ></Image>
-              <span className="block text-sm text-lg text-gray-700 my-2">
-                EVOLUTOR, collar for dogs
-              </span>
-              <button
-                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
-                onClick={() => {
-                  addQuant(1);
-                }}
-              >
-                {t.buyFor}
-                <span> 20,00</span>$
-              </button>
-            </div>
-            {/* 4-th Product */}
-            <div
-              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-3 mx-auto pt-3`}
-            >
-              <Image
-                width={500}
-                height={500}
-                className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src="https://i.ibb.co/LJQK54N/4.png"
-                alt="Product picture"
-              ></Image>
-              <span className="block text-sm text-lg text-gray-700 my-2">
-                Parrot cage
-              </span>
-              <button
-                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
-                onClick={() => {
-                  addQuant(1);
-                }}
-              >
-                {t.buyFor}
-                <span> 20,99</span>$
-              </button>
-            </div>
-            {/* 5-th Product */}
-            <div
-              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-3 mx-auto pt-3`}
-            >
-              <Image
-                width={500}
-                height={500}
-                className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src="https://i.ibb.co/KhzhWbr/5.png"
-                alt="Product picture"
-              ></Image>
-              <span className="block text-sm text-lg text-gray-700 my-2">
-                Sani Pet, cat litter
-              </span>
-              <button
-                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
-                onClick={() => {
-                  addQuant(1);
-                }}
-              >
-                {t.buyFor}
-                <span> 8,00</span>$
-              </button>
-            </div>
-            {/* 6-th Product */}
-            <div
-              className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-3 mx-auto pt-3`}
-            >
-              <Image
-                width={500}
-                height={500}
-                className={`${shopBlock.shopImages} border-none rounded-3xl`}
-                src="https://i.ibb.co/9NFfbFh/6.png"
-                alt="Product picture"
-              ></Image>
-              <span className="block text-sm text-lg text-gray-700 my-2">
-                Georplast Mini Twisterball
-              </span>
-              <button
-                className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
-                onClick={() => {
-                  addQuant(1);
-                }}
-              >
-                {t.buyFor}
-                <span> 9,40</span>$
-              </button>
-            </div>
+
+            {products &&
+              products.map((product) => {
+                return (
+                  <div
+                    className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3`}
+                  >
+                    <Image
+                      width={500}
+                      height={500}
+                      className={`${shopBlock.shopImages} border-none rounded-3xl`}
+                      src={product.photo}
+                      alt="Product picture"
+                    ></Image>
+                    <span className="block text-sm text-lg text-gray-700 my-2">
+                      {product.title}
+                    </span>
+                    <button
+                      className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+                      onClick={() => {
+                        if (!cart.map(e => e._id).includes(product._id)) {
+                          // console.log(cart.map(e => e._id).includes(product._id));
+                          setCart([...cart, {...product, number: 1}]);
+                        }
+                      }}
+                    >
+                      {t.buyFor}
+                      <span>{product.price["$numberDecimal"]}</span>$
+                    </button>
+                  </div>
+                );
+              })}
           </div>
           <div className="w-full flex justify-center">
             <Link href={`/products/${router.locale}`}>
@@ -734,57 +598,13 @@ export default function Home() {
         <div className="px-7 py-28">
           <p className="text-3xl ml-4">{t.contactQuestion}</p>
           <div className="grid grid-cols-2 mt-10">
-            <div className="self-start justify-center">
-              <div
-                className={`${formBlock.form} border-none rounded-3xl self-start px-14 py-1 mx-5`}
-              >
-                <form className="my-7">
-                  <label className="block my-3">
-                    <span className="block text-sm font-medium text-gray-700">
-                      {t.contactCountry}
-                    </span>
-                    <select
-                      className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                      required
-                    >
-                      <option>Ukraine</option>
-                      <option>England</option>
-                      <option>Germany</option>
-                    </select>
-                  </label>
-
-                  <label className="block my-3">
-                    <span className="block text-sm font-medium text-gray-700">
-                      {t.contactCity}
-                    </span>
-                    <select
-                      className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                      required
-                    >
-                      <option>Kiev</option>
-                      <option>Zaporizhzhya</option>
-                      <option>London</option>
-                      <option>Berlin</option>
-                    </select>
-                  </label>
-
-                  <label className="block my-3">
-                    <span className="block text-sm font-medium text-gray-700">
-                      {t.contactDepartment}
-                    </span>
-                    <select
-                      className="mt-1 block w-full h-9 px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                      required
-                    >
-                      <option>London SW1A 0AA</option>
-                      <option>Gendarmenmarkt, 10117 Berlin</option>
-                      <option>Vulytsia Solom'ianska, 24, Kiev</option>
-                      <option>
-                        Street Leonida Zhabotinsky, 19, Zaporizhzhia
-                      </option>
-                    </select>
-                  </label>
-                </form>
+            <div className="self-start text-right mx-5">
+              <div className="">
+                <Image
+                  className="border-none rounded-3xl"
+                  src={shopImage2}
+                  alt="Picture with cat :>"
+                />
               </div>
             </div>
             <div className="self-center text-right mx-5">
