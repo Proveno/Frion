@@ -13,6 +13,8 @@ import navBar from "../../../styles/navBar.module.css";
 import MenuIcon from "../../../assets/logo.png";
 import shopBlock from "../../../styles/products.module.css";
 import cartIcon from "../../../assets/Icons/Tilda_Icons_3st_cart.png";
+import cartBlock from "../../../styles/cartState.module.css";
+import crossIcon from "../../../assets/Icons/Tilda_Icons_27bu_8.svg";
 
 const ProductSearch = ({ products, searchText, locale }) => {
   const router = useRouter();
@@ -37,8 +39,110 @@ const ProductSearch = ({ products, searchText, locale }) => {
       [e.target.name]: e.target.value,
     });
   };
+  const [ShouldNavButtons, setShouldNavButtons] = useState(true);
+  const [isCartOpened, setIsCartOpened] = useState(false);
+  const [cart, setCart] = useState([]);
   return (
     <div>
+
+{isCartOpened && (
+        <div
+          className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
+        >
+          <div className={`${cartBlock.cart} self-center w-2/5 rounded-3xl`}>
+            <div className={`${cartBlock.products} px-4 pt-2`}>
+              <div className="flex justify-between">
+                <div className="text-start text-2xl font-bold text-gray-700">
+                  {t.myOrder}
+                </div>
+                <div
+                  className={`${cartBlock.close} mt-1`}
+                  onClick={() => {
+                    setShouldNavButtons(true);
+                    setIsCartOpened(false);
+                  }}
+                >
+                  <Image src={crossIcon} alt="Close"></Image>
+                </div>
+              </div>
+
+              <div className={`${cartBlock.product} mt-4 w-full rounded-lg`}>
+                {/* One product order */}
+                {cart.map((product) => {
+                  return (
+                    <>
+                      <div className="flex bg-white  justify-between">
+                        <div className={`${cartBlock.images}  mt-2`}>
+                          <Image
+                            className="rounded-lg"
+                            src={product.photo}
+                            width={130}
+                            height={130}
+                          ></Image>
+                        </div>
+                        <div className="w-4/5">
+                          <span className="block text-sm text-lg text-gray-700 my-2">
+                            {product.title}
+                          </span>
+                          <div className="w-full pr-5">
+                            <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                              <div>{t.priceCart}</div>
+                              <div>
+                                <span>{product.price["$numberDecimal"]}</span>$
+                              </div>
+                            </div>
+                            <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                              <div>{t.quantityCart}</div>
+                              <input
+                                className="w-14 border rounded-xl pl-3"
+                                type={"number"}
+                                defaultValue={product.number}
+                                onChange={(e) => {
+                                  product.number = e.target.value;
+                                  console.log(product.number);
+                                }}
+                              ></input>
+                            </div>
+                          </div>
+                        </div>
+                        <div className={`w-4 mt-2 mr-2`}>
+                          <Image
+                            src={crossIcon}
+                            alt="Close"
+                            onClick={() => {
+                              setCart([
+                                ...cart.slice(0, cart.indexOf(product)),
+                                ...cart.slice(cart.indexOf(product) + 1),
+                              ]);
+                            }}
+                          ></Image>
+                        </div>
+                      </div>
+                      {cart[cart.length - 1] != product && (
+                        <div className={`${cartBlock.line} w-full h-0.5`}></div>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="flex">
+              <div
+                className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
+                onClick={()=>{
+                  console.log(cart);
+                }
+                }
+              >
+                {t.buyButtonCart}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {ShouldNavButtons && (
       <div
         className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
       >
@@ -101,12 +205,18 @@ const ProductSearch = ({ products, searchText, locale }) => {
                 width={35}
                 height={35}
                 src={cartIcon}
+                onClick={() => {
+                  if(cart.length > 0){
+                  setShouldNavButtons(false);
+                  setIsCartOpened(true);}
+                }}
                 layout="fixed"
               ></Image>
             </div>
           </div>
         </div>
       </div>
+      )}
       <div
         className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
       >
@@ -133,6 +243,12 @@ const ProductSearch = ({ products, searchText, locale }) => {
                     <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                       <button
                         className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
+                        onClick={() => {
+                          if (!cart.map((e) => e._id).includes(product._id)) {
+                            // console.log(cart.map(e => e._id).includes(product._id));
+                            setCart([...cart, { ...product, number: 1 }]);
+                          }
+                        }}
                       >
                         {t.buyFor}
                         <span>{product.price["$numberDecimal"]}</span>$

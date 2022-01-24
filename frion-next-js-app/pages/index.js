@@ -185,7 +185,6 @@ export default function Home() {
   };
 
   const [cart, setCart] = useState([]);
-  console.log(cart);
   return (
     <div>
       {/* NavBar */}
@@ -261,7 +260,7 @@ export default function Home() {
         </div>
       )}
 
-      {isCartOpened && (
+      {isCartOpened && cart.length > 0 && (
         <div
           className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
         >
@@ -282,14 +281,12 @@ export default function Home() {
                 </div>
               </div>
 
-              <div
-                className={`${cartBlock.product} bg-white mt-4 w-full py-2 rounded-lg`}
-              >
+              <div className={`${cartBlock.product} mt-4 w-full rounded-lg`}>
                 {/* One product order */}
                 {cart.map((product) => {
                   return (
                     <>
-                      <div className="flex justify-between">
+                      <div className="flex bg-white  justify-between">
                         <div className={`${cartBlock.images}  mt-2`}>
                           <Image
                             className="rounded-lg"
@@ -315,13 +312,25 @@ export default function Home() {
                                 className="w-14 border rounded-xl pl-3"
                                 type={"number"}
                                 defaultValue={product.number}
-                                onChange={(e)=>{
+                                onChange={(e) => {
                                   product.number = e.target.value;
                                   console.log(product.number);
                                 }}
                               ></input>
                             </div>
                           </div>
+                        </div>
+                        <div className={`w-4 mt-2 mr-2`}>
+                          <Image
+                            src={crossIcon}
+                            alt="Close"
+                            onClick={() => {
+                              setCart([
+                                ...cart.slice(0, cart.indexOf(product)),
+                                ...cart.slice(cart.indexOf(product) + 1),
+                              ]);
+                            }}
+                          ></Image>
                         </div>
                       </div>
                       {cart[cart.length - 1] != product && (
@@ -569,9 +578,9 @@ export default function Home() {
                     <button
                       className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
                       onClick={() => {
-                        if (!cart.map(e => e._id).includes(product._id)) {
+                        if (!cart.map((e) => e._id).includes(product._id)) {
                           // console.log(cart.map(e => e._id).includes(product._id));
-                          setCart([...cart, {...product, number: 1}]);
+                          setCart([...cart, { ...product, number: 1 }]);
                         }
                       }}
                     >
