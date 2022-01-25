@@ -13,13 +13,13 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
     addAndUpdateProducts: Fkey.addAndUpdateProducts,
     deleteProducts: Fkey.deleteProducts,
     takingReq: Fkey.takingReq,
-    deletingTakingReq: Fkey.deletingTakingReq,
+    acceptedTakingReq: Fkey.acceptedTakingReq,
     givingReq: Fkey.givingReq,
-    deletingGivingReq: Fkey.deletingGivingReq,
+    acceptedGivingReq: Fkey.acceptedGivingReq,
     healingReq: Fkey.healingReq,
-    deletingHealingReq: Fkey.deletingHealingReq,
-    addPlaces: Fkey.addPlaces,
-    deletePlaces: Fkey.deletePlaces,
+    acceptedHealingReq: Fkey.acceptedHealingReq,
+    orders: Fkey.orders,
+    acceptedOrders: Fkey.acceptedOrders,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -164,7 +164,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update taking requests:
+                Can work with unaccepted taking requests:
                 </span>
                 <input
                   name="takingReq"
@@ -182,24 +182,24 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete taking requests:
+                  Can work with accepted taking requests:
                 </span>
                 <input
-                  name="deletingTakingReq"
+                  name="acceptedTakingReq"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      deletingTakingReq: !form.deletingTakingReq,
+                      acceptedTakingReq: !form.acceptedTakingReq,
                     });
                   }}
                   type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
-                  checked={form.deletingTakingReq}
+                  checked={form.acceptedTakingReq}
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update giving requests:
+                Can work with unaccepted giving requests:
                 </span>
                 <input
                   name="givingReq"
@@ -216,24 +216,24 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete giving requests:
+                Can work with accepted giving requests:
                 </span>
                 <input
-                  name="deletingGivingReq"
+                  name="acceptedGivingReq"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      deletingGivingReq: !form.deletingGivingReq,
+                      acceptedGivingReq: !form.acceptedGivingReq,
                     });
                   }}
                   type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
-                  checked={form.deletingGivingReq}
+                  checked={form.acceptedGivingReq}
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update healing requests:
+                Can work with unaccepted healing requests:
                 </span>
                 <input
                   name="healingReq"
@@ -250,53 +250,53 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete healing requests:
+                Can work with accepted healing requests:
                 </span>
                 <input
-                  name="deletingHealingReq"
+                  name="acceptedHealingReq"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      deletingHealingReq: !form.deletingHealingReq,
+                      acceptedHealingReq: !form.acceptedHealingReq,
                     });
                   }}
                   type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
-                  checked={form.deletingHealingReq}
+                  checked={form.acceptedHealingReq}
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update place information:
+                Can work with unaccepted orders:
                 </span>
                 <input
-                  name="addPlaces"
+                  name="orders"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      addPlaces: !form.addPlaces,
+                      orders: !form.orders,
                     });
                   }}
                   type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
-                  checked={form.addPlaces}
+                  checked={form.orders}
                 />
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete place information:
+                Can work with accepted orders:
                 </span>
                 <input
-                  name="deletePlaces"
+                  name="acceptedOrders"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      deletePlaces: !form.deletePlaces,
+                      acceptedOrders: !form.acceptedOrders,
                     });
                   }}
                   type="checkbox"
                   className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
-                  checked={form.deletePlaces}
+                  checked={form.acceptedOrders}
                 />
 
               </div>

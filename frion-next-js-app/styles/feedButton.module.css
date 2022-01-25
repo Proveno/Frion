@@ -2,6 +2,7 @@
     background-color: lightgray;
     width: 45px;
     height: 45px;
+    z-index: 10;
 }
 .textPlace{
     background-color: lightgray;

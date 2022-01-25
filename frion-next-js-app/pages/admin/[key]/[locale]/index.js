@@ -81,10 +81,12 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
       {isKeyValid ? (
         <div>
           <div
-            className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
+            className={`${shopBlock.shopContainer} container mx-auto py-12 justify-center`}
           >
+            <p className="text-3xl ml-8">Welcome, {keyData[0].owner}</p>
+            <p className="text-l ml-8 mt-2">Have a nice day!</p>
             <div
-              className={`grid auto-rows-max grid-cols-4 justify-between w-full`}
+              className={`grid auto-rows-max grid-cols-4 mt-2 justify-between w-full`}
             >
               {(keyData[0].addAndUpdateKeys || keyData[0].deleteKeys) && (
                 <Link href={`/admin/${Akey}/${locale}/keys/`}>
@@ -172,7 +174,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                 </Link>
               )}
 
-              {(keyData[0].orders) && (
+              {keyData[0].orders && (
                 <Link href={`/admin/${Akey}/${locale}/orders/`}>
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
@@ -181,7 +183,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   </div>
                 </Link>
               )}
-                            {(keyData[0].acceptedOrders) && (
+              {keyData[0].acceptedOrders && (
                 <Link href={`/admin/${Akey}/${locale}/acceptedOrders/`}>
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}

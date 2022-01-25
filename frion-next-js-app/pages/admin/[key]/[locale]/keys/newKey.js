@@ -21,8 +21,8 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
     acceptedGivingReq: false,
     healingReq: false,
     acceptedHealingReq: false,
-    addPlaces: false,
-    deletePlaces: false,
+    orders: false,
+    acceptedOrders: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -160,7 +160,7 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update taking requests:
+                Can work with unaccepted taking requests:
                 </span>
                 <input
                   name="takingReq"
@@ -176,14 +176,14 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete taking requests:
+                Can work with accepted taking requests:
                 </span>
                 <input
-                  name="deletingTakingReq"
+                  name="acceptedTakingReq"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      acceptedTakingReq: !form.deletingTakingReq,
+                      acceptedTakingReq: !form.acceptedTakingReq,
                     });
                   }}
                   type="checkbox"
@@ -192,7 +192,7 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update giving requests:
+                Can work with unaccepted giving requests:
                 </span>
                 <input
                   name="givingReq"
@@ -208,14 +208,14 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete giving requests:
+                Can work with accepted giving requests:
                 </span>
                 <input
-                  name="deletingGivingReq"
+                  name="acceptedGivingReq"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      acceptedGivingReq: !form.deletingGivingReq,
+                      acceptedGivingReq: !form.acceptedGivingReq,
                     });
                   }}
                   type="checkbox"
@@ -224,7 +224,7 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update healing requests:
+                Can work with unaccepted healing requests:
                 </span>
                 <input
                   name="healingReq"
@@ -240,14 +240,14 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete healing requests:
+                Can work with accepted healing requests:
                 </span>
                 <input
-                  name="deletingHealingReq"
+                  name="acceptedHealingReq"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      acceptedHealingReq: !form.deletingHealingReq,
+                      acceptedHealingReq: !form.acceptedHealingReq,
                     });
                   }}
                   type="checkbox"
@@ -256,14 +256,14 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update place information:
+                Can work with unaccepted orders:
                 </span>
                 <input
-                  name="addPlaces"
+                  name="orders"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      addPlaces: !form.addPlaces,
+                      orders: !form.orders,
                     });
                   }}
                   type="checkbox"
@@ -272,14 +272,14 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete place information:
+                Can work with accepted orders:
                 </span>
                 <input
-                  name="deletePlaces"
+                  name="acceptedOrders"
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      deletePlaces: !form.deletePlaces,
+                      acceptedOrders: !form.acceptedOrders,
                     });
                   }}
                   type="checkbox"

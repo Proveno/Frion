@@ -44,6 +44,89 @@ const UserProductList = ({ allProducts, locale }) => {
   const [isCartOpened, setIsCartOpened] = useState(false);
   const [cart, setCart] = useState([]);
 
+  const [cartForm, setCartForm] = useState({
+    name: "",
+    surname: "",
+    phone: "",
+    email: "",
+    products: [],
+    productsQuant: [],
+    sum: 0.0,
+    orderLocale: "en",
+    accepted: false,
+    createdAt: new Date(),
+  });
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [cartErrors, setCartErrors] = useState({});
+  useEffect(() => {
+    if (isConfirming) {
+      if (Object.keys(cartErrors).length === 0) {
+        console.log(cartForm);
+        createOrder();
+      } else {
+        setIsConfirming(false);
+      }
+    }
+  }, [cartErrors]);
+  const createOrder = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/cart/`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartForm),
+      });
+      router.reload(`/products/${locale}/`);
+    } catch (error) {
+      console.log(console.error());
+    }
+  };
+  const handleCartChange = (e) => {
+    setCartForm({
+      ...cartForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const cartValidate = () => {
+    let err = {};
+    if (!cartForm.name) {
+      err.name = "Description is required";
+    }
+    if (!cartForm.surname) {
+      err.surname = "Description is required";
+    }
+    if (!cartForm.phone) {
+      err.phone = "Description is required";
+    }
+    if (!cartForm.email) {
+      err.email = "Description is required";
+    }
+    return err;
+  };
+  const handleCartSubmit = (e) => {
+    let sum = 0;
+    cart.map((order)=>{sum += order.price["$numberDecimal"] * order.number;})
+
+
+
+    setCartForm({
+      ...cartForm,
+      products: cart.map((order)=>{return order._id;}),
+      productsQuant: cart.map((order)=>{return order.number;}),
+      sum: sum,
+      orderLocale: locale
+    })
+
+    e.preventDefault();
+    let errs = cartValidate();
+    console.log(errs);
+    setCartErrors(errs);
+    setIsConfirming(true);
+  };
+  const [isBuy, setIsBuy] = useState(false);
+
   return (
     <div>
       {isCartOpened && (
@@ -51,93 +134,201 @@ const UserProductList = ({ allProducts, locale }) => {
           className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
         >
           <div className={`${cartBlock.cart} self-center w-2/5 rounded-3xl`}>
-            <div className={`${cartBlock.products} px-4 pt-2`}>
-              <div className="flex justify-between">
-                <div className="text-start text-2xl font-bold text-gray-700">
-                  {t.myOrder}
-                </div>
-                <div
-                  className={`${cartBlock.close} mt-1`}
-                  onClick={() => {
-                    setShouldNavButtons(true);
-                    setIsCartOpened(false);
-                  }}
-                >
-                  <Image src={crossIcon} alt="Close"></Image>
-                </div>
-              </div>
+          {!isBuy ? (
+              <>
+                <div className={`${cartBlock.products} px-4 pt-2`}>
+                  <div className="flex justify-between">
+                    <div className="text-start text-2xl font-bold text-gray-700">
+                      {t.myOrder}
+                    </div>
+                    <div
+                      className={`${cartBlock.close} mt-1`}
+                      onClick={() => {
+                        setShouldNavButtons(true);
+                        setIsCartOpened(false);
+                      }}
+                    >
+                      <Image src={crossIcon} alt="Close"></Image>
+                    </div>
+                  </div>
 
-              <div className={`${cartBlock.product} mt-4 w-full rounded-lg`}>
-                {/* One product order */}
-                {cart.map((product) => {
-                  return (
-                    <>
-                      <div className="flex bg-white  justify-between">
-                        <div className={`${cartBlock.images}  mt-2`}>
-                          <Image
-                            className="rounded-lg"
-                            src={product.photo}
-                            width={130}
-                            height={130}
-                          ></Image>
-                        </div>
-                        <div className="w-4/5">
-                          <span className="block text-sm text-lg text-gray-700 my-2">
-                            {product.title}
-                          </span>
-                          <div className="w-full pr-5">
-                            <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                              <div>{t.priceCart}</div>
-                              <div>
-                                <span>{product.price["$numberDecimal"]}</span>$
+                  <div
+                    className={`${cartBlock.product} mt-4 w-full rounded-lg`}
+                  >
+                    {/* One product order */}
+                    {cart.map((product) => {
+                      return (
+                        <>
+                          <div className="flex bg-white  justify-between">
+                            <div className={`${cartBlock.images}  mt-2`}>
+                              <Image
+                                className="rounded-lg"
+                                src={product.photo}
+                                width={130}
+                                height={130}
+                              ></Image>
+                            </div>
+                            <div className="w-4/5">
+                              <span className="block text-sm text-lg text-gray-700 my-2">
+                                {product.title}
+                              </span>
+                              <div className="w-full pr-5">
+                                <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                                  <div>{t.priceCart}</div>
+                                  <div>
+                                    <span>
+                                      {product.price["$numberDecimal"]}
+                                    </span>
+                                    $
+                                  </div>
+                                </div>
+                                <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
+                                  <div>{t.quantityCart}</div>
+                                  <input
+                                    className="w-14 border rounded-xl pl-3"
+                                    type={"number"}
+                                    defaultValue={product.number}
+                                    onChange={(e) => {
+                                      product.number = e.target.value;
+                                      console.log(product.number);
+                                    }}
+                                  ></input>
+                                </div>
                               </div>
                             </div>
-                            <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
-                              <div>{t.quantityCart}</div>
-                              <input
-                                className="w-14 border rounded-xl pl-3"
-                                type={"number"}
-                                defaultValue={product.number}
-                                onChange={(e) => {
-                                  product.number = e.target.value;
-                                  console.log(product.number);
+                            <div className={`w-4 mt-2 mr-2`}>
+                              <Image
+                                src={crossIcon}
+                                alt="Close"
+                                onClick={() => {
+                                  setCart([
+                                    ...cart.slice(0, cart.indexOf(product)),
+                                    ...cart.slice(cart.indexOf(product) + 1),
+                                  ]);
                                 }}
-                              ></input>
+                              ></Image>
                             </div>
                           </div>
-                        </div>
-                        <div className={`w-4 mt-2 mr-2`}>
-                          <Image
-                            src={crossIcon}
-                            alt="Close"
-                            onClick={() => {
-                              setCart([
-                                ...cart.slice(0, cart.indexOf(product)),
-                                ...cart.slice(cart.indexOf(product) + 1),
-                              ]);
-                            }}
-                          ></Image>
-                        </div>
-                      </div>
-                      {cart[cart.length - 1] != product && (
-                        <div className={`${cartBlock.line} w-full h-0.5`}></div>
-                      )}
-                    </>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="flex">
-              <div
-                className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
-                onClick={()=>{
-                  console.log(cart);
-                }
-                }
-              >
-                {t.buyButtonCart}
-              </div>
-            </div>
+                          {cart[cart.length - 1] != product && (
+                            <div
+                              className={`${cartBlock.line} w-full h-0.5`}
+                            ></div>
+                          )}
+                        </>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="flex">
+                  <div
+                    className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
+                    onClick={() => {
+                      setIsBuy(true);
+                    }}
+                  >
+                    {t.buyButtonCart}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className={`${cartBlock.products} px-4 pt-2`}>
+                  <div className="flex justify-between">
+                    <div className="text-start text-2xl font-bold text-gray-700">
+                      {t.myOrder}
+                    </div>
+                    <div
+                      className={`${cartBlock.close} mt-1`}
+                      onClick={() => {
+                        setShouldNavButtons(true);
+                        setIsCartOpened(false);
+                      }}
+                    >
+                      <Image src={crossIcon} alt="Close"></Image>
+                    </div>
+                  </div>
+                  <div
+                    className={`${cartBlock.product} mt-4 w-full rounded-lg`}
+                  >
+                    <form className="my-7">
+                      <label className="block my-3">
+                        <span className="block text-sm font-medium text-gray-700">
+                          {t.firstNameLabel}
+                        </span>
+                        <input
+                          name="name"
+                          onChange={handleCartChange}
+                          type="text"
+                          required
+                          className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                          placeholder={`${t.firstNameLabelPlaceholder}`}
+                        />
+                      </label>
+                      <label className="block my-3">
+                        <span className="block text-sm font-medium text-gray-700">
+                          {t.secondNameLabel}
+                        </span>
+                        <input
+                          name="surname"
+                          onChange={handleCartChange}
+                          type="text"
+                          required
+                          className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                          placeholder={`${t.secondNameLabelPlaceholder}`}
+                        />
+                      </label>
+                      <label className="block my-3">
+                        <span className="block text-sm font-medium text-gray-700">
+                          {t.phoneNumberLabel}
+                        </span>
+                        <input
+                          name="phone"
+                          onChange={handleCartChange}
+                          type="text"
+                          className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
+                          placeholder={`${t.phoneNumberLabelPlaceholder}`}
+                          required
+                        />
+                      </label>
+                      <label className="block my-3">
+                        <span class="block text-sm font-medium text-gray-700">
+                          {t.emailLabel}
+                        </span>
+                        <input
+                          onChange={handleCartChange}
+                          type="email"
+                          name="email"
+                          id="email"
+                          class="peer px-3 py-2 bg-white placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-lg invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+                          required
+                          placeholder={`${t.emailLabelPlaceholder}`}
+                        />
+                        <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
+                          {t.pleaseEnterRightEmail}
+                        </p>
+                      </label>
+                      {/* TODO: country, city, place */}
+                    </form>
+                  </div>
+                </div>
+                <div className="flex">
+                  <div
+                    className={`${cartBlock.back} self-end w-1/2 rounded-bl-xl text-center py-4 text-xl`}
+                    onClick={() => {
+                      setIsBuy(false);
+                    }}
+                  >
+                    Back
+                  </div>
+                  <div
+                    className={`${cartBlock.submit} self-end w-1/2 rounded-br-xl text-center py-4 text-xl`}
+                    onClick={handleCartSubmit}
+                  >
+                    Confirm
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -182,7 +373,6 @@ const UserProductList = ({ allProducts, locale }) => {
                         `http://localhost:3000/api/products/${locale}`,
                       );
                       const { data } = await newProducts.json();
-                      console.log("TES", data);
                       setProducts(data);
                     }
                   }}
@@ -196,13 +386,26 @@ const UserProductList = ({ allProducts, locale }) => {
               <select
                 className={`${navBar.langButton} px-4 text`}
                 id="LanguageSelect"
-                onChange={() => {
+                onChange={async() => {
                   setT(getLang(document.getElementById("LanguageSelect").value));
                   router.push(
-                    `/products/${
-                      document.getElementById("LanguageSelect").value
-                    }/`
+                    `/products/${document.getElementById("LanguageSelect").value}/`
                   );
+                  setCart([]);
+                  if (search.searchRequest){
+                    const newProducts = await fetch(
+                      `http://localhost:3000/api/products/${document.getElementById("LanguageSelect").value}/${search.searchRequest}`,
+                    );
+                    const { data } = await newProducts.json();
+                    setProducts(data);
+                  }
+                  else{
+                    const newProducts = await fetch(
+                      `http://localhost:3000/api/products/${document.getElementById("LanguageSelect").value}`,
+                    );
+                    const { data } = await newProducts.json();
+                    setProducts(data);
+                  }
                 }}
                 defaultValue={locale}
               >
@@ -239,7 +442,7 @@ const UserProductList = ({ allProducts, locale }) => {
                   <div
                     className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                   >
-                    <Link href={`/products/${router.locale}/product/${product._id}`}>
+                    <Link href={`/products/${locale}/product/${product._id}`}>
                       <Image
                         width={500}
                         height={500}
