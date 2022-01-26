@@ -474,7 +474,9 @@ const UserProductList = ({ allProducts, locale }) => {
             </>
           ) : (
             // TODO: make beautifyll exeption
-            <div>Nothing here</div>
+            <div className="mt-48 text-4xl">
+            Nothing found
+          </div>
           )}
         </div>
       </div>

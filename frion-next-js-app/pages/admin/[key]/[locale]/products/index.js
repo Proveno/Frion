@@ -204,14 +204,18 @@ const AdminProductList = ({ Akey, isKeyValid, keyData, products, locale }) => {
                 </>
               ) : (
                 // TODO: make beautifyll exeption
-                <div>Nothing here</div>
+                <div className="mt-48 text-4xl">
+            Nothing found
+          </div>
               )}
             </div>
           </div>
         </div>
       ) : (
         <div className="flex justify-center">
-          <div className="text-2xl">Admin key is incorrect</div>
+<div className="mt-48 text-4xl">
+            Admin key is incorrect
+          </div>
         </div>
       )}
     </div>

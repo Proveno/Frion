@@ -94,7 +94,9 @@ const NewProduct = ({Akey, isKeyValid, keyData,locale }) => {
         </div>
       ) : (
         <div className="flex justify-center">
-          <div className="text-2xl">Admin key is incorrect</div>
+<div className="mt-48 text-4xl">
+            Admin key is incorrect
+          </div>
         </div>
       )}
     </div>

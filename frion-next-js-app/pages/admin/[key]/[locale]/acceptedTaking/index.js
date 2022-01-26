@@ -11,6 +11,7 @@ import Image from "next/image";
 
 import navBar from "../../../../../styles/navBar.module.css";
 import MenuIcon from "../../../../../assets/logo.png";
+import manIcon from "../../../../../assets/Icons/Tilda_Icons_3st_man.svg";
 
 import requestStyle from "../../../../../styles/requests.module.css";
 
@@ -49,7 +50,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({archivedAt: new Date()}),
+          body: JSON.stringify({ archivedAt: new Date() }),
         }
       );
       router.push(`/admin/${Akey}/${locale}/acceptedTaking/`);
@@ -65,7 +66,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({accepted: true}),
+          body: JSON.stringify({ accepted: true }),
         }
       );
       router.push(`/admin/${Akey}/${locale}/acceptedTaking/`);
@@ -101,7 +102,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                 placeholder="Enter title..."
               ></input>
               <Link
-                href={`/admin/${Akey}/${locale}/taking/${search.searchRequest}`}
+                href={`/admin/${Akey}/${locale}/acceptedTaking/${search.searchRequest}`}
               >
                 <button
                   className={`${requestStyle.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
@@ -123,7 +124,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/taking/`
+                    }/acceptedTaking/`
                   );
                 }}
                 defaultValue={locale}
@@ -137,62 +138,97 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
           </div>
         </div>
       </div>
-      {isKeyValid &&
-      (keyData[0].acceptedTakingReq) ? (
+      {isKeyValid && keyData[0].acceptedTakingReq ? (
         <div>
-          <div
-            className={`container mx-auto flex py-12 justify-center`}
-          >
+          <div className={`container mx-auto flex py-12 justify-center`}>
             <div className={`grid auto-rows-max grid-cols-4`}>
               {requests ? (
                 <>
                   {requests.map((request) => {
-                      if(request.accepted && request.archivedAt == undefined){
-                        return (
-                            <div
-                              className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
-                              // onClick={()=>{
-                              //     router.push(`/admin/${Akey}/${
-                              //       document.getElementById("LanguageSelect").value
-                              //     }/acceptedTaking/request/${request._id}`)
-                              // }}
-                            > 
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.phone}
+                    if (request.accepted && request.archivedAt == undefined) {
+                      return (
+                        <div
+                          className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-start px-4 pt-3 pb-16 rounded-lg`}
+                          // onClick={()=>{
+                          //     router.push(`/admin/${Akey}/${
+                          //       document.getElementById("LanguageSelect").value
+                          //     }/acceptedTaking/request/${request._id}`)
+                          // }}
+                        >
+                          <Image
+                            width={500}
+                            height={500}
+                            className={`border-none rounded-3xl`}
+                            src={manIcon}
+                            alt="Product picture"
+                          ></Image>
+                          <div className="flex mt-3">
+                            <div className="w-1/2 px-3">
+                              <span className="block text-sm font-medium text-gray-700">
+                                Name
                               </span>
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.email}
+                              <span className="break-words block text-base text-gray-700 px-2">
+                                {request.name}
                               </span>
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.createdAt}
-                              </span>
-                              <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
-                                <div className="w-full py-1 flex">
-                                  <button
-                                      className={`${requestStyle.deleteButton} ${`w-full rounded-lg`}`}
-                                      onClick={() => {
-                                        setArchivingTakingId(request._id);
-                                      }}
-                                    >
-                                      ARCHIVE
-                                    </button>
-                                </div>
-                              </div>
                             </div>
-                          );
-                      }
+
+                            <div className="w-1/2 px-3">
+                              <span className="block text-sm font-medium text-gray-700">
+                                Surname
+                              </span>
+                              <span className="break-words block text-base text-gray-700 px-2">
+                                {request.surname}
+                              </span>
+                            </div>
+                          </div>
+
+                          <span className="block text-sm font-medium text-gray-700 mx-3">
+                            Phone
+                          </span>
+                          <span className="break-words block text-base text-gray-700 mx-5">
+                            +{request.phone}
+                          </span>
+
+                          <span className="block text-sm font-medium text-gray-700 mx-3">
+                            Email
+                          </span>
+                          <span className="break-words block text-base text-gray-700 mx-5 mb-3">
+                            {request.email}
+                          </span>
+                          
+                          <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                            <div className="w-full py-1 flex">
+                              <button
+                                className={`${
+                                  requestStyle.deleteButton
+                                } ${`w-full rounded-lg`}`}
+                                onClick={() => {
+                                  setArchivingTakingId(request._id);
+                                }}
+                              >
+                                ARCHIVE
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
                   })}
                 </>
               ) : (
                 // TODO: make beautifyll exeption
-                <div>Nothing here</div>
+                <div className="mt-48 text-4xl">
+            Nothing found
+          </div>
               )}
             </div>
           </div>
         </div>
       ) : (
         <div className="flex justify-center">
-          <div className="text-2xl">Admin key is incorrect</div>
+<div className="mt-48 text-4xl">
+            Admin key is incorrect
+          </div>
         </div>
       )}
     </div>

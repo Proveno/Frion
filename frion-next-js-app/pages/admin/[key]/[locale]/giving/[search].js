@@ -11,7 +11,7 @@ import Image from "next/image";
 
 import navBar from "../../../../../styles/navBar.module.css";
 import MenuIcon from "../../../../../assets/logo.png";
-
+import manIcon from "../../../../../assets/Icons/Tilda_Icons_3st_man.svg";
 import requestStyle from "../../../../../styles/requests.module.css";
 
 const AdminGivingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText, locale }) => {
@@ -146,22 +146,53 @@ const AdminGivingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                       if(!request.accepted && request.archivedAt == undefined){
                         return (
                             <div
-                              className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+                              className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-start px-4 pt-3 pb-16 rounded-lg`}
                               // onClick={()=>{
                               //     router.push(`/admin/${Akey}/${
                               //       document.getElementById("LanguageSelect").value
                               //     }/giving/request/${request._id}`)
                               // }}
                             > 
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.phone}
+                              <Image
+                            width={500}
+                            height={500}
+                            className={`border-none rounded-3xl`}
+                            src={manIcon}
+                            alt="Product picture"
+                          ></Image>
+                          <div className="flex mt-3">
+                            <div className="w-1/2 px-3">
+                              <span className="block text-sm font-medium text-gray-700">
+                                Name
                               </span>
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.email}
+                              <span className="break-words block text-base text-gray-700 px-2">
+                                {request.name}
                               </span>
-                              <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                                {request.createdAt}
+                            </div>
+
+                            <div className="w-1/2 px-3">
+                              <span className="block text-sm font-medium text-gray-700">
+                                Surname
                               </span>
+                              <span className="break-words block text-base text-gray-700 px-2">
+                                {request.surname}
+                              </span>
+                            </div>
+                          </div>
+
+                          <span className="block text-sm font-medium text-gray-700 mx-3">
+                            Phone
+                          </span>
+                          <span className="break-words block text-base text-gray-700 mx-5">
+                            +{request.phone}
+                          </span>
+
+                          <span className="block text-sm font-medium text-gray-700 mx-3">
+                            Email
+                          </span>
+                          <span className="break-words block text-base text-gray-700 mx-5 mb-3">
+                            {request.email}
+                          </span>
                               <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                                 <div className="w-full py-1 flex">
                                       <button
@@ -190,14 +221,18 @@ const AdminGivingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                 </>
               ) : (
                 // TODO: make beautifyll exeption
-                <div>Nothing here</div>
+                <div className="mt-48 text-4xl">
+            Nothing found
+          </div>
               )}
             </div>
           </div>
         </div>
       ) : (
         <div className="flex justify-center">
-          <div className="text-2xl">Admin key is incorrect</div>
+          <div className="mt-48 text-4xl">
+            Admin key is incorrect
+          </div>
         </div>
       )}
     </div>

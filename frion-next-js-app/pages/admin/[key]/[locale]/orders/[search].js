@@ -19,7 +19,14 @@ import magnifierIcon from "../../../../../assets/Icons/Tilda_Icons_2web_magnifie
 import dataIcon from "../../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
 import requestStyle from "../../../../../styles/requests.module.css";
-const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale, searchText }) => {
+const AdminOrdersList = ({
+  Akey,
+  isKeyValid,
+  keyData,
+  orders,
+  locale,
+  searchText,
+}) => {
   const router = useRouter();
 
   function getLang(selectedLocale) {
@@ -50,7 +57,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale, searchText
       const deleted = await fetch(
         `http://localhost:3000/api/cart/order/${deletingOrderId}`,
         {
-          method: "DELETE"
+          method: "DELETE",
         }
       );
       router.push(`/admin/${Akey}/${locale}/orders/`);
@@ -66,7 +73,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale, searchText
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({accepted: true}),
+          body: JSON.stringify({ accepted: true }),
         }
       );
       router.push(`/admin/${Akey}/${locale}/orders/`);
@@ -151,28 +158,52 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale, searchText
                     if (!order.accepted && order.archivedAt == undefined) {
                       return (
                         <div
-                          className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
+                          className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-start px-4 pt-3 pb-16 rounded-lg`}
                           // onClick={()=>{
                           //     router.push(`/admin/${Akey}/${
                           //       document.getElementById("LanguageSelect").value
                           //     }/giving/request/${request._id}`)
                           // }}
                         >
-                            <Image
+                          <Image
                             width={500}
                             height={500}
                             className={`${shopBlock.shopImages} border-none rounded-3xl`}
                             src={manIcon}
                             alt="Product picture"
                           ></Image>
-                          <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                            {order.phone}
+                          <div className="flex mt-3">
+                            <div className="w-1/2 px-3">
+                              <span className="block text-sm font-medium text-gray-700">
+                                Name
+                              </span>
+                              <span className="break-words block text-base text-gray-700 px-2">
+                                {order.name}
+                              </span>
+                            </div>
+
+                            <div className="w-1/2 px-3">
+                              <span className="block text-sm font-medium text-gray-700">
+                                Surname
+                              </span>
+                              <span className="break-words block text-base text-gray-700 px-2">
+                                {order.surname}
+                              </span>
+                            </div>
+                          </div>
+
+                          <span className="block text-sm font-medium text-gray-700 mx-3">
+                            Phone
                           </span>
-                          <span className="break-words block text-sm text-lg text-gray-700 my-2">
+                          <span className="break-words block text-base text-gray-700 mx-5">
+                            +{order.phone}
+                          </span>
+
+                          <span className="block text-sm font-medium text-gray-700 mx-3">
+                            Email
+                          </span>
+                          <span className="break-words block text-base text-gray-700 mx-5 mb-3">
                             {order.email}
-                          </span>
-                          <span className="break-words block text-sm text-lg text-gray-700 my-2">
-                            {order.sum["$numberDecimal"]}
                           </span>
                           <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                             <div className="w-full py-1 flex">
@@ -206,23 +237,31 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale, searchText
                 </>
               ) : (
                 // TODO: make beautifyll exeption
-                <div>Nothing here</div>
+                <div className="mt-48 text-4xl">
+            Nothing found
+          </div>
               )}
             </div>
           </div>
         </div>
       ) : (
         <div className="flex justify-center">
-          <div className="text-2xl">Admin key is incorrect</div>
+<div className="mt-48 text-4xl">
+            Admin key is incorrect
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-AdminOrdersList.getInitialProps = async ({ query: { key, locale, search } }) => {
+AdminOrdersList.getInitialProps = async ({
+  query: { key, locale, search },
+}) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const orders = await fetch(`http://localhost:3000/api/cart/${locale}/${search}/`);
+  const orders = await fetch(
+    `http://localhost:3000/api/cart/${locale}/${search}/`
+  );
   const { success, keyData } = await keyRes.json();
   const { orderData } = await orders.json();
   return {
@@ -231,7 +270,7 @@ AdminOrdersList.getInitialProps = async ({ query: { key, locale, search } }) => 
     keyData: keyData,
     orders: orderData,
     locale: locale,
-    searchText: search
+    searchText: search,
   };
 };
 

@@ -4,7 +4,7 @@ import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import formStyle from "../../../../../../styles/requestForm.module.css";
-const EditProduct = ({ Akey, isKeyValid, product, allCategories }) => {
+const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
   const [form, setForm] = useState({
     title: product.title,
     description: product.description,
@@ -188,14 +188,16 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories }) => {
         </div>
       ) : (
         <div className="flex justify-center">
-          <div className="text-2xl">Admin key is incorrect</div>
+<div className="mt-48 text-4xl">
+            Admin key is incorrect
+          </div>
         </div>
       )}
     </>
   );
 };
 
-EditProduct.getInitialProps = async ({ query: { key, id } }) => {
+EditProduct.getInitialProps = async ({ query: { key, locale, id } }) => {
   const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
   const res = await fetch(`http://localhost:3000/api/products/product/${id}`);
 
@@ -210,6 +212,7 @@ EditProduct.getInitialProps = async ({ query: { key, id } }) => {
     isKeyValid: success,
     product: data,
     allCategories: dataCategories,
+    locale: locale
   };
 };
 
