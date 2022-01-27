@@ -105,7 +105,7 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/giving/`
+                    }/acceptedGiving/`
                   );
                 }}
                 defaultValue={locale}

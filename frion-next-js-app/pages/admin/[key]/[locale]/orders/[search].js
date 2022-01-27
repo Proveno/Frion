@@ -132,7 +132,7 @@ const AdminOrdersList = ({
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/orders`
+                    }/orders/${searchText}`
                   );
                 }}
                 defaultValue={locale}

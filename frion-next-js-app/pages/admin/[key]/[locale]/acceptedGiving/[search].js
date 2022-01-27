@@ -124,7 +124,7 @@ const AdminAcceptGivingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/giving/`
+                    }/acceptedGiving/${searchText}`
                   );
                 }}
                 defaultValue={locale}

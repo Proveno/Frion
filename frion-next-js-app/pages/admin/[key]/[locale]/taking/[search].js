@@ -119,7 +119,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/taking/`
+                    }/taking/${searchText}`
                   );
                 }}
                 defaultValue={locale}

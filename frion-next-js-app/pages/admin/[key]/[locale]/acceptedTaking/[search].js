@@ -125,7 +125,7 @@ const AdminAcceptTakingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/acceptedTaking/`
+                    }/acceptedTaking/${searchText}`
                   );
                 }}
                 defaultValue={locale}

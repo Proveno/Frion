@@ -119,7 +119,7 @@ const AdminHealingSearchList = ({ Akey, isKeyValid, keyData, requests, searchTex
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/healing/`
+                    }/healing/${searchText}`
                   );
                 }}
                 defaultValue={locale}

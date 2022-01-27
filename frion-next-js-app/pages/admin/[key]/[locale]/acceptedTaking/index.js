@@ -124,7 +124,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/acceptedTaking/`
+                    }/acceptedTaking`
                   );
                 }}
                 defaultValue={locale}

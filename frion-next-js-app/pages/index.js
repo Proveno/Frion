@@ -203,17 +203,21 @@ export default function Home() {
   };
   const handleCartSubmit = (e) => {
     let sum = 0;
-    cart.map((order)=>{sum += order.price["$numberDecimal"] * order.number;})
-
-
+    cart.map((order) => {
+      sum += order.price["$numberDecimal"] * order.number;
+    });
 
     setCartForm({
       ...cartForm,
-      products: cart.map((order)=>{return order._id;}),
-      productsQuant: cart.map((order)=>{return order.number;}),
+      products: cart.map((order) => {
+        return order._id;
+      }),
+      productsQuant: cart.map((order) => {
+        return order.number;
+      }),
       sum: sum,
-      orderLocale: router.locale
-    })
+      orderLocale: router.locale,
+    });
 
     e.preventDefault();
     let errs = cartValidate();
@@ -222,10 +226,8 @@ export default function Home() {
     setIsConfirming(true);
   };
 
-
   const [type, setType] = useState();
 
-  
   const [categories, setCategories] = useState();
   const getCategories = async () => {
     try {
@@ -268,8 +270,6 @@ export default function Home() {
     getProducts();
   }
 
-  
-
   const [cart, setCart] = useState([]);
   const [isBuy, setIsBuy] = useState(false);
   return (
@@ -280,14 +280,16 @@ export default function Home() {
           className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
         >
           {/* Logo/Home */}
-          <div className={`flex`}>
-            <div className={`${navBar.imageLogo}`}>
-              <Image src={MenuIcon} alt="Logo picture :>" />
+          <Link href={"/"}>
+            <div className={`flex`}>
+              <div className={`${navBar.imageLogo}`}>
+                <Image src={MenuIcon} alt="Logo picture :>" />
+              </div>
+              <div className={`ml-2 ${navBar.textLogo}`}>
+                <a>Frion</a>
+              </div>
             </div>
-            <div className={`ml-2 ${navBar.textLogo}`}>
-              <a>Frion</a>
-            </div>
-          </div>
+          </Link>
 
           {/* NavButtons */}
           {/* TODO: replace links to scroll */}

@@ -124,7 +124,7 @@ const AdminAcceptHealingSearchList = ({ Akey, isKeyValid, keyData, requests, sea
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/acceptedHealing/`
+                    }/acceptedHealing/${searchText}`
                   );
                 }}
                 defaultValue={locale}

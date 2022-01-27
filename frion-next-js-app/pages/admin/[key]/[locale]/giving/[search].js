@@ -119,7 +119,7 @@ const AdminGivingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
                   router.push(
                     `/admin/${Akey}/${
                       document.getElementById("LanguageSelect").value
-                    }/giving/`
+                    }/giving/${searchText}`
                   );
                 }}
                 defaultValue={locale}

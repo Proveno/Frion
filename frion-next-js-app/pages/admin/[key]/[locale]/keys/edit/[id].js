@@ -306,7 +306,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
                   type="submit"
                   className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}
                 >
-                  Create
+                  Edit
                 </button>
               </div>
             </form>
