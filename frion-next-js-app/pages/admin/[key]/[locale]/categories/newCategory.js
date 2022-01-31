@@ -41,7 +41,7 @@ const NewProduct = ({Akey, isKeyValid, keyData,locale }) => {
 
   const createCategory = async () => {
     try {
-      const res = await fetch("${process.env.API_HOST}/categories/", {
+      const res = await fetch(`${process.env.API_HOST}/categories/`, {
         method: "POST",
         headers: {
           Accept: "application/json",

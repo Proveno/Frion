@@ -58,7 +58,7 @@ const NewKey = ({ Akey, isKeyValid, keyData, locale }) => {
 
   const createKey = async () => {
     try {
-      const res = await fetch("${process.env.API_HOST}/keys/", {
+      const res = await fetch(`${process.env.API_HOST}/keys/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
