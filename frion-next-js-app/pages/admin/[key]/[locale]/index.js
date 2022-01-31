@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { en } from "../../../../locales/en";
 import { ru } from "../../../../locales/ru";
-import { uk } from "../../../../locales/uk";
+import { ua } from "../../../../locales/ua";
 import { de } from "../../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
@@ -28,8 +28,8 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
         return ru;
       case "de":
         return de;
-      case "uk":
-        return uk;
+      case "ua":
+        return ua;
     }
   }
   const [t, setT] = useState(getLang(locale));
@@ -72,7 +72,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                 <option value="en">{t.english}</option>
                 <option value="ru">{t.russian}</option>
                 <option value="de">{t.deutsch}</option>
-                <option value="uk">{t.ukrainian}</option>
+                <option value="ua">{t.ukrainian}</option>
               </select>
             </div>
           </div>
@@ -83,8 +83,11 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
           <div
             className={`${shopBlock.shopContainer} container mx-auto py-12 justify-center`}
           >
-            <p className="text-3xl ml-8">Welcome, {keyData[0].owner}</p>
-            <p className="text-l ml-8 mt-2">Have a nice day!</p>
+            <p className="text-3xl ml-8">
+              {t.welcomeWorker}
+              {keyData[0].owner}
+            </p>
+            <p className="text-l ml-8 mt-2">{t.haveANiceDayWorker}</p>
             <div
               className={`grid auto-rows-max grid-cols-4 mt-2 justify-between w-full`}
             >
@@ -93,7 +96,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Edit keys</button>
+                    <button className="">{t.editKeysPermission}</button>
                   </div>
                 </Link>
               )}
@@ -103,7 +106,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Edit products</button>
+                    <button className="">{t.editProductsPermission}</button>
                   </div>
                 </Link>
               )}
@@ -113,7 +116,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Taking requests</button>
+                    <button className="">{t.TakingRequestPermission}</button>
                   </div>
                 </Link>
               )}
@@ -122,7 +125,9 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Accepted taking requests</button>
+                    <button className="">
+                      {t.AcceptedTakingRequestPermission}
+                    </button>
                   </div>
                 </Link>
               )}
@@ -131,7 +136,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Giving requests</button>
+                    <button className="">{t.GivingRequestPermission}</button>
                   </div>
                 </Link>
               )}
@@ -140,7 +145,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Accepted giving requests</button>
+                    <button className="">{t.AcceptedGivingPermission}</button>
                   </div>
                 </Link>
               )}
@@ -150,7 +155,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Healing requests</button>
+                    <button className="">{t.HealingRequestPermission}</button>
                   </div>
                 </Link>
               )}
@@ -159,7 +164,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Accepted healing requests</button>
+                    <button className="">{t.AcceptedHealingPermission}</button>
                   </div>
                 </Link>
               )}
@@ -169,7 +174,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Edit categories</button>
+                    <button className="">{t.editCategoriesPermission}</button>
                   </div>
                 </Link>
               )}
@@ -179,7 +184,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Orders</button>
+                    <button className="">{t.OrdersPermission}</button>
                   </div>
                 </Link>
               )}
@@ -188,7 +193,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                   <div
                     className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">Accepted orders</button>
+                    <button className="">{t.AcceptedOrdersPermission}</button>
                   </div>
                 </Link>
               )}
@@ -197,9 +202,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
         </div>
       ) : (
         <div className="flex justify-center">
-<div className="mt-48 text-4xl">
-            Admin key is incorrect
-          </div>
+          <div className="mt-48 text-4xl">{t.keyIsIncorrect}</div>
         </div>
       )}
     </div>
@@ -207,7 +210,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
 };
 
 AdminList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
   const { success, keyData } = await keyRes.json();
   return { Akey: key, isKeyValid: success, keyData: keyData, locale: locale };
 };

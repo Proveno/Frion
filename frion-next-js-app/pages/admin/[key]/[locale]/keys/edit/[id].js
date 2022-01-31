@@ -4,7 +4,25 @@ import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import formStyle from "../../../../../../styles/requestForm.module.css";
+import { en } from "../../../../../../locales/en";
+import { ru } from "../../../../../../locales/ru";
+import { ua } from "../../../../../../locales/ua";
+import { de } from "../../../../../../locales/de";
 const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
+
+  function getLang(selectedLocale) {
+    switch (selectedLocale) {
+      case "en":
+        return en;
+      case "ru":
+        return ru;
+      case "de":
+        return de;
+      case "ua":
+        return ua;
+    }
+  }
+  const [t, setT] = useState(getLang(locale));
   const [form, setForm] = useState({
     key: Fkey.key,
     owner: Fkey.owner,
@@ -18,6 +36,8 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
     acceptedGivingReq: Fkey.acceptedGivingReq,
     healingReq: Fkey.healingReq,
     acceptedHealingReq: Fkey.acceptedHealingReq,
+    categories: Fkey.categories,
+    addCategories: Fkey.addCategories,
     orders: Fkey.orders,
     acceptedOrders: Fkey.acceptedOrders,
   });
@@ -40,7 +60,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
   const updateKey = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/keys/key/${router.query.id}`,
+        `${process.env.API_HOST}/key/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -78,7 +98,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
             <form className="my-7" onSubmit={handleSubmit}>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Owner:
+                  {t.ownerLabel}
                 </span>
                 <input
                   name="owner"
@@ -90,13 +110,13 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
                   }}
                   type="text"
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter title ...`}
+                  placeholder={t.ownerPlaceHolder}
                   defaultValue={form.owner}
                 />
               </label>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update keys:
+                  {t.editKeysKeyPermission}
                 </span>
                 <input
                   name="addAndUpdateKeys"
@@ -113,7 +133,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete keys:
+                  {t.deleteKeysKeyPermission}
                 </span>
                 <input
                   name="deleteKeys"
@@ -130,7 +150,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can add and update products:
+                  {t.editProductsKeyPermission}
                 </span>
                 <input
                   name="addAndUpdateProducts"
@@ -147,7 +167,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can delete products:
+                  {t.deleteProductsKeyPermission}
                 </span>
                 <input
                   name="deleteProducts"
@@ -164,7 +184,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can work with unaccepted taking requests:
+                  {t.TakingRequestKeyPermission}
                 </span>
                 <input
                   name="takingReq"
@@ -182,7 +202,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                  Can work with accepted taking requests:
+                  {t.AcceptedTakingRequestKeyPermission}
                 </span>
                 <input
                   name="acceptedTakingReq"
@@ -199,7 +219,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can work with unaccepted giving requests:
+                  {t.GivingRequestKeyPermission}
                 </span>
                 <input
                   name="givingReq"
@@ -216,7 +236,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can work with accepted giving requests:
+                  {t.AcceptedGivingKeyPermission}
                 </span>
                 <input
                   name="acceptedGivingReq"
@@ -233,7 +253,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can work with unaccepted healing requests:
+                  {t.HealingRequestKeyPermission}
                 </span>
                 <input
                   name="healingReq"
@@ -250,7 +270,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can work with accepted healing requests:
+                  {t.AcceptedHealingKeyPermission}
                 </span>
                 <input
                   name="acceptedHealingReq"
@@ -267,7 +287,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can work with unaccepted orders:
+                  {t.OrdersKeyPermission}
                 </span>
                 <input
                   name="orders"
@@ -284,7 +304,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
               </div>
               <div className="w-full my-3 flex justify-between">
                 <span className="block text-sm font-medium text-gray-700">
-                Can work with accepted orders:
+                  {t.AcceptedOrdersKeyPermission}
                 </span>
                 <input
                   name="acceptedOrders"
@@ -300,13 +320,49 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
                 />
 
               </div>
+              <div className="w-full my-3 flex justify-between">
+                <span className="block text-sm font-medium text-gray-700">
+                  {t.editCategoriesKeyPermission}
+                </span>
+                <input
+                  name="categories"
+                  onChange={(e) => {
+                    setForm({
+                      ...form,
+                      categories: !form.categories,
+                    });
+                  }}
+                  type="checkbox"
+                  className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
+                  checked={form.categories}
+                />
+
+              </div>
+              <div className="w-full my-3 flex justify-between">
+                <span className="block text-sm font-medium text-gray-700">
+                  {t.addCategoriesKeyPermission}
+                </span>
+                <input
+                  name="addCategories"
+                  onChange={(e) => {
+                    setForm({
+                      ...form,
+                      addCategories: !form.addCategories,
+                    });
+                  }}
+                  type="checkbox"
+                  className="mt-1 block w-1/5 px-3 py-2 bg-white rounded-lg text-sm"
+                  checked={form.addCategories}
+                />
+
+              </div>
 
               <div className="justify-center flex w-full">
                 <button
                   type="submit"
                   className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}
                 >
-                  Edit
+                  {t.editBtn}
                 </button>
               </div>
             </form>
@@ -317,8 +373,8 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
 };
 
 EditProduct.getInitialProps = async ({ query: { key, locale , id } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const res = await fetch(`http://localhost:3000/api/keys/key/${id}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.API_HOST}/keys/key/${id}`);
 
   const { keyData } = await res.json();
   const { success } = await keyRes.json();

@@ -40,7 +40,7 @@ export default async (req, res) => {
       break;
     case "DELETE":
       try {
-        const deleted = await Category.deleteOne({ category: category });
+        const deleted = await Category.findByIdAndDelete(id);
 
         if (!deleted) {
           return res.status(400).json({ success: false });

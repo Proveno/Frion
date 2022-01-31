@@ -4,8 +4,24 @@ import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import formStyle from "../../../../../styles/requestForm.module.css";
-
+import { en } from "../../../../../locales/en";
+import { ru } from "../../../../../locales/ru";
+import { ua } from "../../../../../locales/ua";
+import { de } from "../../../../../locales/de";
 const NewProduct = ({Akey, isKeyValid, keyData, category, locale }) => {
+  function getLang(selectedLocale) {
+    switch (selectedLocale) {
+      case "en":
+        return en;
+      case "ru":
+        return ru;
+      case "de":
+        return de;
+      case "ua":
+        return ua;
+    }
+  }
+  const [t, setT] = useState(getLang(locale));
   const router = useRouter();
   const [form, setForm] = useState({
     category: category.category,
@@ -25,7 +41,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, category, locale }) => {
 
   const createCategory = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/categories/${locale}/${category._id}/`, {
+      const res = await fetch(`${process.env.API_HOST}/categories/${locale}/${category._id}/`, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -71,14 +87,14 @@ const NewProduct = ({Akey, isKeyValid, keyData, category, locale }) => {
             <form className="my-7" onSubmit={handleSubmit}>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Category:
+                  {t.category}
                 </span>
                 <input
                   name="category"
                   onChange={handleChange}
                   type="text"
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter category ...`}
+                  placeholder={t.categoryPlaceHolder}
                   defaultValue={category.category}
                 />
               </label>
@@ -87,7 +103,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, category, locale }) => {
                   type="submit"
                   className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}
                 >
-                  Create
+                  {t.editBtn}
                 </button>
               </div>
             </form>
@@ -96,7 +112,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, category, locale }) => {
       ) : (
         <div className="flex justify-center">
 <div className="mt-48 text-4xl">
-            Admin key is incorrect
+{t.keyIsIncorrect}
           </div>
         </div>
       )}
@@ -105,9 +121,9 @@ const NewProduct = ({Akey, isKeyValid, keyData, category, locale }) => {
 };
 
 NewProduct.getInitialProps = async ({ query: { key, locale, id } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
   const categories = await fetch(
-    `http://localhost:3000/api/categories/${locale}/${id}`
+    `${process.env.API_HOST}/categories/${locale}/${id}`
   );
 
   const { dataCategories } = await categories.json();

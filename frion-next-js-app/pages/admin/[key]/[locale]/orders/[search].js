@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { en } from "../../../../../locales/en";
 import { ru } from "../../../../../locales/ru";
-import { uk } from "../../../../../locales/uk";
+import { ua } from "../../../../../locales/ua";
 import { de } from "../../../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
@@ -37,11 +37,11 @@ const AdminOrdersList = ({
         return ru;
       case "de":
         return de;
-      case "uk":
-        return uk;
+      case "ua":
+        return ua;
     }
   }
-  const [t, setT] = useState(getLang("en"));
+  const [t, setT] = useState(getLang(locale));
 
   const [search, setSearch] = useState({ searchRequest: "" });
   const handleChange = (e) => {
@@ -55,7 +55,7 @@ const AdminOrdersList = ({
   useEffect(async () => {
     if (deletingOrderId) {
       const deleted = await fetch(
-        `http://localhost:3000/api/cart/order/${deletingOrderId}`,
+        `${process.env.API_HOST}/order/${deletingOrderId}`,
         {
           method: "DELETE",
         }
@@ -66,7 +66,7 @@ const AdminOrdersList = ({
   useEffect(async () => {
     if (acceptingOrderId) {
       const accepted = await fetch(
-        `http://localhost:3000/api/cart/order/${acceptingOrderId}`,
+        `${process.env.API_HOST}/order/${acceptingOrderId}`,
         {
           method: "PUT",
           headers: {
@@ -106,7 +106,7 @@ const AdminOrdersList = ({
                 onChange={handleChange}
                 name="searchRequest"
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
-                placeholder="Enter phone..."
+                placeholder={t.searchPlaceholder}
                 defaultValue={searchText}
               ></input>
               <Link
@@ -115,7 +115,7 @@ const AdminOrdersList = ({
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
-                  Search
+                  {t.searchBtn}
                 </button>
               </Link>
             </div>
@@ -140,7 +140,7 @@ const AdminOrdersList = ({
                 <option value="en">{t.english}</option>
                 <option value="ru">{t.russian}</option>
                 <option value="de">{t.deutsch}</option>
-                <option value="uk">{t.ukrainian}</option>
+                <option value="ua">{t.ukrainian}</option>
               </select>
             </div>
           </div>
@@ -175,7 +175,7 @@ const AdminOrdersList = ({
                           <div className="flex mt-3">
                             <div className="w-1/2 px-3">
                               <span className="block text-sm font-medium text-gray-700">
-                                Name
+                                {t.NameReq}
                               </span>
                               <span className="break-words block text-base text-gray-700 px-2">
                                 {order.name}
@@ -184,7 +184,7 @@ const AdminOrdersList = ({
 
                             <div className="w-1/2 px-3">
                               <span className="block text-sm font-medium text-gray-700">
-                                Surname
+                                {t.SnameReq}
                               </span>
                               <span className="break-words block text-base text-gray-700 px-2">
                                 {order.surname}
@@ -193,14 +193,14 @@ const AdminOrdersList = ({
                           </div>
 
                           <span className="block text-sm font-medium text-gray-700 mx-3">
-                            Phone
+                            {t.PhoneReq}
                           </span>
                           <span className="break-words block text-base text-gray-700 mx-5">
-                            +{order.phone}
+                            {order.phone}
                           </span>
 
                           <span className="block text-sm font-medium text-gray-700 mx-3">
-                            Email
+                            {t.EmailReq}
                           </span>
                           <span className="break-words block text-base text-gray-700 mx-5 mb-3">
                             {order.email}
@@ -215,7 +215,7 @@ const AdminOrdersList = ({
                                   setAcceptingOrderId(order._id);
                                 }}
                               >
-                                ACCEPT
+                                {t.acceptBtn}
                               </button>
 
                               <button
@@ -226,7 +226,7 @@ const AdminOrdersList = ({
                                   setDeletingOrderId(order._id);
                                 }}
                               >
-                                DELETE
+                                {t.deleteBtn}
                               </button>
                             </div>
                           </div>
@@ -238,7 +238,7 @@ const AdminOrdersList = ({
               ) : (
                 // TODO: make beautifyll exeption
                 <div className="mt-48 text-4xl">
-            Nothing found
+            {t.nothingFound}
           </div>
               )}
             </div>
@@ -247,7 +247,7 @@ const AdminOrdersList = ({
       ) : (
         <div className="flex justify-center">
 <div className="mt-48 text-4xl">
-            Admin key is incorrect
+{t.keyIsIncorrect}
           </div>
         </div>
       )}
@@ -258,9 +258,9 @@ const AdminOrdersList = ({
 AdminOrdersList.getInitialProps = async ({
   query: { key, locale, search },
 }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/findKey/${key}`);
   const orders = await fetch(
-    `http://localhost:3000/api/cart/${locale}/${search}/`
+    `${process.env.API_HOST}/${locale}/${search}/`
   );
   const { success, keyData } = await keyRes.json();
   const { orderData } = await orders.json();

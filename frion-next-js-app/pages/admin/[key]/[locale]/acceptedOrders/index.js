@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { en } from "../../../../../locales/en";
 import { ru } from "../../../../../locales/ru";
-import { uk } from "../../../../../locales/uk";
+import { ua } from "../../../../../locales/ua";
 import { de } from "../../../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
@@ -30,11 +30,11 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
         return ru;
       case "de":
         return de;
-      case "uk":
-        return uk;
+      case "ua":
+        return ua;
     }
   }
-  const [t, setT] = useState(getLang("en"));
+  const [t, setT] = useState(getLang(locale));
 
   const [search, setSearch] = useState({ searchRequest: "" });
   const handleChange = (e) => {
@@ -47,7 +47,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
   useEffect(async () => {
     if (archivingOrderId) {
       const archived = await fetch(
-        `http://localhost:3000/api/cart/order/${archivingOrderId}`,
+        `${process.env.API_HOST}/cart/order/${archivingOrderId}`,
         {
           method: "PUT",
           headers: {
@@ -87,7 +87,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
                 onChange={handleChange}
                 name="searchRequest"
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
-                placeholder="Enter owner..."
+                placeholder={t.searchPlaceholder}
               ></input>
               <Link
                 href={`/admin/${Akey}/${locale}/acceptedOrders/${search.searchRequest}`}
@@ -95,7 +95,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
-                  Search
+                  {t.searchBtn}
                 </button>
               </Link>
             </div>
@@ -120,7 +120,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
                 <option value="en">{t.english}</option>
                 <option value="ru">{t.russian}</option>
                 <option value="de">{t.deutsch}</option>
-                <option value="uk">{t.ukrainian}</option>
+                <option value="ua">{t.ukrainian}</option>
               </select>
             </div>
           </div>
@@ -155,7 +155,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
                           <div className="flex mt-3">
                             <div className="w-1/2 px-3">
                               <span className="block text-sm font-medium text-gray-700">
-                                Name
+                                {t.NameReq}
                               </span>
                               <span className="break-words block text-base text-gray-700 px-2">
                                 {order.name}
@@ -164,7 +164,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
 
                             <div className="w-1/2 px-3">
                               <span className="block text-sm font-medium text-gray-700">
-                                Surname
+                                {t.SnameReq}
                               </span>
                               <span className="break-words block text-base text-gray-700 px-2">
                                 {order.surname}
@@ -173,14 +173,14 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
                           </div>
 
                           <span className="block text-sm font-medium text-gray-700 mx-3">
-                            Phone
+                            {t.PhoneReq}
                           </span>
                           <span className="break-words block text-base text-gray-700 mx-5">
-                            +{order.phone}
+                            {order.phone}
                           </span>
 
                           <span className="block text-sm font-medium text-gray-700 mx-3">
-                            Email
+                            {t.EmailReq}
                           </span>
                           <span className="break-words block text-base text-gray-700 mx-5 mb-3">
                             {order.email}
@@ -195,7 +195,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
                                     setArchivingOrderId(order._id);
                                 }}
                               >
-                                ARCHIVE
+                                {t.archiveBtn}
                               </button>
                             </div>
                           </div>
@@ -207,7 +207,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
               ) : (
                 // TODO: make beautifyll exeption
 <div className="mt-48 text-4xl">
-            Nothing found
+            {t.nothingFound}
           </div>
               )}
             </div>
@@ -216,7 +216,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
       ) : (
         <div className="flex justify-center">
 <div className="mt-48 text-4xl">
-            Admin key is incorrect
+{t.keyIsIncorrect}
           </div>
         </div>
       )}
@@ -225,8 +225,8 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale }) => {
 };
 
 AdminOrdersList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const orders = await fetch(`http://localhost:3000/api/cart/${locale}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const orders = await fetch(`${process.env.API_HOST}/cart/${locale}`);
   const { success, keyData } = await keyRes.json();
   const { ordersData } = await orders.json();
   return {

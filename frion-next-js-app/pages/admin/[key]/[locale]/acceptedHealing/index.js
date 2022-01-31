@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { en } from "../../../../../locales/en";
 import { ru } from "../../../../../locales/ru";
-import { uk } from "../../../../../locales/uk";
+import { ua } from "../../../../../locales/ua";
 import { de } from "../../../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
@@ -24,8 +24,8 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
         return ru;
       case "de":
         return de;
-      case "uk":
-        return uk;
+      case "ua":
+        return ua;
     }
   }
   const [t, setT] = useState(getLang(locale));
@@ -42,7 +42,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
   useEffect(async () => {
     if (archivingHealingId) {
       const archived = await fetch(
-        `http://localhost:3000/api/healing/request/${archivingHealingId}`,
+        `${process.env.API_HOST}/healing/request/${archivingHealingId}`,
         {
           method: "PUT",
           headers: {
@@ -58,7 +58,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
   useEffect(async () => {
     if (acceptingHealingId) {
       const accepted = await fetch(
-        `http://localhost:3000/api/healing/request/${acceptingHealingId}`,
+        `${process.env.API_HOST}/healing/request/${acceptingHealingId}`,
         {
           method: "PUT",
           headers: {
@@ -98,7 +98,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                 onChange={handleChange}
                 name="searchRequest"
                 className={`${requestStyle.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
-                placeholder="Enter title..."
+                placeholder={t.searchPlaceholder}
               ></input>
               <Link
                 href={`/admin/${Akey}/${locale}/acceptedHealing/${search.searchRequest}`}
@@ -106,7 +106,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                 <button
                   className={`${requestStyle.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
-                  Search
+                  {t.searchBtn}
                 </button>
               </Link>
             </div>
@@ -131,7 +131,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                 <option value="en">{t.english}</option>
                 <option value="ru">{t.russian}</option>
                 <option value="de">{t.deutsch}</option>
-                <option value="uk">{t.ukrainian}</option>
+                <option value="ua">{t.ukrainian}</option>
               </select>
             </div>
           </div>
@@ -167,7 +167,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                           <div className="flex mt-3">
                             <div className="w-1/2 px-3">
                               <span className="block text-sm font-medium text-gray-700">
-                                Name
+                                {t.NameReq}
                               </span>
                               <span className="break-words block text-base text-gray-700 px-2">
                                 {request.name}
@@ -176,7 +176,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
 
                             <div className="w-1/2 px-3">
                               <span className="block text-sm font-medium text-gray-700">
-                                Surname
+                                {t.SnameReq}
                               </span>
                               <span className="break-words block text-base text-gray-700 px-2">
                                 {request.surname}
@@ -185,17 +185,23 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                           </div>
 
                           <span className="block text-sm font-medium text-gray-700 mx-3">
-                            Phone
+                            {t.PhoneReq}
                           </span>
                           <span className="break-words block text-base text-gray-700 mx-5">
-                            +{request.phone}
+                            {request.phone}
                           </span>
 
                           <span className="block text-sm font-medium text-gray-700 mx-3">
-                            Email
+                            {t.EmailReq}
+                          </span>
+                          <span className="break-words block text-base text-gray-700 mx-5">
+                            {request.email}
+                          </span>
+                          <span className="block text-sm font-medium text-gray-700 mx-3">
+                            {t.PetReq}
                           </span>
                           <span className="break-words block text-base text-gray-700 mx-5 mb-3">
-                            {request.email}
+                            {request.category}
                           </span>
                               <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                                 <div className="w-full py-1 flex">
@@ -205,7 +211,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
                                         setArchivingHealingId(request._id);
                                       }}
                                     >
-                                      ARCHIVE
+                                      {t.archiveBtn}
                                     </button>
                                 </div>
                               </div>
@@ -217,7 +223,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
               ) : (
                 // TODO: make beautifyll exeption
 <div className="mt-48 text-4xl">
-            Nothing found
+            {t.nothingFound}
           </div>
               )}
             </div>
@@ -226,7 +232,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
       ) : (
         <div className="flex justify-center">
 <div className="mt-48 text-4xl">
-            Admin key is incorrect
+{t.keyIsIncorrect}
           </div>
         </div>
       )}
@@ -235,8 +241,8 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
 };
 
 AdminHealingList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const res = await fetch(`http://localhost:3000/api/healing/${locale}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.API_HOST}/healing/${locale}`);
   const { healingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {

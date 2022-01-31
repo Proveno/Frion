@@ -4,14 +4,30 @@ import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import formStyle from "../../../../../styles/requestForm.module.css";
-
+import { en } from "../../../../../locales/en";
+import { ru } from "../../../../../locales/ru";
+import { ua } from "../../../../../locales/ua";
+import { de } from "../../../../../locales/de";
 const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
+  function getLang(selectedLocale) {
+    switch (selectedLocale) {
+      case "en":
+        return en;
+      case "ru":
+        return ru;
+      case "de":
+        return de;
+      case "ua":
+        return ua;
+    }
+  }
+  const [t, setT] = useState(getLang(locale));
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",
     description: "",
     price: 0.0,
-    category: "",
+    category: allCategories[0],
     photo: "",
     productLocale: locale,
   });
@@ -31,7 +47,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
 
   const createProduct = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/products/", {
+      const res = await fetch("${process.env.API_HOST}/products/", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -65,9 +81,6 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
     if (parseFloat(form.price) < 0.0) {
       err.price = "Price is required";
     }
-    if (!form.category) {
-      err.price = "Category is required";
-    }
     if (!form.photo) {
       err.photo = "Photo url is required";
     }
@@ -86,19 +99,19 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
             <form className="my-7" onSubmit={handleSubmit}>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Title:
+                  {t.titleProduct}
                 </span>
                 <textarea
                   name="title"
                   onChange={handleChange}
                   type="text"
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter title ...`}
+                  placeholder={t.titleProductPlaceholder}
                 />
               </label>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Description:
+                  {t.descriptionProduct}
                 </span>
                 <textarea
                   name="description"
@@ -107,25 +120,25 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                   rows="5"
                   required
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter description...`}
+                  placeholder={t.descriptionProductPlaceholder}
                 />
               </label>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Price:
+                  {t.priceProduct}
                 </span>
                 <input
                   name="price"
                   onChange={handleChange}
                   type="text"
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter price...`}
+                  placeholder={t.priceProductPlaceholder}
                   required
                 />
               </label>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Category:
+                  {t.categoryProduct}
                 </span>
                 <select
                   name="category"
@@ -140,7 +153,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
               </label>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Photo URL:
+                  {t.photoProduct}
                 </span>
                 <div className="flex">
                   <input
@@ -148,7 +161,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                     onChange={handleChange}
                     type="text"
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                    placeholder={`Enter photo url...`}
+                    placeholder={t.photoProductPlaceholder}
                     required
                   />
                   <button
@@ -157,7 +170,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                       setPhotoUrl(form.photo);
                     }}
                   >
-                    Check
+                    {t.checkBtn}
                   </button>
                 </div>
               </label>
@@ -166,7 +179,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                   type="submit"
                   className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}
                 >
-                  Create
+                  {t.addBtn}
                 </button>
               </div>
             </form>
@@ -180,7 +193,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
       ) : (
         <div className="flex justify-center">
 <div className="mt-48 text-4xl">
-            Admin key is incorrect
+{t.keyIsIncorrect}
           </div>
         </div>
       )}
@@ -189,9 +202,9 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
 };
 
 NewProduct.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
   const categories = await fetch(
-    `http://localhost:3000/api/categories/${locale}/`
+    `${process.env.API_HOST}/categories/${locale}/`
   );
 
   const { dataCategories } = await categories.json();

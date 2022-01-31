@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { en } from "../../../../../locales/en";
 import { ru } from "../../../../../locales/ru";
-import { uk } from "../../../../../locales/uk";
+import { ua } from "../../../../../locales/ua";
 import { de } from "../../../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
@@ -35,11 +35,11 @@ const AdminKeyList = ({
         return ru;
       case "de":
         return de;
-      case "uk":
-        return uk;
+      case "ua":
+        return ua;
     }
   }
-  const [t, setT] = useState(getLang("en"));
+  const [t, setT] = useState(getLang(locale));
 
   const [search, setSearch] = useState({ searchRequest: "" });
   const handleChange = (e) => {
@@ -52,7 +52,7 @@ const AdminKeyList = ({
   useEffect(async () => {
     if (deletingKeyId) {
       const deleted = await fetch(
-        `http://localhost:3000/api/keys/key/${deletingKeyId}`,
+        `${process.env.API_HOST}/key/${deletingKeyId}`,
         {
           method: "Delete",
         }
@@ -87,7 +87,7 @@ const AdminKeyList = ({
                 onChange={handleChange}
                 name="searchRequest"
                 className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
-                placeholder="Enter owner..."
+                placeholder={t.searchPlaceholder}
                 defaultValue={searchText}
               ></input>
               <Link
@@ -96,7 +96,7 @@ const AdminKeyList = ({
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
                 >
-                  Search
+                  {t.searchBtn}
                 </button>
               </Link>
             </div>
@@ -121,7 +121,7 @@ const AdminKeyList = ({
                 <option value="en">{t.english}</option>
                 <option value="ru">{t.russian}</option>
                 <option value="de">{t.deutsch}</option>
-                <option value="uk">{t.ukrainian}</option>
+                <option value="ua">{t.ukrainian}</option>
               </select>
             </div>
           </div>
@@ -147,14 +147,14 @@ const AdminKeyList = ({
                     ></Image>
                   </Link>
                   <span className="block text-sm text-lg text-gray-700 my-2">
-                    Add new key
+                    {t.addNewKey}
                   </span>
                   <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                     <Link href={`/admin/${Akey}/${locale}/keys/newKey`}>
                       <button
                         className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
                       >
-                        ADD
+                        {t.addBtn}
                       </button>
                     </Link>
                   </div>
@@ -195,7 +195,7 @@ const AdminKeyList = ({
                                         : `w-full rounded-lg`
                                     }`}
                                   >
-                                    EDIT
+                                    {t.editBtn}
                                   </button>
                                 </Link>
                               )}
@@ -210,7 +210,7 @@ const AdminKeyList = ({
                                     setDeletingKeyId(key._id);
                                   }}
                                 >
-                                  DELETE
+                                  {t.deleteBtn}
                                 </button>
                               )}
                             </div>
@@ -223,7 +223,7 @@ const AdminKeyList = ({
               ) : (
                 // TODO: make beautifyll exeption
                 <div className="mt-48 text-4xl">
-            Nothing found
+            {t.nothingFound}
           </div>
               )}
             </div>
@@ -232,7 +232,7 @@ const AdminKeyList = ({
       ) : (
         <div className="flex justify-center">
 <div className="mt-48 text-4xl">
-            Admin key is incorrect
+{t.keyIsIncorrect}
           </div>
         </div>
       )}
@@ -241,8 +241,8 @@ const AdminKeyList = ({
 };
 
 AdminKeyList.getInitialProps = async ({ query: { key, locale, search } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const keys = await fetch(`http://localhost:3000/api/keys/${search}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/findKey/${key}`);
+  const keys = await fetch(`${process.env.API_HOST}/${search}`);
   const { success, keyData } = await keyRes.json();
   const { keysData } = await keys.json();
   return {

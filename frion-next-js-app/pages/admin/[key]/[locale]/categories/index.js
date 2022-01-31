@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { en } from "../../../../../locales/en";
 import { ru } from "../../../../../locales/ru";
-import { uk } from "../../../../../locales/uk";
+import { ua } from "../../../../../locales/ua";
 import { de } from "../../../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
@@ -24,8 +24,8 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
         return ru;
       case "de":
         return de;
-      case "uk":
-        return uk;
+      case "ua":
+        return ua;
     }
   }
   const [t, setT] = useState(getLang(locale));
@@ -34,7 +34,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
   useEffect(async () => {
     if (deletingCategory) {
       const deleted = await fetch(
-        `http://localhost:3000/api/categories/${locale}/${deletingCategory}`,
+        `${process.env.API_HOST}/categories/${locale}/${deletingCategory}`,
         {
           method: "Delete",
         }
@@ -86,7 +86,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
                 <option value="en">{t.english}</option>
                 <option value="ru">{t.russian}</option>
                 <option value="de">{t.deutsch}</option>
-                <option value="uk">{t.ukrainian}</option>
+                <option value="ua">{t.ukrainian}</option>
               </select>
             </div>
           </div>
@@ -101,7 +101,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
                   className={`${shopBlock.shopItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                 >
                   <span className="block text-sm text-lg text-gray-700 my-2">
-                    Add new category
+                    {t.addNewKey}
                   </span>
                   <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
                     <Link
@@ -110,7 +110,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
                       <button
                         className={`${shopBlock.shopBuyButton} w-full rounded-lg py-1`}
                       >
-                        ADD
+                        {t.addBtn}
                       </button>
                     </Link>
                   </div>
@@ -141,7 +141,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
                                       : `w-full rounded-lg`
                                   }`}
                                 >
-                                  EDIT
+                                  {t.editBtn}
                                 </button>
                               </Link>
                             )}
@@ -153,10 +153,10 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
                                     : `w-full rounded-lg`
                                 }`}
                                 onClick={() => {
-                                  setDeletingCategory(category.category);
+                                  setDeletingCategory(category._id);
                                 }}
                               >
-                                DELETE
+                                {t.deleteBtn}
                               </button>
                             )}
                           </div>
@@ -168,7 +168,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
               ) : (
                 // TODO: make beautifyll exeption
                 <div className="mt-48 text-4xl">
-            Nothing found
+            {t.nothingFound}
           </div>
               )}
             </div>
@@ -177,7 +177,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
       ) : (
         <div className="flex justify-center">
 <div className="mt-48 text-4xl">
-            Admin key is incorrect
+{t.keyIsIncorrect}
           </div>
         </div>
       )}
@@ -186,8 +186,8 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
 };
 
 AdminTakingList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const res = await fetch(`http://localhost:3000/api/categories/${locale}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.API_HOST}/categories/${locale}`);
   const { dataCategories } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {

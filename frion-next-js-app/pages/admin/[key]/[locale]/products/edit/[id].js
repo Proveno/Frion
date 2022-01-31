@@ -4,7 +4,24 @@ import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import formStyle from "../../../../../../styles/requestForm.module.css";
+import { en } from "../../../../../../locales/en";
+import { ru } from "../../../../../../locales/ru";
+import { ua } from "../../../../../../locales/ua";
+import { de } from "../../../../../../locales/de";
 const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
+  function getLang(selectedLocale) {
+    switch (selectedLocale) {
+      case "en":
+        return en;
+      case "ru":
+        return ru;
+      case "de":
+        return de;
+      case "ua":
+        return ua;
+    }
+  }
+  const [t, setT] = useState(getLang(locale));
   const [form, setForm] = useState({
     title: product.title,
     description: product.description,
@@ -31,7 +48,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
   const updateProduct = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/products/product/${router.query.id}`,
+        `${process.env.API_HOST}/products/product/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -87,7 +104,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
             <form className="my-7" onSubmit={handleSubmit}>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Title:
+                  {t.titleProduct}
                 </span>
                 <textarea
                   name="title"
@@ -96,12 +113,12 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
                   required
                   value={form.title}
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter title ...`}
+                  placeholder={t.titleProductPlaceholder}
                 />
               </label>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Description:
+                {t.descriptionProduct}
                 </span>
                 <textarea
                   name="description"
@@ -111,12 +128,12 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
                   required
                   value={form.description}
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter description...`}
+                  placeholder={t.descriptionProductPlaceholder}
                 />
               </label>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Price:
+                {t.priceProduct}
                 </span>
                 <input
                   name="price"
@@ -124,13 +141,13 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
                   type="text"
                   value={form.price}
                   className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                  placeholder={`Enter price...`}
+                  placeholder={t.priceProductPlaceholder}
                   required
                 />
               </label>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Category:
+                {t.categoryProduct}
                 </span>
                 <select
                   name="category"
@@ -148,7 +165,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
               </label>
               <label className="block my-3">
                 <span className="block text-sm font-medium text-gray-700">
-                  Photo URL:
+                {t.photoProduct}
                 </span>
                 <div className="flex">
                   <input
@@ -157,7 +174,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
                     type="text"
                     value={form.photo}
                     className="mt-1 block w-full px-3 py-2 bg-white rounded-lg text-sm placeholder-gray-400 invalid:border-pink-500 invalid:text-pink-600"
-                    placeholder={`Enter photo url...`}
+                    placeholder={t.photoProductPlaceholder}
                     required
                   />
                   <button
@@ -166,7 +183,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
                       setPhotoUrl(form.photo);
                     }}
                   >
-                    Check
+                    {t.checkBtn}
                   </button>
                 </div>
               </label>
@@ -175,7 +192,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
                   type="submit"
                   className={`${formStyle.SubmitButton} w-full py-2 rounded-lg`}
                 >
-                  Update
+                  {t.editBtn}
                 </button>
               </div>
             </form>
@@ -189,7 +206,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
       ) : (
         <div className="flex justify-center">
 <div className="mt-48 text-4xl">
-            Admin key is incorrect
+{t.keyIsIncorrect}
           </div>
         </div>
       )}
@@ -198,10 +215,10 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
 };
 
 EditProduct.getInitialProps = async ({ query: { key, locale, id } }) => {
-  const keyRes = await fetch(`http://localhost:3000/api/keys/findKey/${key}`);
-  const res = await fetch(`http://localhost:3000/api/products/product/${id}`);
+  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.API_HOST}/products/product/${id}`);
 
-  const allCategories = await fetch(`http://localhost:3000/api/categories/`);
+  const allCategories = await fetch(`${process.env.API_HOST}/categories/`);
 
   const { dataCategories } = await allCategories.json();
   const { data } = await res.json();

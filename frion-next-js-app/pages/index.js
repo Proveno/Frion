@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { en } from "../locales/en";
 import { ru } from "../locales/ru";
-import { uk } from "../locales/uk";
+import { ua } from "../locales/ua";
 import { de } from "../locales/de";
 
 import Link from "next/link";
@@ -56,8 +56,8 @@ export default function Home() {
         return ru;
       case "de":
         return de;
-      case "uk":
-        return uk;
+      case "ua":
+        return ua;
     }
   }
 
@@ -92,7 +92,7 @@ export default function Home() {
   }, [errors]);
   const createRequest = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/${type}/`, {
+      const res = await fetch(`${process.env.API_HOST}/${type}/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -114,19 +114,23 @@ export default function Home() {
   const validate = () => {
     let err = {};
     if (!form.name) {
-      err.name = "Description is required";
+      err.name = "Name is required";
     }
     if (!form.surname) {
-      err.surname = "Description is required";
+      err.surname = "Surname is required";
     }
     if (!form.phone) {
-      err.phone = "Description is required";
+      err.phone = "Phone is required";
+    } else {
+      let regex =
+        /^(\+1|\+7|\+44|\+38|\+49|1|7|44|38|49)?[\s\-]?\(?[0-9]{3}[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+      setPhoneError(!regex.test(form.phone));
+      if (!regex.test(form.phone)) {
+        err.phone = "Incorrect phone";
+      }
     }
     if (!form.email) {
-      err.email = "Description is required";
-    }
-    if (!form.category) {
-      err.category = "Description is required";
+      err.email = "Email is required";
     }
 
     // TODO: length
@@ -166,7 +170,7 @@ export default function Home() {
   }, [cartErrors]);
   const createOrder = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/cart/`, {
+      const res = await fetch(`${process.env.API_HOST}/cart/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -188,42 +192,52 @@ export default function Home() {
   const cartValidate = () => {
     let err = {};
     if (!cartForm.name) {
-      err.name = "Description is required";
+      err.name = "Name is required";
     }
     if (!cartForm.surname) {
-      err.surname = "Description is required";
+      err.surname = "Surname is required";
     }
     if (!cartForm.phone) {
-      err.phone = "Description is required";
+      err.phone = "Phone is required";
+    } else {
+      let regex =
+        /^(\+1|\+7|\+44|\+38|\+49|1|7|44|38|49)?[\s\-]?\(?[0-9]{3}[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+      setPhoneError(!regex.test(cartForm.phone));
+      if (!regex.test(cartForm.phone)) {
+        err.phone = "Incorrect phone";
+      }
     }
     if (!cartForm.email) {
-      err.email = "Description is required";
+      err.email = "Email is required";
     }
+
     return err;
   };
   const handleCartSubmit = (e) => {
-    let sum = 0;
-    cart.map((order) => {
-      sum += order.price["$numberDecimal"] * order.number;
-    });
+    if (order.number > 0) {
+      let sum = 0;
+      cart.map((order) => {
+        sum += order.price["$numberDecimal"] * order.number;
+      });
 
-    setCartForm({
-      ...cartForm,
-      products: cart.map((order) => {
-        return order._id;
-      }),
-      productsQuant: cart.map((order) => {
-        return order.number;
-      }),
-      sum: sum,
-      orderLocale: router.locale,
-    });
+      setCartForm({
+        ...cartForm,
+        products: cart.map((order) => {
+          return order._id;
+        }),
+        productsQuant: cart.map((order) => {
+          return order.number;
+        }),
+        sum: sum,
+        orderLocale: router.locale,
+      });
 
-    e.preventDefault();
-    let errs = cartValidate();
-    console.log(errs);
-    setCartErrors(errs);
-    setIsConfirming(true);
+      e.preventDefault();
+      let errs = cartValidate();
+      console.log(errs);
+      setCartErrors(errs);
+      setIsConfirming(true);
+    }
   };
 
   const [type, setType] = useState();
@@ -232,7 +246,7 @@ export default function Home() {
   const getCategories = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/categories/${
+        `${process.env.API_HOST}/categories/${
           document.getElementById("LanguageSelect").value
         }`,
         {
@@ -240,6 +254,7 @@ export default function Home() {
         }
       );
       const { dataCategories } = await res.json();
+      form.category = dataCategories[0].category;
       setCategories(dataCategories);
     } catch (error) {
       console.log(console.error());
@@ -253,7 +268,7 @@ export default function Home() {
   const getProducts = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/products/${
+        `${process.env.API_HOST}/products/${
           document.getElementById("LanguageSelect").value
         }/mainPage`,
         {
@@ -269,7 +284,7 @@ export default function Home() {
   if (!products) {
     getProducts();
   }
-
+  const [phoneError, setPhoneError] = useState();
   const [cart, setCart] = useState([]);
   const [isBuy, setIsBuy] = useState(false);
   return (
@@ -340,7 +355,7 @@ export default function Home() {
                 <option value="en">{t.english}</option>
                 <option value="ru">{t.russian}</option>
                 <option value="de">{t.deutsch}</option>
-                <option value="uk">{t.ukrainian}</option>
+                <option value="ua">{t.ukrainian}</option>
               </select>
             </div>
             <div className={`self-center`}>
@@ -400,7 +415,7 @@ export default function Home() {
                                     <span>
                                       {product.price["$numberDecimal"]}
                                     </span>
-                                    $
+                                    {t.currency}
                                   </div>
                                 </div>
                                 <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
@@ -409,6 +424,7 @@ export default function Home() {
                                     className="w-14 border rounded-xl pl-3"
                                     type={"number"}
                                     defaultValue={product.number}
+                                    min={1}
                                     onChange={(e) => {
                                       product.number = e.target.value;
                                       console.log(product.number);
@@ -445,6 +461,11 @@ export default function Home() {
                     className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
                     onClick={() => {
                       setIsBuy(true);
+                      cart.map((order) => {
+                        if (order.number <= 0) {
+                          setIsBuy(false);
+                        }
+                      });
                     }}
                   >
                     {t.buyButtonCart}
@@ -510,6 +531,11 @@ export default function Home() {
                           placeholder={`${t.phoneNumberLabelPlaceholder}`}
                           required
                         />
+                        {phoneError && (
+                          <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
+                            {t.pleaseEnterRightEmail}
+                          </p>
+                        )}
                       </label>
                       <label className="block my-3">
                         <span class="block text-sm font-medium text-gray-700">
@@ -539,13 +565,13 @@ export default function Home() {
                       setIsBuy(false);
                     }}
                   >
-                    Back
+                    {t.cartBackBtn}
                   </div>
                   <div
                     className={`${cartBlock.submit} self-end w-1/2 rounded-br-xl text-center py-4 text-xl`}
                     onClick={handleCartSubmit}
                   >
-                    Confirm
+                    {t.cartConfirmBtn}
                   </div>
                 </div>
               </>
@@ -664,6 +690,11 @@ export default function Home() {
                     placeholder={`${t.phoneNumberLabelPlaceholder}`}
                     required
                   />
+                  {phoneError && (
+                    <p class="mt-2 text-pink-600 text-sm">
+                      {t.pleaseEnterRightPhone}
+                    </p>
+                  )}
                 </label>
                 <label className="block my-3">
                   <span class="block text-sm font-medium text-gray-700">
@@ -678,9 +709,6 @@ export default function Home() {
                     required
                     placeholder={`${t.emailLabelPlaceholder}`}
                   />
-                  <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
-                    {t.pleaseEnterRightEmail}
-                  </p>
                 </label>
                 <label className="block my-3">
                   <span className="block text-sm font-medium text-gray-700">
@@ -765,7 +793,7 @@ export default function Home() {
               products.map((product) => {
                 return (
                   <div
-                    className={`${shopBlock.shopItems} text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3`}
+                    className={`${shopBlock.shopItems} relative text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3 pb-10`}
                   >
                     <Image
                       width={500}
@@ -778,7 +806,7 @@ export default function Home() {
                       {product.title}
                     </span>
                     <button
-                      className={`${shopBlock.shopBuyButton} w-full rounded-b-xl py-1`}
+                      className={`${shopBlock.shopBuyButton} absolute bottom-0 right-0  w-full rounded-b-xl py-1`}
                       onClick={() => {
                         if (!cart.map((e) => e._id).includes(product._id)) {
                           // console.log(cart.map(e => e._id).includes(product._id));
@@ -787,7 +815,8 @@ export default function Home() {
                       }}
                     >
                       {t.buyFor}
-                      <span>{product.price["$numberDecimal"]}</span>$
+                      <span>{product.price["$numberDecimal"]}</span>
+                      {t.currency}
                     </button>
                   </div>
                 );
@@ -834,24 +863,36 @@ export default function Home() {
       <div className={`${shopBlock.shopContainer}`}>
         <div className="px-7 py-7 justify-center container mx-auto ">
           <div className="flex w-full justify-center">
-            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
-              <Image src={twitterIcon}></Image>
-            </div>
-            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
-              <Image src={facebookIcon}></Image>
-            </div>
-            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
-              <Image src={youtubeIcon}></Image>
-            </div>
-            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
-              <Image src={telegramIcon}></Image>
-            </div>
-            <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
-              <Image src={watsUpIcon}></Image>
-            </div>
-            <div className={`${footer.socNetworkIcon} mx-3 rounded-full`}>
-              <Image src={instaIcon}></Image>
-            </div>
+            <Link href={"https://twitter.com/adoptpetshelter"}>
+              <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+                <Image src={twitterIcon}></Image>
+              </div>
+            </Link>
+            <Link href={"https://www.facebook.com/TheAnimalShelterSocietyInc/"}>
+              <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+                <Image src={facebookIcon}></Image>
+              </div>
+            </Link>
+            <Link href={"https://www.youtube.com/watch?v=_CIC1OXl2u0"}>
+              <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+                <Image src={youtubeIcon}></Image>
+              </div>
+            </Link>
+            <Link href={"https://t.me/natgeorus"}>
+              <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+                <Image src={telegramIcon}></Image>
+              </div>
+            </Link>
+            <Link href={"/"}>
+              <div className={`${footer.socNetworkIcon} mx-2 p-1 rounded-full`}>
+                <Image src={watsUpIcon}></Image>
+              </div>
+            </Link>
+            <Link href={"https://www.instagram.com/neanimalshelter/"}>
+              <div className={`${footer.socNetworkIcon} mx-3 rounded-full`}>
+                <Image src={instaIcon}></Image>
+              </div>
+            </Link>
           </div>
         </div>
       </div>

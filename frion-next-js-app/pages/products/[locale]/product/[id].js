@@ -21,7 +21,7 @@ const Product = ({ locale, product }) => {
     const productId = router.query.id;
     try {
       const deleted = await fetch(
-        `http://localhost:3000/api/products/${productId}`,
+        `process.env.API_HOSTucts/${productId}`,
         {
           method: "Delete",
         }
@@ -94,7 +94,7 @@ const Product = ({ locale, product }) => {
 };
 
 Product.getInitialProps = async ({ query: { locale, id } }) => {
-  const res = await fetch(`http://localhost:3000/api/products/product/${id}`);
+  const res = await fetch(`${process.env.API_HOST}/products/product/${id}`);
   const { data } = await res.json();
 
   return { locale: locale, product: data };

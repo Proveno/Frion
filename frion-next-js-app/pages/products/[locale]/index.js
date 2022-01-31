@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { en } from "../../../locales/en";
 import { ru } from "../../../locales/ru";
-import { uk } from "../../../locales/uk";
+import { ua } from "../../../locales/ua";
 import { de } from "../../../locales/de";
 
 import fetch from "isomorphic-unfetch";
@@ -29,8 +29,8 @@ const UserProductList = ({ allProducts, locale }) => {
         return ru;
       case "de":
         return de;
-      case "uk":
-        return uk;
+      case "ua":
+        return ua;
     }
   }
   const [t, setT] = useState(getLang(locale));
@@ -70,7 +70,7 @@ const UserProductList = ({ allProducts, locale }) => {
   }, [cartErrors]);
   const createOrder = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/cart/`, {
+      const res = await fetch(`${process.env.API_HOST}/cart/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -92,32 +92,44 @@ const UserProductList = ({ allProducts, locale }) => {
   const cartValidate = () => {
     let err = {};
     if (!cartForm.name) {
-      err.name = "Description is required";
+      err.name = "Name is required";
     }
     if (!cartForm.surname) {
-      err.surname = "Description is required";
+      err.surname = "Surname is required";
     }
     if (!cartForm.phone) {
-      err.phone = "Description is required";
+      err.phone = "Phone is required";
+    } else {
+      let regex =
+        /^(\+1|\+7|\+44|\+38|\+49|1|7|44|38|49)?[\s\-]?\(?[0-9]{3}[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+      setPhoneError(!regex.test(cartForm.phone));
+      if (!regex.test(cartForm.phone)) {
+        err.phone = "Incorrect phone";
+      }
     }
     if (!cartForm.email) {
-      err.email = "Description is required";
+      err.email = "Email is required";
     }
     return err;
   };
+  const [phoneError, setPhoneError] = useState();
   const handleCartSubmit = (e) => {
     let sum = 0;
-    cart.map((order)=>{sum += order.price["$numberDecimal"] * order.number;})
-
-
+    cart.map((order) => {
+      sum += order.price["$numberDecimal"] * order.number;
+    });
 
     setCartForm({
       ...cartForm,
-      products: cart.map((order)=>{return order._id;}),
-      productsQuant: cart.map((order)=>{return order.number;}),
+      products: cart.map((order) => {
+        return order._id;
+      }),
+      productsQuant: cart.map((order) => {
+        return order.number;
+      }),
       sum: sum,
-      orderLocale: locale
-    })
+      orderLocale: locale,
+    });
 
     e.preventDefault();
     let errs = cartValidate();
@@ -134,7 +146,7 @@ const UserProductList = ({ allProducts, locale }) => {
           className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
         >
           <div className={`${cartBlock.cart} self-center w-2/5 rounded-3xl`}>
-          {!isBuy ? (
+            {!isBuy ? (
               <>
                 <div className={`${cartBlock.products} px-4 pt-2`}>
                   <div className="flex justify-between">
@@ -179,7 +191,7 @@ const UserProductList = ({ allProducts, locale }) => {
                                     <span>
                                       {product.price["$numberDecimal"]}
                                     </span>
-                                    $
+                                    {t.currency}
                                   </div>
                                 </div>
                                 <div className="block text-sm text-sm text-gray-700 my-3 flex justify-between">
@@ -188,6 +200,7 @@ const UserProductList = ({ allProducts, locale }) => {
                                     className="w-14 border rounded-xl pl-3"
                                     type={"number"}
                                     defaultValue={product.number}
+                                    min={1}
                                     onChange={(e) => {
                                       product.number = e.target.value;
                                       console.log(product.number);
@@ -224,6 +237,11 @@ const UserProductList = ({ allProducts, locale }) => {
                     className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
                     onClick={() => {
                       setIsBuy(true);
+                      cart.map((order) => {
+                        if (order.number <= 0) {
+                          setIsBuy(false);
+                        }
+                      });
                     }}
                   >
                     {t.buyButtonCart}
@@ -289,6 +307,11 @@ const UserProductList = ({ allProducts, locale }) => {
                           placeholder={`${t.phoneNumberLabelPlaceholder}`}
                           required
                         />
+                        {phoneError && (
+                          <p class="mt-2 text-pink-600 text-sm">
+                            Incorrect phone
+                          </p>
+                        )}
                       </label>
                       <label className="block my-3">
                         <span class="block text-sm font-medium text-gray-700">
@@ -303,9 +326,6 @@ const UserProductList = ({ allProducts, locale }) => {
                           required
                           placeholder={`${t.emailLabelPlaceholder}`}
                         />
-                        <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
-                          {t.pleaseEnterRightEmail}
-                        </p>
                       </label>
                       {/* TODO: country, city, place */}
                     </form>
@@ -318,13 +338,13 @@ const UserProductList = ({ allProducts, locale }) => {
                       setIsBuy(false);
                     }}
                   >
-                    Back
+                    {t.cartBackBtn}
                   </div>
                   <div
                     className={`${cartBlock.submit} self-end w-1/2 rounded-br-xl text-center py-4 text-xl`}
                     onClick={handleCartSubmit}
                   >
-                    Confirm
+                    {t.cartConfirmBtn}
                   </div>
                 </div>
               </>
@@ -332,105 +352,114 @@ const UserProductList = ({ allProducts, locale }) => {
           </div>
         </div>
       )}
-      {ShouldNavButtons && (<div
-        className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
-      >
-        {/* Logo/Home */}
-        <Link href={`/`}>
-          <div className={`flex`}>
-            <div className={`${navBar.imageLogo}`}>
-              <Image src={MenuIcon} alt="Logo picture :>" />
+      {ShouldNavButtons && (
+        <div
+          className={`sticky flex justify-between top-0 py-3 px-10 ${navBar.navBar}`}
+        >
+          {/* Logo/Home */}
+          <Link href={`/`}>
+            <div className={`flex`}>
+              <div className={`${navBar.imageLogo}`}>
+                <Image src={MenuIcon} alt="Logo picture :>" />
+              </div>
+              <div className={`ml-2 ${navBar.textLogo}`}>
+                <a>Frion</a>
+              </div>
             </div>
-            <div className={`ml-2 ${navBar.textLogo}`}>
-              <a>Frion</a>
-            </div>
-          </div>
-        </Link>
+          </Link>
 
-        {/* NavButtons */}
-        {/* TODO: replace links to scroll */}
-        <div className={`flex justify-between w-full`}>
-          <div className={`w-full self-center flex justify-end`}>
+          {/* NavButtons */}
+          {/* TODO: replace links to scroll */}
+          <div className={`flex justify-between w-full`}>
+            <div className={`w-full self-center flex justify-end`}>
               <div className="flex w-1/2 mx-4">
-              <input
-                onChange={handleChange}
-                name="searchRequest"
-                className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
-                placeholder="Enter title..."
-              ></input>
+                <input
+                  onChange={handleChange}
+                  name="searchRequest"
+                  className={`${shopBlock.searchInput} w-full rounded px-2 mr-2 placeholder-gray-400`}
+                  placeholder={t.searchPlaceholder}
+                ></input>
                 <button
                   className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
-                  onClick={async()=>{
-                    if (search.searchRequest){
+                  onClick={async () => {
+                    if (search.searchRequest) {
                       const newProducts = await fetch(
-                        `http://localhost:3000/api/products/${locale}/${search.searchRequest}`,
+                        `${process.env.API_HOST}/products/${locale}/${search.searchRequest}`
                       );
                       const { data } = await newProducts.json();
                       setProducts(data);
-                    }
-                    else{
+                    } else {
                       const newProducts = await fetch(
-                        `http://localhost:3000/api/products/${locale}`,
+                        `${process.env.API_HOST}/products/${locale}`
                       );
                       const { data } = await newProducts.json();
                       setProducts(data);
                     }
                   }}
                 >
-                  Search
+                  {t.searchBtn}
                 </button>
               </div>
-          </div>
-          <div className="flex justify-center w-1/6">
-            <div className="self-center mx-4">
-              <select
-                className={`${navBar.langButton} px-4 text`}
-                id="LanguageSelect"
-                onChange={async() => {
-                  setT(getLang(document.getElementById("LanguageSelect").value));
-                  router.push(
-                    `/products/${document.getElementById("LanguageSelect").value}/`
-                  );
-                  setCart([]);
-                  if (search.searchRequest){
-                    const newProducts = await fetch(
-                      `http://localhost:3000/api/products/${document.getElementById("LanguageSelect").value}/${search.searchRequest}`,
-                    );
-                    const { data } = await newProducts.json();
-                    setProducts(data);
-                  }
-                  else{
-                    const newProducts = await fetch(
-                      `http://localhost:3000/api/products/${document.getElementById("LanguageSelect").value}`,
-                    );
-                    const { data } = await newProducts.json();
-                    setProducts(data);
-                  }
-                }}
-                defaultValue={locale}
-              >
-                <option value="en">{t.english}</option>
-                <option value="ru">{t.russian}</option>
-                <option value="de">{t.deutsch}</option>
-                <option value="uk">{t.ukrainian}</option>
-              </select>
             </div>
-            <div className={`self-center mx-4`}>
-              <Image
-                width={35}
-                height={35}
-                src={cartIcon}
-                layout="fixed"
-                onClick={() => {
-                  if(cart.length > 0){
-                  setShouldNavButtons(false);
-                  setIsCartOpened(true);}
-                }}
-              ></Image>
+            <div className="flex justify-center w-1/6">
+              <div className="self-center mx-4">
+                <select
+                  className={`${navBar.langButton} px-4 text`}
+                  id="LanguageSelect"
+                  onChange={async () => {
+                    setT(
+                      getLang(document.getElementById("LanguageSelect").value)
+                    );
+                    router.push(
+                      `/products/${
+                        document.getElementById("LanguageSelect").value
+                      }/`
+                    );
+                    setCart([]);
+                    if (search.searchRequest) {
+                      const newProducts = await fetch(
+                        `${process.env.API_HOST}/products/${
+                          document.getElementById("LanguageSelect").value
+                        }/${search.searchRequest}`
+                      );
+                      const { data } = await newProducts.json();
+                      setProducts(data);
+                    } else {
+                      const newProducts = await fetch(
+                        `${process.env.API_HOST}/products/${
+                          document.getElementById("LanguageSelect").value
+                        }`
+                      );
+                      const { data } = await newProducts.json();
+                      setProducts(data);
+                    }
+                  }}
+                  defaultValue={locale}
+                >
+                  <option value="en">{t.english}</option>
+                  <option value="ru">{t.russian}</option>
+                  <option value="de">{t.deutsch}</option>
+                  <option value="ua">{t.ukrainian}</option>
+                </select>
+              </div>
+              <div className={`self-center mx-4`}>
+                <Image
+                  width={35}
+                  height={35}
+                  src={cartIcon}
+                  layout="fixed"
+                  onClick={() => {
+                    if (cart.length > 0) {
+                      setShouldNavButtons(false);
+                      setIsCartOpened(true);
+                    }
+                  }}
+                ></Image>
+              </div>
             </div>
           </div>
         </div>
-      </div>)}
+      )}
       <div
         className={`${shopBlock.shopContainer} container mx-auto flex py-12 justify-center`}
       >
@@ -465,7 +494,8 @@ const UserProductList = ({ allProducts, locale }) => {
                         }}
                       >
                         {t.buyFor}
-                        <span>{product.price["$numberDecimal"]}</span>$
+                        <span>{product.price["$numberDecimal"]}</span>
+                        {t.currency}
                       </button>
                     </div>
                   </div>
@@ -474,9 +504,7 @@ const UserProductList = ({ allProducts, locale }) => {
             </>
           ) : (
             // TODO: make beautifyll exeption
-            <div className="mt-48 text-4xl">
-            Nothing found
-          </div>
+            <div className="mt-48 text-4xl">{t.nothingFound}</div>
           )}
         </div>
       </div>
@@ -485,7 +513,7 @@ const UserProductList = ({ allProducts, locale }) => {
 };
 
 UserProductList.getInitialProps = async ({ query: { locale } }) => {
-  const res = await fetch(`http://localhost:3000/api/products/${locale}`);
+  const res = await fetch(`${process.env.API_HOST}/products/${locale}`);
   const { data } = await res.json();
 
   return { allProducts: data, locale: locale };
