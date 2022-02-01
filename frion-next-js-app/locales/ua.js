@@ -7,7 +7,7 @@ export const ua = {
 
 
   aboutUs: "ПРО НАС",
-  registrarion: "Створити заявку",
+  registrarion: "СТВОРИТИ ЗАПИТ",
   shop: "МАГАЗИН",
   contacts: "КОНТАКТИ",
 

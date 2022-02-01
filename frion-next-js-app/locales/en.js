@@ -2,7 +2,7 @@ export const en = {
   english: "EN",
   russian: "RU",
   deutsch: "DE",
-  ukrainian: "UK",
+  ukrainian: "UА",
 
 
 

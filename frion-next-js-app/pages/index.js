@@ -46,6 +46,7 @@ import watsUpIcon from "../assets/Icons/wats.png";
 import youtubeIcon from "../assets/Icons/yout.png";
 
 import CloseIcon from "../assets/window-close-regular.svg";
+import { route } from "next/dist/server/router";
 
 export default function Home() {
   function getLang() {
@@ -90,6 +91,7 @@ export default function Home() {
       }
     }
   }, [errors]);
+  console.log(process.env.API_HOST)
   const createRequest = async () => {
     try {
       const res = await fetch(`${process.env.API_HOST}/${type}/`, {
@@ -245,6 +247,7 @@ export default function Home() {
   const [categories, setCategories] = useState();
   const getCategories = async () => {
     try {
+      console.log(process.env.API_HOST)
       const res = await fetch(
         `${process.env.API_HOST}/categories/${
           document.getElementById("LanguageSelect").value
@@ -268,9 +271,7 @@ export default function Home() {
   const getProducts = async () => {
     try {
       const res = await fetch(
-        `${process.env.API_HOST}/products/${
-          document.getElementById("LanguageSelect").value
-        }/mainPage`,
+        `${process.env.API_HOST}/products/${router.locale}/mainPage`,
         {
           method: "GET",
         }

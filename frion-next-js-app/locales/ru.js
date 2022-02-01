@@ -7,7 +7,7 @@ export const ru = {
 
 
   aboutUs: "О НАС",
-  registrarion: "Создать заявку",
+  registrarion: "СОЗДАТЬ ЗАЯВКУ",
   shop: "МАГАЗИН",
   contacts: "КОНТАКТЫ",
 
