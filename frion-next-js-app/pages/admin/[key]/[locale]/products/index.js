@@ -157,6 +157,7 @@ const AdminProductList = ({ Akey, isKeyValid, keyData, products, locale }) => {
                   {products.map((product) => {
                     return (
                       <div
+                      key={product.key}
                         className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                       >
                         <Link

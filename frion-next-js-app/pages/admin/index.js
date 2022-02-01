@@ -9,7 +9,8 @@ import { ru } from "../../locales/ru";
 import { ua } from "../../locales/ua";
 import { de } from "../../locales/de";
 
-const adminLogin = () => {
+const useAdminLogin = () => {
+  const router = useRouter();
   function getLang() {
     switch (router.locale) {
       case "en":
@@ -23,7 +24,7 @@ const adminLogin = () => {
     }
   }
 
-  const router = useRouter();
+
   const t = getLang();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -100,4 +101,4 @@ const adminLogin = () => {
     </div>
   );
 };
-export default adminLogin;
+export default useAdminLogin;

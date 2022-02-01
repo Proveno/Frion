@@ -147,7 +147,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, allCategories,locale }) => {
                   required
                 >
                   {allCategories.map((category) => {
-                    return <option>{category.category}</option>;
+                    return <option key={category.key}>{category.category}</option>;
                   })}
                 </select>
               </label>

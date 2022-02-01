@@ -166,6 +166,7 @@ const AdminKeyList = ({
                     if (key._id != keyData[0]._id) {
                       return (
                         <div
+                        key={key.key}
                           className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                         >
                           <Link

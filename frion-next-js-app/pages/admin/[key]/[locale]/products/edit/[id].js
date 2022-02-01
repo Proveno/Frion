@@ -158,7 +158,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
                 >
                   {allCategories.map((category) => {
                     if (category.categoryLocale == router.locale) {
-                      return <option>{category.category}</option>;
+                      return <option key={category.key}>{category.category}</option>;
                     }
                   })}
                 </select>

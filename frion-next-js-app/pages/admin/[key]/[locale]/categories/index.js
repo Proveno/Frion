@@ -122,13 +122,14 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
                   {categories.map((category) => {
                     return (
                       <div
+                        key={category.key}
                         className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                       >
                         <span className="break-words block text-sm text-lg text-gray-700 my-2">
                           {category.category}
                         </span>
 
-                        <div className="absolute bottom-0 right-0 w-full px-4 pb-4">
+                        <div className="absolute bottom-0 righclst-0 w-full px-4 pb-4">
                           <div className="w-full py-1 flex">
                             {keyData[0].addCategories && (
                               <Link

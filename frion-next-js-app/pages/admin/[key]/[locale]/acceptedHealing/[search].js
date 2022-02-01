@@ -151,6 +151,7 @@ const AdminAcceptHealingSearchList = ({ Akey, isKeyValid, keyData, requests, sea
                       if(request.accepted && request.archivedAt == undefined){
                         return (
                             <div
+                            key={request.key}
                               className={`${requestStyle.requestItems} w-full text-gray-700 relative justify-self-auto text-start px-4 pt-3 pb-16 rounded-lg`}
                               // onClick={()=>{
                               //     router.push(`/admin/${Akey}/${

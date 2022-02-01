@@ -170,7 +170,7 @@ const UserProductList = ({ allProducts, locale }) => {
                     {/* One product order */}
                     {cart.map((product) => {
                       return (
-                        <>
+                        <div key={product.key}>
                           <div className="flex bg-white  justify-between">
                             <div className={`${cartBlock.images}  mt-2`}>
                               <Image
@@ -227,7 +227,7 @@ const UserProductList = ({ allProducts, locale }) => {
                               className={`${cartBlock.line} w-full h-0.5`}
                             ></div>
                           )}
-                        </>
+                        </div>
                       );
                     })}
                   </div>
@@ -308,13 +308,13 @@ const UserProductList = ({ allProducts, locale }) => {
                           required
                         />
                         {phoneError && (
-                          <p class="mt-2 text-pink-600 text-sm">
+                          <p className="mt-2 text-pink-600 text-sm">
                             Incorrect phone
                           </p>
                         )}
                       </label>
                       <label className="block my-3">
-                        <span class="block text-sm font-medium text-gray-700">
+                        <span className="block text-sm font-medium text-gray-700">
                           {t.emailLabel}
                         </span>
                         <input
@@ -322,7 +322,7 @@ const UserProductList = ({ allProducts, locale }) => {
                           type="email"
                           name="email"
                           id="email"
-                          class="peer px-3 py-2 bg-white placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-lg invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+                          className="peer px-3 py-2 bg-white placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-lg invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
                           required
                           placeholder={`${t.emailLabelPlaceholder}`}
                         />
@@ -469,6 +469,7 @@ const UserProductList = ({ allProducts, locale }) => {
               {products.map((product) => {
                 return (
                   <div
+                  key={product.key}
                     className={`${shopBlock.shopItems} text-gray-700 relative justify-self-auto text-center px-4 pt-3 pb-16 rounded-lg`}
                   >
                     <Link href={`/products/${locale}/product/${product._id}`}>
