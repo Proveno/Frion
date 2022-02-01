@@ -41,7 +41,7 @@ const NewProduct = ({Akey, isKeyValid, keyData, category, locale }) => {
 
   const createCategory = async () => {
     try {
-      const res = await fetch(`${process.env.API_HOST}/categories/${locale}/${category._id}/`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/categories/${locale}/${category._id}/`, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -121,9 +121,9 @@ const NewProduct = ({Akey, isKeyValid, keyData, category, locale }) => {
 };
 
 NewProduct.getInitialProps = async ({ query: { key, locale, id } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
   const categories = await fetch(
-    `${process.env.API_HOST}/categories/${locale}/${id}`
+    `${process.env.NEXT_PUBLIC_API_HOST}/categories/${locale}/${id}`
   );
 
   const { dataCategories } = await categories.json();

@@ -42,7 +42,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
   useEffect(async () => {
     if (archivingHealingId) {
       const archived = await fetch(
-        `${process.env.API_HOST}/healing/request/${archivingHealingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/healing/request/${archivingHealingId}`,
         {
           method: "PUT",
           headers: {
@@ -58,7 +58,7 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
   useEffect(async () => {
     if (acceptingHealingId) {
       const accepted = await fetch(
-        `${process.env.API_HOST}/healing/request/${acceptingHealingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/healing/request/${acceptingHealingId}`,
         {
           method: "PUT",
           headers: {
@@ -242,8 +242,8 @@ const AdminHealingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
 };
 
 AdminHealingList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/healing/${locale}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/healing/${locale}`);
   const { healingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {

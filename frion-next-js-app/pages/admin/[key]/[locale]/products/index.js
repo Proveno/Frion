@@ -44,7 +44,7 @@ const AdminProductList = ({ Akey, isKeyValid, keyData, products, locale }) => {
   useEffect(async () => {
     if (deletingProductId) {
       const deleted = await fetch(
-        `${process.env.API_HOST}/products/product/${deletingProductId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/products/product/${deletingProductId}`,
         {
           method: "Delete",
         }
@@ -224,8 +224,8 @@ const AdminProductList = ({ Akey, isKeyValid, keyData, products, locale }) => {
 };
 
 AdminProductList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/products/${locale}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/products/${locale}`);
   const { data } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {

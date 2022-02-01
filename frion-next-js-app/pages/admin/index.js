@@ -45,7 +45,7 @@ const useAdminLogin = () => {
 
   const checkKey = async () => {
     try {
-      const res = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`, {
         method: "GET",
       });
       const { success } = await res.json();

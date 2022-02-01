@@ -49,7 +49,7 @@ const ProductSearch = ({
   useEffect(async () => {
     if (deletingProductId) {
       const deleted = await fetch(
-        `${process.env.API_HOST}/products/product/${deletingProductId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/products/product/${deletingProductId}`,
         {
           method: "Delete",
         }
@@ -237,9 +237,9 @@ const ProductSearch = ({
 };
 
 ProductSearch.getInitialProps = async ({ query: { key, locale, search } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
   const res = await fetch(
-    `${process.env.API_HOST}/products/${locale}/${search}`
+    `${process.env.NEXT_PUBLIC_API_HOST}/products/${locale}/${search}`
   );
   const { data } = await res.json();
   const { success, keyData } = await keyRes.json();

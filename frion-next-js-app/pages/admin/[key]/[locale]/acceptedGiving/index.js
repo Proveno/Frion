@@ -41,7 +41,7 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
   useEffect(async () => {
     if (archivingGivingId) {
       const archived = await fetch(
-        `${process.env.API_HOST}/giving/request/${archivingGivingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/giving/request/${archivingGivingId}`,
         {
           method: "PUT",
           headers: {
@@ -224,8 +224,8 @@ const AdminGivingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
 };
 
 AdminGivingList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/giving/${locale}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/giving/${locale}`);
   const { givingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {

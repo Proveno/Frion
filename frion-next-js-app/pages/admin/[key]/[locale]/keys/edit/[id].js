@@ -60,7 +60,7 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
   const updateKey = async () => {
     try {
       const res = await fetch(
-        `${process.env.API_HOST}/key/${router.query.id}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/key/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -373,8 +373,8 @@ const EditProduct = ({ Akey, isKeyValid, locale, Fkey }) => {
 };
 
 EditProduct.getInitialProps = async ({ query: { key, locale , id } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/keys/key/${id}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/key/${id}`);
 
   const { keyData } = await res.json();
   const { success } = await keyRes.json();

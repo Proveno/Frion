@@ -55,7 +55,7 @@ const AdminOrdersList = ({
   useEffect(async () => {
     if (deletingOrderId) {
       const deleted = await fetch(
-        `${process.env.API_HOST}/order/${deletingOrderId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/order/${deletingOrderId}`,
         {
           method: "DELETE",
         }
@@ -66,7 +66,7 @@ const AdminOrdersList = ({
   useEffect(async () => {
     if (acceptingOrderId) {
       const accepted = await fetch(
-        `${process.env.API_HOST}/order/${acceptingOrderId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/order/${acceptingOrderId}`,
         {
           method: "PUT",
           headers: {
@@ -259,9 +259,9 @@ const AdminOrdersList = ({
 AdminOrdersList.getInitialProps = async ({
   query: { key, locale, search },
 }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/findKey/${key}`);
   const orders = await fetch(
-    `${process.env.API_HOST}/${locale}/${search}/`
+    `${process.env.NEXT_PUBLIC_API_HOST}/${locale}/${search}/`
   );
   const { success, keyData } = await keyRes.json();
   const { orderData } = await orders.json();

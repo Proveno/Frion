@@ -41,7 +41,7 @@ const NewProduct = ({Akey, isKeyValid, keyData,locale }) => {
 
   const createCategory = async () => {
     try {
-      const res = await fetch(`${process.env.API_HOST}/categories/`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/categories/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -119,7 +119,7 @@ const NewProduct = ({Akey, isKeyValid, keyData,locale }) => {
 };
 
 NewProduct.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
   const { success, keyData } = await keyRes.json();
   return { Akey: key,isKeyValid: success, keyData: keyData, locale: locale };
 };

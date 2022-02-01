@@ -48,7 +48,7 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
   const updateProduct = async () => {
     try {
       const res = await fetch(
-        `${process.env.API_HOST}/products/product/${router.query.id}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/products/product/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -215,10 +215,10 @@ const EditProduct = ({ Akey, isKeyValid, product, allCategories, locale }) => {
 };
 
 EditProduct.getInitialProps = async ({ query: { key, locale, id } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/products/product/${id}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/products/product/${id}`);
 
-  const allCategories = await fetch(`${process.env.API_HOST}/categories/`);
+  const allCategories = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/categories/`);
 
   const { dataCategories } = await allCategories.json();
   const { data } = await res.json();

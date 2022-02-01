@@ -94,7 +94,7 @@ const Product = ({ locale, product }) => {
 };
 
 Product.getInitialProps = async ({ query: { locale, id } }) => {
-  const res = await fetch(`${process.env.API_HOST}/products/product/${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/products/product/${id}`);
   const { data } = await res.json();
 
   return { locale: locale, product: data };

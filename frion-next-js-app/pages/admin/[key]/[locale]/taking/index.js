@@ -42,7 +42,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
   useEffect(async () => {
     if (deletingTakingId) {
       const deleted = await fetch(
-        `${process.env.API_HOST}/taking/request/${deletingTakingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/taking/request/${deletingTakingId}`,
         {
           method: "DELETE"
         }
@@ -53,7 +53,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
   useEffect(async () => {
     if (acceptingTakingId) {
       const accepted = await fetch(
-        `${process.env.API_HOST}/taking/request/${acceptingTakingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/taking/request/${acceptingTakingId}`,
         {
           method: "PUT",
           headers: {
@@ -246,8 +246,8 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, requests, locale }) => {
 };
 
 AdminTakingList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/taking/${locale}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/taking/${locale}`);
   const { takingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {

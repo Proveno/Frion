@@ -47,7 +47,7 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale, searchText
   useEffect(async () => {
     if (archivingOrderId) {
       const archived = await fetch(
-        `${process.env.API_HOST}/cart/order/${archivingOrderId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/cart/order/${archivingOrderId}`,
         {
           method: "PUT",
           headers: {
@@ -227,8 +227,8 @@ const AdminOrdersList = ({ Akey, isKeyValid, keyData, orders, locale, searchText
 };
 
 AdminOrdersList.getInitialProps = async ({ query: { key, locale, search } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const orders = await fetch(`${process.env.API_HOST}/cart/${locale}/${search}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const orders = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/cart/${locale}/${search}`);
   const { success, keyData } = await keyRes.json();
   const { orderData } = await orders.json();
   return {

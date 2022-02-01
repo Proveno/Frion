@@ -247,7 +247,7 @@ const AdminTakingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
 };
 
 AdminTakingSearchList.getInitialProps = async ({ query: { key, locale, search } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/findKey/${key}`);
   const res = await fetch(`process.env.API_HOSTng/${locale}/${search}`);
   const { takingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();

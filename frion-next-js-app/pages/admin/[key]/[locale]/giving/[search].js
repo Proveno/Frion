@@ -42,7 +42,7 @@ const AdminGivingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
   useEffect(async () => {
     if (deletingGivingId) {
       const deleted = await fetch(
-        `${process.env.API_HOST}/giving/request/${deletingGivingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/giving/request/${deletingGivingId}`,
         {
           method: "DELETE"
         }
@@ -53,7 +53,7 @@ const AdminGivingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
   useEffect(async () => {
     if (acceptingGivingId) {
       const accepted = await fetch(
-        `${process.env.API_HOST}/giving/request/${acceptingGivingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/giving/request/${acceptingGivingId}`,
         {
           method: "PUT",
           headers: {
@@ -247,8 +247,8 @@ const AdminGivingSearchList = ({ Akey, isKeyValid, keyData, requests, searchText
 };
 
 AdminGivingSearchList.getInitialProps = async ({ query: { key, locale, search } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/giving/${locale}/${search}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/giving/${locale}/${search}`);
   const { givingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {

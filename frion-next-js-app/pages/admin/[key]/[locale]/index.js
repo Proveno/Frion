@@ -210,7 +210,7 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
 };
 
 AdminList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
   const { success, keyData } = await keyRes.json();
   return { Akey: key, isKeyValid: success, keyData: keyData, locale: locale };
 };

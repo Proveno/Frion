@@ -70,7 +70,7 @@ const UserProductList = ({ allProducts, locale }) => {
   }, [cartErrors]);
   const createOrder = async () => {
     try {
-      const res = await fetch(`${process.env.API_HOST}/cart/`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/cart/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -384,13 +384,13 @@ const UserProductList = ({ allProducts, locale }) => {
                   onClick={async () => {
                     if (search.searchRequest) {
                       const newProducts = await fetch(
-                        `${process.env.API_HOST}/products/${locale}/${search.searchRequest}`
+                        `${process.env.NEXT_PUBLIC_API_HOST}/products/${locale}/${search.searchRequest}`
                       );
                       const { data } = await newProducts.json();
                       setProducts(data);
                     } else {
                       const newProducts = await fetch(
-                        `${process.env.API_HOST}/products/${locale}`
+                        `${process.env.NEXT_PUBLIC_API_HOST}/products/${locale}`
                       );
                       const { data } = await newProducts.json();
                       setProducts(data);
@@ -418,7 +418,7 @@ const UserProductList = ({ allProducts, locale }) => {
                     setCart([]);
                     if (search.searchRequest) {
                       const newProducts = await fetch(
-                        `${process.env.API_HOST}/products/${
+                        `${process.env.NEXT_PUBLIC_API_HOST}/products/${
                           document.getElementById("LanguageSelect").value
                         }/${search.searchRequest}`
                       );
@@ -426,7 +426,7 @@ const UserProductList = ({ allProducts, locale }) => {
                       setProducts(data);
                     } else {
                       const newProducts = await fetch(
-                        `${process.env.API_HOST}/products/${
+                        `${process.env.NEXT_PUBLIC_API_HOST}/products/${
                           document.getElementById("LanguageSelect").value
                         }`
                       );
@@ -514,7 +514,7 @@ const UserProductList = ({ allProducts, locale }) => {
 };
 
 UserProductList.getInitialProps = async ({ query: { locale } }) => {
-  const res = await fetch(`${process.env.API_HOST}/products/${locale}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/products/${locale}`);
   const { data } = await res.json();
 
   return { allProducts: data, locale: locale };

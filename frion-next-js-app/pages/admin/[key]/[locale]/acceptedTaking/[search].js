@@ -43,7 +43,7 @@ const AdminAcceptTakingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
   useEffect(async () => {
     if (archivingTakingId) {
       const archived = await fetch(
-        `${process.env.API_HOST}/taking/request/${archivingTakingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/taking/request/${archivingTakingId}`,
         {
           method: "PUT",
           headers: {
@@ -59,7 +59,7 @@ const AdminAcceptTakingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
   useEffect(async () => {
     if (acceptingTakingId) {
       const accepted = await fetch(
-        `${process.env.API_HOST}/taking/request/${acceptingTakingId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/taking/request/${acceptingTakingId}`,
         {
           method: "PUT",
           headers: {
@@ -244,8 +244,8 @@ const AdminAcceptTakingSearchList = ({ Akey, isKeyValid, keyData, requests, sear
 };
 
 AdminAcceptTakingSearchList.getInitialProps = async ({ query: { key, locale, search } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/taking/${locale}/${search}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/taking/${locale}/${search}`);
   const { takingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {

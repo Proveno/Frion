@@ -247,7 +247,7 @@ const AdminHealingSearchList = ({ Akey, isKeyValid, keyData, requests, searchTex
 };
 
 AdminHealingSearchList.getInitialProps = async ({ query: { key, locale, search } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/findKey/${key}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/findKey/${key}`);
   const res = await fetch(`process.env.API_HOSTing/${locale}/${search}`);
   const { healingRequestData } = await res.json();
   const { success, keyData } = await keyRes.json();

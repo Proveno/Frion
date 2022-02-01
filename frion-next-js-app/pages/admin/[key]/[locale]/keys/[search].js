@@ -52,7 +52,7 @@ const AdminKeyList = ({
   useEffect(async () => {
     if (deletingKeyId) {
       const deleted = await fetch(
-        `${process.env.API_HOST}/key/${deletingKeyId}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/key/${deletingKeyId}`,
         {
           method: "Delete",
         }
@@ -242,8 +242,8 @@ const AdminKeyList = ({
 };
 
 AdminKeyList.getInitialProps = async ({ query: { key, locale, search } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/findKey/${key}`);
-  const keys = await fetch(`${process.env.API_HOST}/${search}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/findKey/${key}`);
+  const keys = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${search}`);
   const { success, keyData } = await keyRes.json();
   const { keysData } = await keys.json();
   return {

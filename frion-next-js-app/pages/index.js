@@ -91,10 +91,9 @@ export default function Home() {
       }
     }
   }, [errors]);
-  console.log(process.env.API_HOST)
   const createRequest = async () => {
     try {
-      const res = await fetch(`${process.env.API_HOST}/${type}/`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${type}/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -172,7 +171,7 @@ export default function Home() {
   }, [cartErrors]);
   const createOrder = async () => {
     try {
-      const res = await fetch(`${process.env.API_HOST}/cart/`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/cart/`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -247,9 +246,8 @@ export default function Home() {
   const [categories, setCategories] = useState();
   const getCategories = async () => {
     try {
-      console.log(process.env.API_HOST)
       const res = await fetch(
-        `${process.env.API_HOST}/categories/${
+        `${process.env.NEXT_PUBLIC_API_HOST}/categories/${
           document.getElementById("LanguageSelect").value
         }`,
         {
@@ -271,7 +269,7 @@ export default function Home() {
   const getProducts = async () => {
     try {
       const res = await fetch(
-        `${process.env.API_HOST}/products/${router.locale}/mainPage`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/products/${router.locale}/mainPage`,
         {
           method: "GET",
         }

@@ -34,7 +34,7 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
   useEffect(async () => {
     if (deletingCategory) {
       const deleted = await fetch(
-        `${process.env.API_HOST}/categories/${locale}/${deletingCategory}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/categories/${locale}/${deletingCategory}`,
         {
           method: "Delete",
         }
@@ -187,8 +187,8 @@ const AdminTakingList = ({ Akey, isKeyValid, keyData, categories, locale }) => {
 };
 
 AdminTakingList.getInitialProps = async ({ query: { key, locale } }) => {
-  const keyRes = await fetch(`${process.env.API_HOST}/keys/findKey/${key}`);
-  const res = await fetch(`${process.env.API_HOST}/categories/${locale}`);
+  const keyRes = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/keys/findKey/${key}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/categories/${locale}`);
   const { dataCategories } = await res.json();
   const { success, keyData } = await keyRes.json();
   return {
