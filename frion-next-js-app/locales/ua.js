@@ -46,7 +46,7 @@ export const ua = {
   shopQuestion: "Вам потрібно що-небудь для вашого улюбленця?",
   buyFor: "Купити за ",
   viewAllProducts: "Переглянути всі продукти",
-  currency: "₽",
+  currency: "₴",
 
   contactQuestion: "Бажаєте відвідати нас?",
   
