@@ -247,9 +247,7 @@ export default function Home() {
   const getCategories = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/categories/${
-          document.getElementById("LanguageSelect").value
-        }`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/categories/${router.locale}`,
         {
           method: "GET",
         }
