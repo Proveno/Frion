@@ -8,6 +8,8 @@ export default async (req, res)=>{
         query: {locale} ,
         method
     } = req;
+    
+    res.status(500).json({success: true});
 
     switch(method){
         case 'GET':
