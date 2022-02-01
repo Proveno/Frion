@@ -12,13 +12,13 @@ export default async (req, res)=>{
         case 'GET':
             try{
                 const category = await Category.find({ categoryLocale: locale });
-                res.status(200).json({success: true, dataCategories: category}).end();
+                res.status(200).json({success: true, dataCategories: category});
             }catch(error){
-                res.status(400).json({success: false}).end();
+                res.status(400).json({success: false});
             }
             break;
         default: 
-            res.status(400).json({success: false}).end();
+            res.status(400).json({success: false});
             break
     }
 }
