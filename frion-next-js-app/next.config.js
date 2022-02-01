@@ -6,7 +6,7 @@ module.exports = {
   },
   env:{
     MONGO_URI: "mongodb+srv://adminUser:M9RasTmoLg35N8AV@cluster0.qhuao.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    API_HOST: "http://localhost:3000/api"
+    API_HOST: "https://frion-app.vercel.app/"
   },
   images: {
     domains: ['i.ibb.co'],
