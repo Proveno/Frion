@@ -10,14 +10,13 @@ export default async (req, res)=>{
         case 'GET':
             try{
                 const products = await Product.find({productLocale: locale}).sort({'_id': -1}).limit(6);
-                res.status(200).json({success: true, data: products});
+                res.status(200).json({success: true, data: products}).end();
             }catch(error){
-                res.status(400).json({success: false});
-
+                res.status(400).json({success: false}).end();
             }
             break;
         default: 
-            res.status(400).json({success: false});
+            res.status(400).json({success: false}).end();
             break
     }
 }

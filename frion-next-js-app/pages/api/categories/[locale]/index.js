@@ -8,20 +8,17 @@ export default async (req, res)=>{
         query: {locale} ,
         method
     } = req;
-    
-    res.status(500).json({success: true});
-
     switch(method){
         case 'GET':
             try{
                 const category = await Category.find({ categoryLocale: locale });
-                res.status(200).json({success: true, dataCategories: category});
+                res.status(200).json({success: true, dataCategories: category}).end();
             }catch(error){
-                res.status(400).json({success: false});
+                res.status(400).json({success: false}).end();
             }
             break;
         default: 
-            res.status(400).json({success: false});
+            res.status(400).json({success: false}).end();
             break
     }
 }
