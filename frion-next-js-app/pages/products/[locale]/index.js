@@ -101,7 +101,7 @@ const UserProductList = ({ allProducts, locale }) => {
       err.phone = "Phone is required";
     } else {
       let regex =
-        /^(\+1|\+7|\+44|\+38|\+49|1|7|44|38|49)?[\s\-]?\(?[0-9]{3}[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+        /^(1|7|44|38|49)?[\s\-]?\(?[0-9]{3}[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
       setPhoneError(!regex.test(cartForm.phone));
       if (!regex.test(cartForm.phone)) {
         err.phone = "Incorrect phone";
