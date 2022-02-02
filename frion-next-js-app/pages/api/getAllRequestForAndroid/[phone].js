@@ -21,13 +21,13 @@ export default async (req, res) => {
         const regex = new RegExp(escapeRegex(phone), "gi");
 
         const taking = await Taking.find({
-            phone: phone,
+            phone: regex,
         });
         const giving = await Giving.find({
-            phone: phone,
+            phone: regex,
         });
         const healing = await Healing.find({
-            phone: phone,
+            phone: regex,
         });
 
 
