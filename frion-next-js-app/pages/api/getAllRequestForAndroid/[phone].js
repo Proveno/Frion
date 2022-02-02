@@ -18,16 +18,15 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const regex = new RegExp(escapeRegex(phone), "gi");
 
         const taking = await Taking.find({
-            phone: regex,
+            phone: phone,
         });
         const giving = await Giving.find({
-            phone: regex,
+            phone: phone,
         });
         const healing = await Healing.find({
-            phone: regex,
+            phone: phone,
         });
 
 
