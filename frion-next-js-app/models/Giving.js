@@ -34,11 +34,11 @@ const GivingSchema = new mongoose.Schema({
         required: true
     },
     createdAt:{
-        type: Date,
+        type: String,
         required: true
     },
     archivedAt:{
-        type: Date
+        type: String
     }
     
 })
