@@ -18,6 +18,18 @@ import cartIcon from "../../../../assets/Icons/Tilda_Icons_3st_cart.png";
 import magnifierIcon from "../../../../assets/Icons/Tilda_Icons_2web_magnifier.png";
 import dataIcon from "../../../../assets/Icons/Tilda_Icons_40_IT_data.svg";
 
+import keysIcon from "../../../../assets/admin panel icons/free-icon-keys-2829932.png";
+import productsIcon from "../../../../assets/admin panel icons/premium-icon-products-2552183.png";
+import takingIcon from "../../../../assets/admin panel icons/free-icon-delivery-450793.png";
+import accTakingIcon from "../../../../assets/admin panel icons/free-icon-order-814987.png";
+import givingIcon from "../../../../assets/admin panel icons/premium-icon-pet-cage-1566697.png";
+import accGivingIcon from "../../../../assets/admin panel icons/free-icon-pet-house-3047827.png";
+import healingIcon from "../../../../assets/admin panel icons/free-icon-clipboard-4827503.png";
+import accHealingIcon from "../../../../assets/admin panel icons/free-icon-medical-records-4193448.png";
+import categoryIcon from "../../../../assets/admin panel icons/premium-icon-category-3502685.png";
+import orderIcon from "../../../../assets/admin panel icons/free-icon-online-order-2558180.png";
+import accOrderIcon from "../../../../assets/admin panel icons/premium-icon-order-5334264.png";
+
 const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
   const router = useRouter();
   function getLang(selectedLocale) {
@@ -94,9 +106,13 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
               {(keyData[0].addAndUpdateKeys || keyData[0].deleteKeys) && (
                 <Link href={`/admin/${Akey}/${locale}/keys/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20 self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.editKeysPermission}</button>
+                    <div className="w-11">
+                      <Image src={keysIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.editKeysPermission}</button>
                   </div>
                 </Link>
               )}
@@ -104,9 +120,13 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
                 keyData[0].deleteProducts) && (
                 <Link href={`/admin/${Akey}/${locale}/products/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4 mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.editProductsPermission}</button>
+                    <div className="w-11">
+                      <Image src={productsIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.editProductsPermission}</button>
                   </div>
                 </Link>
               )}
@@ -114,18 +134,26 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
               {keyData[0].takingReq && (
                 <Link href={`/admin/${Akey}/${locale}/taking/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.TakingRequestPermission}</button>
+                    <div className="w-11">
+                      <Image src={takingIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.TakingRequestPermission}</button>
                   </div>
                 </Link>
               )}
               {keyData[0].acceptedTakingReq && (
                 <Link href={`/admin/${Akey}/${locale}/acceptedTaking/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">
+                    <div className="w-11">
+                      <Image src={accTakingIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">
                       {t.AcceptedTakingRequestPermission}
                     </button>
                   </div>
@@ -134,18 +162,26 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
               {keyData[0].givingReq && (
                 <Link href={`/admin/${Akey}/${locale}/giving/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.GivingRequestPermission}</button>
+                    <div className="w-11">
+                      <Image src={givingIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.GivingRequestPermission}</button>
                   </div>
                 </Link>
               )}
               {keyData[0].acceptedGivingReq && (
                 <Link href={`/admin/${Akey}/${locale}/acceptedGiving/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.AcceptedGivingPermission}</button>
+                    <div className="w-11">
+                      <Image src={accGivingIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.AcceptedGivingPermission}</button>
                   </div>
                 </Link>
               )}
@@ -153,18 +189,26 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
               {keyData[0].healingReq && (
                 <Link href={`/admin/${Akey}/${locale}/healing/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.HealingRequestPermission}</button>
+                    <div className="w-11">
+                      <Image src={healingIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.HealingRequestPermission}</button>
                   </div>
                 </Link>
               )}
               {keyData[0].acceptedHealingReq && (
                 <Link href={`/admin/${Akey}/${locale}/acceptedHealing/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.AcceptedHealingPermission}</button>
+                    <div className="w-11">
+                      <Image src={accHealingIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.AcceptedHealingPermission}</button>
                   </div>
                 </Link>
               )}
@@ -172,9 +216,13 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
               {(keyData[0].categories || keyData[0].addCategories) && (
                 <Link href={`/admin/${Akey}/${locale}/categories/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.editCategoriesPermission}</button>
+                    <div className="w-11">
+                      <Image src={categoryIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.editCategoriesPermission}</button>
                   </div>
                 </Link>
               )}
@@ -182,18 +230,26 @@ const AdminList = ({ Akey, isKeyValid, keyData, locale }) => {
               {keyData[0].orders && (
                 <Link href={`/admin/${Akey}/${locale}/orders/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.OrdersPermission}</button>
+                    <div className="w-11">
+                      <Image src={orderIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.OrdersPermission}</button>
                   </div>
                 </Link>
               )}
               {keyData[0].acceptedOrders && (
                 <Link href={`/admin/${Akey}/${locale}/acceptedOrders/`}>
                   <div
-                    className={`${adminMenu.adminButtons} self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
+                    className={`${adminMenu.adminButtons} flex h-20  self-center text-gray-700 relative justify-self-auto text-center px-4 py-4  mx-3 my-3 rounded-lg`}
                   >
-                    <button className="">{t.AcceptedOrdersPermission}</button>
+                    <div className="w-11">
+                      <Image src={accOrderIcon}></Image>
+
+                    </div>
+                    <button className="align-middle text-start text-xl w-10/12 h-full">{t.AcceptedOrdersPermission}</button>
                   </div>
                 </Link>
               )}

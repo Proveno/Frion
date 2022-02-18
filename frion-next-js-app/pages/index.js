@@ -307,34 +307,44 @@ export default function Home() {
           {/* TODO: replace links to scroll */}
           <div className={`flex justify-between w-9/12`}>
             <div className={`self-center`}>{/* Indent from logo */}</div>
-            <Link href={"/#About"}>
-              <div
-                className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
-              >
-                <button>{t.aboutUs}</button>
-              </div>
-            </Link>
+            <div className="w-1/5">
+              <Link href={"/#About"}>
+                <div
+                  className={`${navBar.navButton} w-9/12 text-center rounded-3xl px-4 py-1 self-center`}
+                >
+                  <button>{t.aboutUs}</button>
+                </div>
+              </Link>
+            </div>
+            <div className="w-1/5">
             <Link href={"/#Registration"}>
               <div
-                className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
+                className={`${navBar.navButton} w-9/12 text-center rounded-3xl px-4 py-1 self-center`}
               >
                 <button>{t.registrarion}</button>
               </div>
             </Link>
+            </div>
+            <div className="w-1/5">
             <Link href={"/#Shop"}>
               <div
-                className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
+                className={`${navBar.navButton} w-9/12 text-center rounded-3xl px-4 py-1 self-center`}
               >
                 <button>{t.shop}</button>
               </div>
             </Link>
+            </div>
+            <div className="w-1/5">
             <Link href={"/#Contacts"}>
               <div
-                className={`${navBar.navButton} rounded-3xl px-4 py-1 self-center`}
+                className={`${navBar.navButton} w-9/12 text-center rounded-3xl px-4 py-1 self-center`}
               >
                 <button>{t.contacts}</button>
               </div>
             </Link>
+            </div>
+
+
             <div className={`flex`}>
               <select
                 className={`${navBar.langButton} px-4 text`}
@@ -453,9 +463,9 @@ export default function Home() {
                     })}
                   </div>
                 </div>
-                <div className="flex">
+                <div className="relative">
                   <div
-                    className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
+                    className={`${cartBlock.submit} absolute bottom-0 right-0 w-full rounded-b-xl text-center py-4 text-xl`}
                     onClick={() => {
                       setIsBuy(true);
                       cart.map((order) => {
@@ -555,9 +565,9 @@ export default function Home() {
                     </form>
                   </div>
                 </div>
-                <div className="flex">
+                <div className="relative">
                   <div
-                    className={`${cartBlock.back} self-end w-1/2 rounded-bl-xl text-center py-4 text-xl`}
+                    className={`${cartBlock.back} absolute bottom-0 right-0 w-1/2 rounded-bl-xl text-center py-4 text-xl`}
                     onClick={() => {
                       setIsBuy(false);
                     }}
@@ -565,7 +575,7 @@ export default function Home() {
                     {t.cartBackBtn}
                   </div>
                   <div
-                    className={`${cartBlock.submit} self-end w-1/2 rounded-br-xl text-center py-4 text-xl`}
+                    className={`${cartBlock.submit} absolute bottom-0 right-0 w-1/2 rounded-br-xl text-center py-4 text-xl`}
                     onClick={handleCartSubmit}
                   >
                     {t.cartConfirmBtn}
@@ -594,7 +604,7 @@ export default function Home() {
         <div className="px-7 py-28">
           <p className="text-3xl ml-4">{t.aboutQuestion}</p>
           <div className="flex mt-10">
-            <div className="self-center justify-center w-3/4">
+            <div className="self-start justify-center w-3/4">
               <p
                 className={`whitespace-normal break-word indent-8 text-justify font-serif text-lg pr-14`}
               >
@@ -790,8 +800,8 @@ export default function Home() {
               products.map((product) => {
                 return (
                   <div
-                  key={product.key}
-                    className={`${shopBlock.shopItems} relative text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3 pb-10`}
+                    key={product.key}
+                    className={`${shopBlock.shopItems} relative text-gray-700 justify-center text-center rounded-3xl my-5 mx-auto pt-3 px-4 pb-10`}
                   >
                     <Image
                       width={500}
@@ -800,11 +810,11 @@ export default function Home() {
                       src={product.photo}
                       alt="Product picture"
                     ></Image>
-                    <span className="block text-sm text-lg text-gray-700 my-2">
+                    <span className="block text-sm text-lg text-gray-700 my-4 ">
                       {product.title}
                     </span>
                     <button
-                      className={`${shopBlock.shopBuyButton} absolute bottom-0 right-0  w-full rounded-b-xl py-1`}
+                      className={`${shopBlock.shopBuyButton} absolute bottom-0 left-0 w-full rounded-b-xl py-1`}
                       onClick={() => {
                         if (!cart.map((e) => e._id).includes(product._id)) {
                           // console.log(cart.map(e => e._id).includes(product._id));

@@ -145,10 +145,10 @@ const UserProductList = ({ allProducts, locale }) => {
         <div
           className={`${cartBlock.blurBack} flex justify-center fixed w-screen h-screen`}
         >
-          <div className={`${cartBlock.cart} self-center w-2/5 rounded-3xl`}>
+          <div className={`${cartBlock.cart} w-2/5 rounded-3xl`}>
             {!isBuy ? (
               <>
-                <div className={`${cartBlock.products} px-4 pt-2`}>
+                <div className={`${cartBlock.products} px-4 pt-2 pb-10`}>
                   <div className="flex justify-between">
                     <div className="text-start text-2xl font-bold text-gray-700">
                       {t.myOrder}
@@ -232,9 +232,9 @@ const UserProductList = ({ allProducts, locale }) => {
                     })}
                   </div>
                 </div>
-                <div className="flex">
+                <div className="relative">
                   <div
-                    className={`${cartBlock.submit} self-end w-full rounded-b-xl text-center py-4 text-xl`}
+                    className={`${cartBlock.submit} absolute bottom-0 left-0 w-full rounded-b-xl text-center py-4 text-xl`}
                     onClick={() => {
                       setIsBuy(true);
                       cart.map((order) => {
@@ -331,9 +331,9 @@ const UserProductList = ({ allProducts, locale }) => {
                     </form>
                   </div>
                 </div>
-                <div className="flex">
+                <div className="relative">
                   <div
-                    className={`${cartBlock.back} self-end w-1/2 rounded-bl-xl text-center py-4 text-xl`}
+                    className={`${cartBlock.back} absolute bottom-0 left-0 w-1/2 rounded-bl-xl text-center py-4 text-xl`}
                     onClick={() => {
                       setIsBuy(false);
                     }}
@@ -341,7 +341,7 @@ const UserProductList = ({ allProducts, locale }) => {
                     {t.cartBackBtn}
                   </div>
                   <div
-                    className={`${cartBlock.submit} self-end w-1/2 rounded-br-xl text-center py-4 text-xl`}
+                    className={`${cartBlock.submit} absolute bottom-0 right-0 w-1/2 rounded-br-xl text-center py-4 text-xl`}
                     onClick={handleCartSubmit}
                   >
                     {t.cartConfirmBtn}
@@ -380,7 +380,7 @@ const UserProductList = ({ allProducts, locale }) => {
                   placeholder={t.searchPlaceholder}
                 ></input>
                 <button
-                  className={`${shopBlock.searchButton} font-medium px-8 ml-2 py-1 rounded-lg`}
+                  className={`${shopBlock.searchButton} w-32 font-medium px-8 ml-2 py-1 rounded-lg`}
                   onClick={async () => {
                     if (search.searchRequest) {
                       const newProducts = await fetch(

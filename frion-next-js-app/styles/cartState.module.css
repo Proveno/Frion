@@ -10,13 +10,19 @@
     background-color: #ACA8AF;
 }
 .products{
-    height: 92%;
+    height: 100%;
+}
+.lockScroll{
+    overflow: hidden;
 }
 .product{
     overflow: scroll;
     width: 100%;
     height: 90%;
 }
+.product::-webkit-scrollbar {
+    width: 0;
+  }
 .close{
     width: 25px;
     height: 25px;
