@@ -46,7 +46,7 @@ export const ru = {
   shopQuestion: "Вам нужно что нибудь для вашего питомца?",
   buyFor: "Купить за ",
   viewAllProducts: "Посмотреть все продукты",
-  currency: "₽",
+  currency: "₴",
 
   contactQuestion: "Хотите посетить нас?",
   
